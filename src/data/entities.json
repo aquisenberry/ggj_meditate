@@ -2,8 +2,18 @@
  "main": [
   {
    "id": 0,
+   "name": "camera",
+   "camera": true,
+   "position": {
+    "x": 0,
+    "y": 0
+   },
+   "matchCanvasSize": true
+  },
+  {
+   "id": 1,
    "name": "player",
-   "player": true,
+   "strokeStyle": "red",
    "position": {
     "x": 100,
     "y": 100
@@ -15,6 +25,26 @@
    "velocity": {
     "x": 0,
     "y": 0
+   },
+   "playerController2d": {
+    "up": "up",
+    "down": "down",
+    "left": "left",
+    "right": "right"
+   },
+   "movement2d": {
+    "upMax": -0.5,
+    "downMax": 0.5,
+    "leftMax": -0.5,
+    "rightMax": 0.5,
+    "upAccel": -0.02,
+    "downAccel": 0.02,
+    "leftAccel": -0.02,
+    "rightAccel": 0.02
+   },
+   "friction": {
+    "x": 0.97,
+    "y": 0.97
    }
   }
  ]
