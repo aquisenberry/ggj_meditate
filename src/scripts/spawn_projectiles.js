@@ -11,14 +11,14 @@ function normalize(x, y, pos) {
 
 }
 
-function cast_to_edge(x, y, pos, data) {
+function cast_to_edge(size,x, y, pos, data) {
 
     var uv = normalize(x, y, pos);
 
     do {
         x+=uv.x;
         y-=Math.abs(uv.y);
-    } while( x >= 0 && x <= data.canvas.width && y >= 0 );
+    } while( x + size.width >= 0 && x <= data.canvas.width && y+size.height >= 0 );
 
     return {"x": x, "y": y}
 
@@ -31,9 +31,11 @@ module.exports = function(entity, data) {
     var y = Math.floor(Math.random() * data.canvas.height);
 
     var projectile = data.instantiatePrefab("projectile");
+    var projectile_size = data.entities.get(projectile,"size");
 
-    var new_pos = cast_to_edge(x, y, constants.center, data);
-
+    var new_pos = cast_to_edge(projectile_size,x, y, constants.center, data);
+    new_pos.x = new_pos.x + projectile_size.width/2;
+    new_pos.y = new_pos.y + projectile_size.height/2;
     data.entities.set(projectile, "position", new_pos);
 
     var uv = normalize(new_pos.x, new_pos.y, constants.center);
