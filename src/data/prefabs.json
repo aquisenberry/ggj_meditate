@@ -14,6 +14,8 @@
             "x": 0,
             "y": 0
         },
+        "collisions": [],
+        "negative_effect": true,
         "death_animation": "",
         "animation": ""
     }
