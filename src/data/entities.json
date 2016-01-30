@@ -23,7 +23,7 @@
             "spawn_projectile": {
                 "running": true,
                 "time": 0,
-                "max": 500,
+                "max": 1000,
                 "script": "./scripts/spawn_projectiles"
             }
         },
@@ -51,6 +51,20 @@
         "velocity": {
             "x": 0,
             "y": 0
+        },
+        "collisions": []
+    },
+    {
+        "id": 2,
+        "name": "cursor",
+        "cursor": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 40,
+            "height": 40
         },
         "collisions": []
     }
