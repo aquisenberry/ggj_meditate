@@ -6,9 +6,10 @@ function cast_to_edge(x, y, pos) {
        "x": (x-pos.x)/d,
        "y": (y-pos.y)/d
    }
-   var i = 1;
+   
    do {
-       i++; 
+       x+=uv.x;
+       y+=uv.y;
    } while( x >= 0 && x <= data.canvas.width && y >= 0 && y <= data.canvas.height );
 }
 
