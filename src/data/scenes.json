@@ -1,0 +1,7 @@
+{
+ "main": {
+  "first": true,
+  "onEnter": "./scripts/main-enter",
+  "onExit": "./scripts/main-exit"
+ }
+}
