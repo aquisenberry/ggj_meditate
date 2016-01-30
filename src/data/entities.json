@@ -34,6 +34,7 @@
         "id": 1,
         "name": "player",
         "player": true,
+        "time": 0,
         "strokeStyle": "red",
         "score": 0,
         "fillStyle": "blue",
