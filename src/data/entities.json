@@ -36,6 +36,7 @@
     {
         "id": 1,
         "name": "player",
+        "player": true,
         "strokeStyle": "red",
         "fillStyle": "blue",
         "position": {
@@ -49,7 +50,8 @@
         "velocity": {
             "x": 0,
             "y": 0
-        }
+        },
+        "collisions": []
     }
     ]
 }

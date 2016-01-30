@@ -59,6 +59,12 @@
         "scenes": [
             "main"
         ]
+    },
+    {
+        "name": "./systems/simulation/resolve_collisions",
+        "scenes": [
+            "main"
+        ]
     }
     ],
         "renderer": [
