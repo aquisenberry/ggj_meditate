@@ -28,7 +28,13 @@
             "x": 0,
             "y": 0
         },
-        "matchCanvasSize": true
+        "matchCanvasSize": true,
+        "image": {
+            "name": "background"
+        },
+        "z-index": {
+            "z-index": -1
+        }
     },
     {
         "id": 1,
