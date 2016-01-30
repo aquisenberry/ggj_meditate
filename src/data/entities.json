@@ -38,6 +38,7 @@
         "name": "player",
         "player": true,
         "strokeStyle": "red",
+        "score": 0,
         "fillStyle": "blue",
         "position": {
             "x": 0,
