@@ -23,7 +23,7 @@
             "spawn_projectile": {
                 "running": true,
                 "time": 0,
-                "max": 500,
+                "max": 1000,
                 "script": "./scripts/spawn_projectiles"
             }
         },
@@ -63,8 +63,8 @@
             "y": 0
         },
         "size": {
-            "width": 20,
-            "height": 20
+            "width": 40,
+            "height": 40
         },
         "collisions": []
     }
