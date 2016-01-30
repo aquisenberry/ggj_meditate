@@ -2,7 +2,6 @@
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-
 var Splat = require("splat-ecs");
 
 // This is some webpack magic to ensure the dynamically required scripts are loaded
