@@ -1,1 +1,4 @@
-{}
+{
+   "cursor": "images/cursor.png",
+   "cursor_clicked": "images/cursorclicked.png"
+}

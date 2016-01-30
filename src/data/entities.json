@@ -77,6 +77,16 @@
             "width": 40,
             "height": 40
         },
+        "image": {"name": "cursor"},
+        "click_image": "cursor_clicked",
+        "timers": {
+            "cursor_click": {
+                "running": false,
+                "time": 0,
+                "max": 150,
+                "script": "./scripts/change_image"
+            }
+        },
         "collisions": []
     },
     {
