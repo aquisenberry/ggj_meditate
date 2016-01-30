@@ -17,6 +17,9 @@
         "collisions": [],
         "negative_effect": true,
         "death_animation": "",
-        "animation": ""
+        "animation": "",
+        "z-index": {
+            "z-index": 2
+        }
     }
 }

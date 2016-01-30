@@ -48,8 +48,8 @@
             "y": 0
         },
         "size": {
-            "width": 150,
-            "height": 214
+            "width": 175,
+            "height": 250
         },
         "image": { "name": "player" },
         "velocity": {
@@ -70,6 +70,9 @@
                 "cooldown": 9,
                 "prefab": "laser_ability"
             }
+        },
+        "z-index": {
+            "z-index": 5
         }
     },
     {
@@ -94,7 +97,10 @@
                 "script": "./scripts/change_image"
             }
         },
-        "collisions": []
+        "collisions": [],
+        "z-index": {
+            "z-index": 6
+        }
     },
     {
         "id": 3,
@@ -105,12 +111,18 @@
             "y": 0
         },
         "size": {
-            "width": 100,
-            "height": 100
+            "width": 125,
+            "height": 131
+        },
+        "image": {
+            "name": "medallion"
         },
         "meter_full":false,
         "max_value": 100,
-        "value":0 
+        "value":0,
+        "z-index": {
+            "z-index": 1
+        }
     },
     {
         "id": 4,
