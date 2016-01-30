@@ -8,9 +8,6 @@
             "center": {
                 "x": 0,
                 "y": 0
-            },
-            "player_position": {
-
             }
         },
         "timers": {
@@ -52,7 +49,21 @@
             "x": 0,
             "y": 0
         },
-        "collisions": []
+        "collisions": [],
+        "abilities": {
+            "cone": {
+                "cooldown": 6,
+                "prefab": "cone_ability"
+            },
+            "bomb": {
+                "cooldown": 3,
+                "prefab": "bomb_ability"
+            },
+            "laser": {
+                "cooldown": 9,
+                "prefab": "laser_ability"
+            }
+        }
     },
     {
         "id": 2,
@@ -67,6 +78,45 @@
             "height": 40
         },
         "collisions": []
+    },
+    {
+        "id": 4,
+        "name": "cone",
+        "ability_icon": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 75,
+            "height": 75
+        }
+    },
+    {
+        "id": 5,
+        "name": "cone",
+        "ability_icon": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 75,
+            "height": 75
+        }
+    },
+    {
+        "id": 6,
+        "name": "cone",
+        "ability_icon": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 75,
+            "height": 75
+        }
     }
     ]
 }
