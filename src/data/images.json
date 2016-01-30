@@ -1,4 +1,5 @@
 {
    "cursor": "images/cursor.png",
-   "cursor_clicked": "images/cursorclicked.png"
+   "cursor_clicked": "images/cursorclicked.png",
+   "player": "images/player.png"
 }
