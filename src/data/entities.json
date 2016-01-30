@@ -4,6 +4,26 @@
    "id": 0,
    "name": "camera",
    "camera": true,
+   "constants": {
+       "center": {
+           "x": 0,
+           "y": 0
+       }
+   },
+   "timers": {
+    "set_constants": {
+        "running": true,
+        "time": 0,
+        "max": 1,
+        "script": "./scripts/set_constants"
+    },
+    "spawn_projectile": {
+        "running": true,
+        "time": 0,
+        "max": 500,
+        "script": "./scripts/spawn_projectiles"
+    }
+   },
    "position": {
     "x": 0,
     "y": 0
@@ -14,7 +34,7 @@
    "id": 1,
    "name": "player",
    "strokeStyle": "red",
-   "fillStyle": "red",
+   "fillStyle": "blue",
    "position": {
     "x": 550,
     "y": 250
