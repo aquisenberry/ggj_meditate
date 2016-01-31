@@ -14,6 +14,8 @@ module.exports = function(ecs, data) {
             "x": player_pos.x + player_radius,
             "y": player_pos.y + player_radius
         };
+        var progress_meter = 7;
+        var progress = data.entities.get(progress_meter,"progress");
 
         var timers = data.entities.get(entity, "timers");
 
@@ -33,8 +35,8 @@ module.exports = function(ecs, data) {
                     "y": proj_pos.y + proj_radius
                 };
                 if( distance(player_center, proj_center) <= (player_radius + proj_radius) ) {
+                    progress.value += data.entities.get(entity_collisions[i],"effect");
                     if(data.entities.get(entity_collisions[i], "negative_effect")) {
-                        data.entities.set(entity, "score", --score);
                         timers.ouch_pain.running = true;
                         timers.ouch_pain.time = 0;
                         data.entities.set(entity, "is_hit", true); 
@@ -45,6 +47,12 @@ module.exports = function(ecs, data) {
                 }
 
             }
+        }
+        if (progress.value > progress.max){
+            progress.value = progress.max;
+        }
+        if (progress.value < 0){
+            data.switchScene("end");
         }
 
         if(data.entities.get(entity, "is_hit")) {

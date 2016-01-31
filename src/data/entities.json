@@ -209,18 +209,30 @@
         },
         "progress":{
             "blocks":[],
-            "max": 100,
-            "value":30
+            "max": 150,
+            "value":50,
+            "pill_value":10
         },
         "timers": {
-            "decrement_progress": {
-                "running": true,
-                "time": 0,
-                "max": 3000,
-                "script": "./scripts/decrement_progress"
-            }
+            
         }
 
+    },
+    {
+        "id": 8,
+        "name": "lotus",
+        "lotus": true,
+        "size":{
+            "width":220,
+            "height":131
+        },
+        "position":{
+            "x":0,
+            "y":0
+        },
+        "image":{
+            "name":"lotus"
+        }
     }  
     ],
     "end": [

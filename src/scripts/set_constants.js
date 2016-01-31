@@ -80,4 +80,12 @@ module.exports = function(entity, data) {
         progress.blocks.push(tempArray[i]);
     }
 
+    var lotus = 8;
+    var lotus_size=data.entities.get(lotus,"size");
+    var lotus_position = data.entities.get(lotus,"position");
+
+
+    lotus_position.y = progress_meter_position.y + progress_meter_size.height*0.9;
+    lotus_position.x = progress_meter_position.x + progress_meter_size.width/2.3- lotus_size.width/2;
+
 }
