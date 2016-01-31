@@ -42,7 +42,12 @@
             "id": 7,
             "offsetX":0,
             "offsetY":0
+        },
+        "colors":{
+            "empty":"#f04f50",
+            "full": "#f1ea40"
         }
+        
     },
     "zengrenade": {
         "name": "zengrenade",
