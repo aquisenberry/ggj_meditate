@@ -14,6 +14,16 @@ module.exports = function(ecs, data) {
             "x": player_pos.x + player_radius,
             "y": player_pos.y + player_radius
         };
+
+        var timers = data.entities.get(entity, "timers");
+
+        var rotation = data.entities.get(entity, "rotation");
+
+        var half_bob_range = 0.075;
+        var time_incriment = 3;
+
+        var time = data.entities.get(entity,"time");
+
         for( var i = 0; i < entity_collisions.length; ++i) {
             if(data.entities.get(entity_collisions[i], "projectile")) {
                 var proj_pos = data.entities.get(entity_collisions[i], "position");
@@ -25,13 +35,23 @@ module.exports = function(ecs, data) {
                 if( distance(player_center, proj_center) <= (player_radius + proj_radius) ) {
                     if(data.entities.get(entity_collisions[i], "negative_effect")) {
                         data.entities.set(entity, "score", --score);
+                        timers.ouch_pain.running = true;
+                        timers.ouch_pain.time = 0;
+                        data.entities.set(entity, "is_hit", true); 
                     } else {
                         data.entities.set(entity, "score", ++score);
                     }
-                    console.log(score);
                     data.entities.destroy(entity_collisions[i]);
                 }
+
             }
         }
+
+        if(data.entities.get(entity, "is_hit")) {
+            var mod = Math.cos(time.jitter_time)*half_bob_range;
+            data.entities.set(entity, "rotation", {"angle": (rotation.angle + mod)});
+            time.jitter_time += time_incriment;
+        }
+
     }, "player");
 }
