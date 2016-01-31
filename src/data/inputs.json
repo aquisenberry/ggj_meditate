@@ -3,7 +3,21 @@
         "type": "button",
         "inputs": [{
             "device": "keyboard",
+            "key": "e"
+        }]
+    },
+    "laser": {
+        "type": "button",
+        "inputs": [{
+            "device": "keyboard",
             "key": "w"
+        }]
+    },
+    "cone": {
+        "type": "button",
+        "inputs": [{
+            "device": "keyboard",
+            "key": "q"
         }]
     }
 }

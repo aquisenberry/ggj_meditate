@@ -28,7 +28,7 @@ module.exports = function(entity, data) {
     var cone_id = 4;
     var cone_icon_size = data.entities.get(cone_id, "size");
     var cone_icon_position = {
-        "x": (data.canvas.width / 2) - cone_icon_size.width * 1.5,
+        "x": (data.canvas.width / 2) - cone_icon_size.width * 0.5,
         "y": (data.canvas.height * 0.95) - cone_icon_size.height,
     }
     data.entities.set(cone_id, "position", cone_icon_position);
@@ -36,7 +36,7 @@ module.exports = function(entity, data) {
     var bomb_id = 5;
     var bomb_icon_size = data.entities.get(bomb_id, "size");
     var bomb_icon_position = {
-        "x": (data.canvas.width / 2) - bomb_icon_size.width * 0.5,
+        "x": (data.canvas.width / 2) + bomb_icon_size.width * 0.5,
         "y": (data.canvas.height * 0.95) - bomb_icon_size.height,
     }
     data.entities.set(bomb_id, "position", bomb_icon_position);
@@ -44,7 +44,7 @@ module.exports = function(entity, data) {
     var laser_id = 6;
     var laser_icon_size = data.entities.get(bomb_id, "size");
     var laser_icon_position = {
-        "x": (data.canvas.width / 2) + laser_icon_size.width * 0.5,
+        "x": (data.canvas.width / 2) - laser_icon_size.width * 1.5,
         "y": (data.canvas.height * 0.95) - laser_icon_size.height,
     }
     data.entities.set(laser_id, "position", laser_icon_position);

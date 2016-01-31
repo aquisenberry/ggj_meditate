@@ -64,5 +64,23 @@ module.exports = function(ecs, data) {
             }
         }
 
+        if(data.input.button("laser")) {
+            // Show reticle
+            if(!timers.laser_cooldown.running) {
+                image.name = "laser_reticle";
+                image.destinationWidth = entity_size.width * 6;
+                image.destinationHeight = entity_size.height * 6;
+                image.destinationX = -image.destinationWidth / 2 + entity_size.width / 2;
+                image.destinationY = -image.destinationHeight / 2 + entity_size.height / 2;
+            }
+        }
+        if(data.input.buttonReleased("laser")) {
+            if(!timers.laser_cooldown.running) {
+                grenade = data.instantiatePrefab("laser_prefab");
+                timers.laser_cooldown.time = 0;
+                timers.laser_cooldown.running = true;
+            }
+        }
+
     }, "cursor");
 }

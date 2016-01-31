@@ -121,6 +121,16 @@
                 "running": false,
                 "time": 0,
                 "max": 15000
+            },
+            "cone_cooldown": {
+                "running": false,
+                "time": 0,
+                "max": 10000
+            },
+            "laser_cooldown": {
+                "running": false,
+                "time": 0,
+                "max": 20000
             }
         },
         "collisions": [],

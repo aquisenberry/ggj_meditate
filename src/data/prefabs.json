@@ -95,6 +95,45 @@
             "z-index": 3
         }
     },
+    "cone_prefab": {
+        "name": "cone_prefab",
+        "cone_prefab": true,
+        "timers": {
+            
+        },
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 0,
+            "height": 0
+        },
+        "collisions": [],
+        "z-index": {
+            "z-index": 3
+        }
+    },
+    "laser_prefab": {
+        "name": "laser_prefab",
+        "laser_prefab": true,
+        "timers": {
+            
+        },
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size_step": 5,
+        "size": {
+            "width": 0,
+            "height": 0
+        },
+        "collisions": [],
+        "z-index": {
+            "z-index": 3
+        }
+    },
     "cloud": {
         "name": "cloud",
         "cloud": true,
