@@ -26,7 +26,7 @@
             "spawn_projectile": {
                 "running": true,
                 "time": 0,
-                "max": 750,
+                "max": 350,
                 "script": "./scripts/spawn_projectiles"
             }
         },
@@ -116,6 +116,11 @@
                 "time": 0,
                 "max": 150,
                 "script": "./scripts/change_image"
+            },
+            "zen_cooldown": {
+                "running": false,
+                "time": 0,
+                "max": 15000
             }
         },
         "collisions": [],

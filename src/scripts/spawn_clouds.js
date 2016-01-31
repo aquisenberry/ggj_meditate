@@ -6,7 +6,7 @@ module.exports = function(entity, data) {
     var image = data.entities.get(cloud, "image");
     var pos = {
         "x": Math.floor(Math.random() * ((data.canvas.width - 200) - 1)) + 1,
-        "y": 25
+        "y": Math.floor(Math.random() * (205 - 15)) + 15
     };
     data.entities.set(cloud, "position", pos);
 
