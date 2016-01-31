@@ -77,6 +77,12 @@
         "scenes": [
             "main"
         ]
+    },
+    {
+        "name": "./systems/simulation/zengrenade",
+        "scenes": [
+            "main"
+        ]
     }
     ],
         "renderer": [
