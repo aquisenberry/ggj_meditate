@@ -19,6 +19,7 @@
             "name": "negative_projectile"
         },
         "negative_effect": true,
+        "effect": 1,
         "death_animation": "",
         "mod": 0.01,
         "rotation": {

@@ -46,10 +46,25 @@
         "id": 1,
         "name": "player",
         "player": true,
-        "time": 0,
+        "timers": {
+            "ouch_pain": {
+                "running": false,
+                "time": 0,
+                "max": 250,
+                "script": "./scripts/ouch_pain"
+            }
+        },
+        "time": {
+            "bob_time": 0,
+            "jitter_time": 0
+        },
+        "is_hit": false,
         "strokeStyle": "red",
         "score": 0,
         "fillStyle": "blue",
+        "rotation": {
+            "angle": 0
+        },
         "position": {
             "x": 0,
             "y": 0

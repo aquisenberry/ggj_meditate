@@ -58,7 +58,6 @@ module.exports = function(entity, data) {
     }
 
     image.name = cloud_name;
-    console.log(image.name);
     data.entities.set(cloud, "image", image);
     var mod = Math.random() * (0.08 + 0.08) - 0.08;
     data.entities.set(cloud, "velocity", {"x": mod, "y": 0});

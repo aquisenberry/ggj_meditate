@@ -41,7 +41,7 @@ module.exports = function(entity, data) {
     var uv = normalize(new_pos.x, new_pos.y, constants.center);
     var negative = Math.floor(Math.random() * (9 - 1)) + 1;
     var big = Math.floor(Math.random() * 9) % 2;
-    data.entities.set(projectile, "negative_effect", negative);
+    data.entities.set(projectile, "negative_effect", negative > 2);
     if(negative > 2){
         data.entities.set(projectile, "image", {"name": "negative_projectile"});
     } else {
@@ -50,10 +50,20 @@ module.exports = function(entity, data) {
     if(big) {
         data.entities.set(projectile, "size", {"width": 40, "height": 40});
         data.entities.set(projectile, "mod", 0.01);
+        if(negative > 2) {
+            data.entities.set(projectile, "effect", -20);
+        } else {
+            data.entities.set(projectile, "effect", 10);
+        }
         data.entities.set(projectile, "velocity", {"x": -uv.x * 0.03, "y": -uv.y * 0.03});
     } else {
         data.entities.set(projectile, "size", {"width": 25, "height": 25});
         data.entities.set(projectile, "mod", 0.04);
+        if(negative > 2) {
+            data.entities.set(projectile, "effect", -10);
+        } else {
+            data.entities.set(projectile, "effect", 5);
+        }
         data.entities.set(projectile, "velocity", {"x": -uv.x * 0.05, "y": -uv.y * 0.05});
     }
 
