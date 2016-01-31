@@ -1,5 +1,18 @@
 "use strict";
 
+/*
+var placeOnCircle = function(object, circle, offset){
+    object.x = circle.cx + circle.r * Math.sin(circle.theta + offset);
+    object.y = circle.cy + circle.r * Math.cos(circle.theta + offset);
+};
+
+var getTheta = function() {
+    this.cx = (this.x );
+    this.cy = (this.y );
+    this.theta = Math.atan2(game.mouse.x-this.cx+scene.gameCamera.x, game.mouse.y-this.cy+scene.gameCamera.y);
+};
+*/
+
 module.exports = function(ecs, data) {
     ecs.addEach(function(entity, elapsed) {
         var progress_meter = 7;
@@ -77,8 +90,32 @@ module.exports = function(ecs, data) {
         if(data.input.buttonReleased("laser")) {
             if(!timers.laser_cooldown.running) {
                 grenade = data.instantiatePrefab("laser_prefab");
+                data.entities.set(entity, "image", {"name": "cursor"});
+                data.entities.set(grenade, "position", { "x": cursor_position.x - entity_size.width / 2, "y": cursor_position.y - entity_size.height / 2});
+                data.entities.set(grenade, "size", {"width": entity_size.width * 2, "height": entity_size.height * 2});
                 timers.laser_cooldown.time = 0;
                 timers.laser_cooldown.running = true;
+            }
+        }
+
+        if(data.input.button("cone")) {
+            // Show reticle
+            if(!timers.cone_cooldown.running) {
+                image.name = "cone_reticle";
+                image.destinationWidth = entity_size.width * 6;
+                image.destinationHeight = entity_size.height * 6;
+                image.destinationX = -image.destinationWidth / 2 + entity_size.width / 2;
+                image.destinationY = -image.destinationHeight / 2 + entity_size.height / 2;
+            }
+        }
+        if(data.input.buttonReleased("cone")) {
+            if(!timers.cone_cooldown.running) {
+                grenade = data.instantiatePrefab("cone_prefab");
+                data.entities.set(entity, "image", {"name": "cursor"});
+                data.entities.set(grenade, "position", { "x": cursor_position.x - entity_size.width / 2, "y": cursor_position.y - entity_size.height / 2});
+                data.entities.set(grenade, "size", {"width": entity_size.width * 2, "height": entity_size.height * 2});
+                timers.cone_cooldown.time = 0;
+                timers.cone_cooldown.running = true;
             }
         }
 
