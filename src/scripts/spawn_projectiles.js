@@ -39,7 +39,7 @@ module.exports = function(entity, data) {
     data.entities.set(projectile, "position", new_pos);
 
     var uv = normalize(new_pos.x, new_pos.y, constants.center);
-    data.entities.set(projectile, "velocity", {"x": -uv.x * 0.1, "y": -uv.y * 0.1});
+    data.entities.set(projectile, "velocity", {"x": -uv.x * 0.05, "y": -uv.y * 0.05});
 
     var timers = data.entities.get(entity, "timers");
     timers.spawn_projectile.time = 0;

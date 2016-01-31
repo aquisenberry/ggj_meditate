@@ -37,6 +37,12 @@
         ]
     },
     {
+        "name": "./systems/simulation/mouse_simulation",
+        "scenes": [
+            "main"
+        ]
+    },
+    {
         "name": "splat-ecs/lib/systems/apply-friction",
         "scenes": [
             "main"
@@ -66,14 +72,15 @@
             "main"
         ]
     },
+    
     {
-        "name": "./systems/simulation/mouse_simulation",
+        "name": "./systems/simulation/player_bob",
         "scenes": [
             "main"
         ]
     },
     {
-        "name": "./systems/simulation/player_bob",
+        "name": "./systems/simulation/zengrenade",
         "scenes": [
             "main"
         ]

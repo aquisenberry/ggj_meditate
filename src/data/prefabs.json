@@ -37,5 +37,21 @@
             "offsetX":0,
             "offsetY":0
         }
+    },
+    "zengrenade": {
+        "name": "zengrenade",
+        "zengrenade": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 0,
+            "height": 0
+        },
+        "collisions": [],
+        "z-index": {
+            "z-index": 3
+        }
     }
 }

@@ -1,1 +1,9 @@
-{}
+{
+    "zengrenade": {
+        "type": "button",
+        "inputs": [{
+            "device": "keyboard",
+            "key": "w"
+        }]
+    }
+}
