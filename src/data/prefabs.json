@@ -27,6 +27,14 @@
         },
         "z-index": {
             "z-index": 3
+        },
+        "timers":{
+            "push_back":{
+                "running": false,
+                "time":0,
+                "max":500,
+                "script": "./scripts/push_back_stop"
+            }
         }
     },
     "progress_block": {
