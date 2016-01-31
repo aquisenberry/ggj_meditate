@@ -110,5 +110,37 @@
         "z-index": {
             "z-index": 1
         }
+    },
+    "end_btn_title":{
+        "name": "title",
+        "btn": true,
+        "title": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width":0,
+            "height":0
+        },
+        "image":{
+            "name": "back_to_title"
+        }
+    },
+    "end_btn_try_again":{
+        "name": "try_again",
+        "btn": true,
+        "try_again": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width":0,
+            "height":0
+        },
+        "image":{
+            "name": "try_again"
+        }
     }
 }

@@ -147,6 +147,12 @@
             ]
         },
         {
+            "name": "./systems/renderer/render_film",
+            "scenes": [
+                "end"
+            ]
+        },
+        {
             "name": "splat-ecs/lib/systems/viewport-reset",
             "scenes": [
                 "main", "title", "end"

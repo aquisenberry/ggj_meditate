@@ -278,6 +278,23 @@
         },
         "z-index": {
             "z-index": -1
+        },
+        "image": {
+            "name": "background"
+        },
+        "timers":{
+            "bring_in_film":{
+                "running":true,
+                "time":0,
+                "max":3000,
+                "script": "./scripts/bring_in_film"
+            },
+            "start_end": {
+                "running":false,
+                "time":0,
+                "max":1000,
+                "script": "./scripts/start_end"
+            }
         }
     },
     {
@@ -292,7 +309,6 @@
             "width": 40,
             "height": 40
         },
-        "image": {"name": "cursor"},
         "click_image": "cursor_clicked",
         "timers": {
             "cursor_click": {
