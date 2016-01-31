@@ -11,7 +11,7 @@ module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
 			var match =data.entities.get(progress.blocks[i],"match");
 			var block_size = data.entities.get(progress.blocks[i],"size");
 
-			context.fillStyle = "red";
+			context.fillStyle = "#f04f50";
 
 			context.fillRect(position.x, position.y + match.offsetY, block_size.width, block_size.height);
 
