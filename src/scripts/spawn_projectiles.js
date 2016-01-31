@@ -41,10 +41,10 @@ module.exports = function(entity, data) {
     data.entities.set(projectile, "position", new_pos);
 
     var uv = normalize(new_pos.x, new_pos.y, constants.center);
-    var negative = Math.floor(Math.random() * 9) % 2;
+    var negative = Math.floor(Math.random() * (9 - 1)) + 1;
     var big = Math.floor(Math.random() * 9) % 2;
     data.entities.set(projectile, "negative_effect", negative);
-    if(negative) {
+    if(negative > 2){
         data.entities.set(projectile, "image", {"name": "negative_projectile"});
     } else {
         data.entities.set(projectile, "image", {"name": "positive_projectile"});
