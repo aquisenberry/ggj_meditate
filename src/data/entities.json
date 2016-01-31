@@ -129,6 +129,9 @@
         "id": 4,
         "name": "cone",
         "ability_icon": true,
+        "image": {
+            "name": "cone"
+        },
         "position": {
             "x": 0,
             "y": 0
@@ -140,8 +143,11 @@
     },
     {
         "id": 5,
-        "name": "cone",
+        "name": "zengrenade",
         "ability_icon": true,
+        "image": {
+            "name": "zengrenade"
+        },
         "position": {
             "x": 0,
             "y": 0
@@ -153,7 +159,10 @@
     },
     {
         "id": 6,
-        "name": "cone",
+        "name": "lazer",
+        "image": {
+            "name": "lazer"
+        },
         "ability_icon": true,
         "position": {
             "x": 0,
