@@ -71,6 +71,12 @@
         "scenes": [
             "main"
         ]
+    },
+    {
+        "name": "./systems/simulation/player_bob",
+        "scenes": [
+            "main"
+        ]
     }
     ],
         "renderer": [

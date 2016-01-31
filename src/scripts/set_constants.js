@@ -18,8 +18,8 @@ module.exports = function(entity, data) {
         "y": constants.center.y - player_size.height / 2,
     }
     var om_pos = {
-        "x": data.canvas.width*0.8 -om_size.width/2,
-        "y": data.canvas.height*0.9 -om_size.height
+        "x": data.canvas.width*0.95 -om_size.width,
+        "y": data.canvas.height*0.95 -om_size.height
     }
     data.entities.set(player, "position", new_pos);
 
@@ -27,7 +27,7 @@ module.exports = function(entity, data) {
     var cone_icon_size = data.entities.get(cone_id, "size");
     var cone_icon_position = {
         "x": (data.canvas.width / 2) - cone_icon_size.width * 1.5,
-        "y": (data.canvas.height * 0.9) - cone_icon_size.height,
+        "y": (data.canvas.height * 0.95) - cone_icon_size.height,
     }
     data.entities.set(cone_id, "position", cone_icon_position);
 
@@ -35,7 +35,7 @@ module.exports = function(entity, data) {
     var bomb_icon_size = data.entities.get(bomb_id, "size");
     var bomb_icon_position = {
         "x": (data.canvas.width / 2) - bomb_icon_size.width * 0.5,
-        "y": (data.canvas.height * 0.9) - bomb_icon_size.height,
+        "y": (data.canvas.height * 0.95) - bomb_icon_size.height,
     }
     data.entities.set(bomb_id, "position", bomb_icon_position);
 
@@ -43,9 +43,18 @@ module.exports = function(entity, data) {
     var laser_icon_size = data.entities.get(bomb_id, "size");
     var laser_icon_position = {
         "x": (data.canvas.width / 2) + laser_icon_size.width * 0.5,
-        "y": (data.canvas.height * 0.9) - laser_icon_size.height,
+        "y": (data.canvas.height * 0.95) - laser_icon_size.height,
     }
     data.entities.set(laser_id, "position", laser_icon_position);
     data.entities.set(om,"position",om_pos);
+
+    var progress_meter = 7;
+    var progress_meter_size = data.entities.get(progress_meter,"size");
+    var progress_meter_position = data.entities.get(progress_meter,"position");
+
+    progress_meter_size.height = data.canvas.height * 0.9;
+    progress_meter_size.width = data.canvas.width *0.05;
+    progress_meter_position.x = data.canvas.width*0.05;
+    progress_meter_position.y = data.canvas.height*0.05;
 
 }
