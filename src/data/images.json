@@ -20,5 +20,9 @@
     "dark_clouds2": "images/darkclouds2.png",
     "dark_clouds3": "images/darkclouds3.png",
     "lotus": "images/lotus.png",
-    "monkzenmode": "images/monkzenmode.png"
+    "monkzenmode": "images/monkzenmode.png",
+    "title": "images/title.png",
+    "play": "images/play.png",
+    "zenmode": "images/zenmodeselect.png",
+    "credits": "images/credits.png"
 }

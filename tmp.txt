@@ -74,10 +74,9 @@
                 "y": 0
             },
             "size": {
-                "width": 179,
-                "height": 103
+                "width": 0,
+                "height": 0
             },
-            "collisions": [],
             "image": {
                 "name": "play"
             }
@@ -90,10 +89,9 @@
                 "y": 0
             },
             "size": {
-                "width": 415,
-                "height": 103
+                "width": 0,
+                "height": 0
             },
-            "collisions": [],
             "image": {
                 "name": "zenmode"
             }
@@ -106,10 +104,9 @@
                 "y": 0
             },
             "size": {
-                "width": 305,
-                "height": 103
+                "width": 0,
+                "height": 0
             },
-            "collisions": [],
             "image": {
                 "name": "credits"
             }
