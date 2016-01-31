@@ -2,6 +2,8 @@
 
 module.exports = function(entity, data) {
     
+    data.sounds.play("background", true);
+    data.sounds.play("beach", true);
     var player = 1;
     var om = 3;
 

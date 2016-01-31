@@ -8,5 +8,13 @@
     "lazer": "images/lazer.png",
     "cone": "images/cone.png",
     "negative_projectile": "images/badswirl.png",
-    "positive_projectile": "images/goodswirl.png"
+    "positive_projectile": "images/goodswirl.png",
+    "clouds1": "images/clouds1.png",
+    "clouds2": "images/clouds2.png",
+    "clouds3": "images/clouds3.png",
+    "clouds4": "images/clouds4.png",
+    "clouds5": "images/clouds5.png",
+    "dark_clouds1": "images/darkclouds1.png",
+    "dark_clouds2": "images/darkclouds2.png",
+    "dark_clouds3": "images/darkclouds3.png"
 }

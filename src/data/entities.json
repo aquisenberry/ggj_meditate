@@ -17,6 +17,12 @@
                 "max": 1,
                 "script": "./scripts/set_constants"
             },
+            "spawn_clouds": {
+                "running": true,
+                "time": 0,
+                "max": 750,
+                "script": "./scripts/spawn_clouds"
+            },
             "spawn_projectile": {
                 "running": true,
                 "time": 0,

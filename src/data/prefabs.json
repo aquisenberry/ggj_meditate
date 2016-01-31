@@ -25,7 +25,7 @@
             "angle": 0
         },
         "z-index": {
-            "z-index": 2
+            "z-index": 3
         }
     },
     "progress_block": {
@@ -58,6 +58,22 @@
         "collisions": [],
         "z-index": {
             "z-index": 3
+        }
+    },
+    "cloud": {
+        "name": "cloud",
+        "cloud": true,
+        "dark": false,
+        "image": {
+            "name": "clouds1"
+        },
+        "velocity": {
+            "x": 0,
+            "y": 0
+        },
+        "left": true,
+        "z-index": {
+            "z-index": 1
         }
     }
 }

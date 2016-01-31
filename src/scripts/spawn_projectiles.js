@@ -33,8 +33,6 @@ module.exports = function(entity, data) {
     var projectile = data.instantiatePrefab("projectile");
     var projectile_size = data.entities.get(projectile,"size");
 
-    
-
     var new_pos = cast_to_edge(projectile_size,x, y, constants.center, data);
     new_pos.x = new_pos.x + projectile_size.width/2;
     new_pos.y = new_pos.y + projectile_size.height/2;

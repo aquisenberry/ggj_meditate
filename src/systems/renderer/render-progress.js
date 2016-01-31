@@ -16,6 +16,7 @@ module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
 			context.fillRect(position.x, position.y + match.offsetY, block_size.width, block_size.height);
 
 		}
+        context.globalAlpha = 1;
 
 	}, "progress");
 };
