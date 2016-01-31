@@ -1,6 +1,14 @@
 {
+	"title":{
+		"first": true,
+        "onEnter": "./scripts/main-enter",
+        "onExit": "./scripts/main-exit"
+	},
     "main": {
-        "first": true,
+        "onEnter": "./scripts/main-enter",
+        "onExit": "./scripts/main-exit"
+    },
+    "end": {
         "onEnter": "./scripts/main-enter",
         "onExit": "./scripts/main-exit"
     }
