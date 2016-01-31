@@ -59,9 +59,8 @@
             "jitter_time": 0
         },
         "is_hit": false,
-        "strokeStyle": "red",
-        "score": 0,
-        "fillStyle": "blue",
+        "ouch_image": "player_ouch",
+        "zen_image": "player",
         "rotation": {
             "angle": 0
         },

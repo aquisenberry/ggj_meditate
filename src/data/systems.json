@@ -92,7 +92,7 @@
         ]
     }
     ],
-        "renderer": [
+    "renderer": [
         {
             "name": "splat-ecs/lib/systems/clear-screen",
             "scenes": [
@@ -113,6 +113,12 @@
         },
         {
             "name": "splat-ecs/lib/systems/draw-image",
+            "scenes": [
+                "main"
+            ]
+        },
+        {
+            "name": "./systems/renderer/render_zengrenade",
             "scenes": [
                 "main"
             ]
