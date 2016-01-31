@@ -9,6 +9,7 @@ module.exports = function(ecs, data) {
         var entity_size = data.entities.get(entity, "size");
         var entity_position = data.entities.get(entity, "position");
         var image = data.entities.get(entity, "image");
+        var timers = data.entities.get(entity, "timers");
         var click_image = data.entities.get(entity, "click_image");
         var cursor_position = {
             "x": data.input.mouse.x - entity_size.width / 2,
@@ -29,19 +30,28 @@ module.exports = function(ecs, data) {
             timers.cursor_click.running = true;
         }
 
+        var grenade, grenade_timers;
+
         if(data.input.button("zengrenade")) {
             // Show reticle
-            image.name = "zengrenade_reticle";
-            image.destinationWidth = entity_size.width * 6;
-            image.destinationHeight = entity_size.height * 6;
-            image.destinationX = -image.destinationWidth / 2 + entity_size.width / 2;
-            image.destinationY = -image.destinationHeight / 2 + entity_size.height / 2;
+            console.log(timers.zen_cooldown.running);
+            if(!timers.zen_cooldown.running) {
+                image.name = "zengrenade_reticle";
+                image.destinationWidth = entity_size.width * 6;
+                image.destinationHeight = entity_size.height * 6;
+                image.destinationX = -image.destinationWidth / 2 + entity_size.width / 2;
+                image.destinationY = -image.destinationHeight / 2 + entity_size.height / 2;
+            }
         }
         if(data.input.buttonReleased("zengrenade")) {
-            data.entities.set(entity, "image", {"name": "cursor"});
-            var grenade = data.instantiatePrefab("zengrenade");
-            data.entities.set(grenade, "position", { "x": cursor_position.x - entity_size.width / 2, "y": cursor_position.y - entity_size.height / 2});
-            data.entities.set(grenade, "size", {"width": entity_size.width * 2, "height": entity_size.height * 2});
+            if(!timers.zen_cooldown.running) {
+                grenade = data.instantiatePrefab("zengrenade");
+                data.entities.set(entity, "image", {"name": "cursor"});
+                data.entities.set(grenade, "position", { "x": cursor_position.x - entity_size.width / 2, "y": cursor_position.y - entity_size.height / 2});
+                data.entities.set(grenade, "size", {"width": entity_size.width * 2, "height": entity_size.height * 2});
+                timers.zen_cooldown.time = 0;
+                timers.zen_cooldown.running = true;
+            }
         }
 
     }, "cursor");
