@@ -28,6 +28,7 @@ module.exports = function(ecs, data) {
                     } else {
                         data.entities.set(entity, "score", ++score);
                     }
+                    console.log(score);
                     data.entities.destroy(entity_collisions[i]);
                 }
             }
