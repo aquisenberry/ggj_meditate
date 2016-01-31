@@ -72,9 +72,14 @@
             "main"
         ]
     },
-    
     {
         "name": "./systems/simulation/player_bob",
+        "scenes": [
+            "main"
+        ]
+    },
+    {
+        "name": "./systems/simulation/increment_om",
         "scenes": [
             "main"
         ]
@@ -131,6 +136,12 @@
         },
         {
             "name": "./systems/renderer/render_ability_cooldowns",
+            "scenes": [
+                "main"
+            ]
+        },
+        {
+            "name": "./systems/renderer/render_zen",
             "scenes": [
                 "main"
             ]

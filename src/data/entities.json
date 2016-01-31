@@ -158,6 +158,12 @@
         "value":0,
         "z-index": {
             "z-index": 1
+        },
+        "om_progress":{
+            "value": 0,
+            "max": 100,
+            "increment": 0.009,
+            "zen":false
         }
     },
     {
