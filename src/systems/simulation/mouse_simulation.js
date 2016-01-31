@@ -2,6 +2,9 @@
 
 module.exports = function(ecs, data) {
     ecs.addEach(function(entity, elapsed) {
+        var progress_meter = 7;
+        var increment_progress =1;
+        var progress = data.entities.get(progress_meter,"progress");
 
         var entity_size = data.entities.get(entity, "size");
         var click_image = data.entities.get(entity, "click_image");
