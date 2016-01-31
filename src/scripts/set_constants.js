@@ -18,7 +18,7 @@ module.exports = function(entity, data) {
         "y": constants.center.y - player_size.height / 2,
     }
     var om_pos = {
-        "x": data.canvas.width*0.8 -om_size.width/2,
+        "x": data.canvas.width*0.95 -om_size.width,
         "y": data.canvas.height*0.95 -om_size.height
     }
     data.entities.set(player, "position", new_pos);
@@ -47,5 +47,14 @@ module.exports = function(entity, data) {
     }
     data.entities.set(laser_id, "position", laser_icon_position);
     data.entities.set(om,"position",om_pos);
+
+    var progress_meter = 7;
+    var progress_meter_size = data.entities.get(progress_meter,"size");
+    var progress_meter_position = data.entities.get(progress_meter,"position");
+
+    progress_meter_size.height = data.canvas.height * 0.9;
+    progress_meter_size.width = data.canvas.width *0.05;
+    progress_meter_position.x = data.canvas.width*0.05;
+    progress_meter_position.y = data.canvas.height*0.05;
 
 }

@@ -163,6 +163,19 @@
             "width": 75,
             "height": 75
         }
-    } 
+    },
+    {
+        "id": 7,
+        "name": "progress_meter",
+        "progress_meter": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 50,
+            "height": 50
+        }
+    }  
     ]
 }
