@@ -17,9 +17,11 @@ module.exports = function(ecs, data) {
         if(data.input.mouse.consumePressed(0)) {
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "name") == "play") {
+                    data.sounds.stop("title");
                     data.switchScene("main", {"mode": "normal"});
                 }
                 if(data.entities.get(entity_collisions[i], "name") == "zenmode") {
+                    data.sounds.stop("title");
                     data.switchScene("main", {"mode": "zen"});
                 }
                 if(data.entities.get(entity_collisions[i], "name") == "credits") {

@@ -2,6 +2,8 @@
 
 module.exports = function(entity, data) {
 
+    data.sounds.play("title", true);
+
     var play_button = 4;
     var play_pos = data.entities.get(play_button, "position");
     var play_size = data.entities.get(play_button, "size");
