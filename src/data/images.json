@@ -1,7 +1,7 @@
 {
    "cursor": "images/cursor.png",
    "cursor_clicked": "images/cursorclicked.png",
-   "player": "images/player_img.png",
+   "player": "images/player_image.png",
    "background": "images/beach1.png",
    "medallion": "images/medallion.png"
 }
