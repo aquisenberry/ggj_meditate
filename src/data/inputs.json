@@ -3,7 +3,7 @@
         "type": "button",
         "inputs": [{
             "device": "keyboard",
-            "key": "w"
+            "key": "space"
         }]
     }
 }

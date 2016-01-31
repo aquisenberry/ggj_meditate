@@ -25,6 +25,7 @@ module.exports = function(entity, data) {
     }
     data.entities.set(player, "position", new_pos);
 
+    /*
     var cone_id = 4;
     var cone_icon_size = data.entities.get(cone_id, "size");
     var cone_icon_position = {
@@ -32,6 +33,23 @@ module.exports = function(entity, data) {
         "y": (data.canvas.height * 0.95) - cone_icon_size.height,
     }
     data.entities.set(cone_id, "position", cone_icon_position);
+    {
+        "id": 4,
+        "name": "cone",
+        "ability_icon": true,
+        "image": {
+            "name": "cone"
+        },
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 75,
+            "height": 75
+        }
+    },
+    */
 
     var bomb_id = 5;
     var bomb_icon_size = data.entities.get(bomb_id, "size");
@@ -41,6 +59,7 @@ module.exports = function(entity, data) {
     }
     data.entities.set(bomb_id, "position", bomb_icon_position);
 
+    /*
     var laser_id = 6;
     var laser_icon_size = data.entities.get(bomb_id, "size");
     var laser_icon_position = {
@@ -48,6 +67,24 @@ module.exports = function(entity, data) {
         "y": (data.canvas.height * 0.95) - laser_icon_size.height,
     }
     data.entities.set(laser_id, "position", laser_icon_position);
+     {
+        "id": 6,
+        "name": "lazer",
+        "image": {
+            "name": "lazer"
+        },
+        "ability_icon": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width": 75,
+            "height": 75
+        }
+    },
+    */
+    
     data.entities.set(om,"position",om_pos);
 
     var progress_meter = 7;

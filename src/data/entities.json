@@ -120,7 +120,7 @@
             "zen_cooldown": {
                 "running": false,
                 "time": 0,
-                "max": 15000
+                "max": 10000
             }
         },
         "collisions": [],
@@ -157,44 +157,12 @@
         }
     },
     {
-        "id": 4,
-        "name": "cone",
-        "ability_icon": true,
-        "image": {
-            "name": "cone"
-        },
-        "position": {
-            "x": 0,
-            "y": 0
-        },
-        "size": {
-            "width": 75,
-            "height": 75
-        }
-    },
-    {
         "id": 5,
         "name": "zengrenade",
         "ability_icon": true,
         "image": {
             "name": "zengrenade"
         },
-        "position": {
-            "x": 0,
-            "y": 0
-        },
-        "size": {
-            "width": 75,
-            "height": 75
-        }
-    },
-    {
-        "id": 6,
-        "name": "lazer",
-        "image": {
-            "name": "lazer"
-        },
-        "ability_icon": true,
         "position": {
             "x": 0,
             "y": 0
