@@ -28,6 +28,22 @@
             "z-index": 2
         }
     },
+    "progress_block": {
+        "name": "progress_block",
+        "position":{
+            "x": 0,
+            "y": 0
+        },
+        "size":{
+            "width": 0,
+            "height": 0
+        },
+        "match":{
+            "id": 7,
+            "offsetX":0,
+            "offsetY":0
+        }
+    },
     "zengrenade": {
         "name": "zengrenade",
         "zengrenade": true,

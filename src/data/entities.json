@@ -177,6 +177,7 @@
         "id": 7,
         "name": "progress_meter",
         "progress_meter": true,
+
         "position": {
             "x": 0,
             "y": 0
@@ -184,7 +185,39 @@
         "size": {
             "width": 50,
             "height": 50
+        },
+        "progress":{
+            "blocks":[],
+            "max": 100,
+            "value":30
+        },
+        "timers": {
+            "decrement_progress": {
+                "running": true,
+                "time": 0,
+                "max": 3000,
+                "script": "./scripts/decrement_progress"
+            }
         }
+
     }  
+    ],
+    "end": [
+        {
+        "id": 0,
+        "name": "camera",
+        "camera": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "matchCanvasSize": true,
+        "image": {
+            "name": "background"
+        },
+        "z-index": {
+            "z-index": -1
+        }
+    }
     ]
 }

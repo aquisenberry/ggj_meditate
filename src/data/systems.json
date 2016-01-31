@@ -118,6 +118,12 @@
             ]
         },
         {
+            "name": "./systems/renderer/render-progress",
+            "scenes": [
+                "main"
+            ]
+        },
+        {
             "name": "splat-ecs/lib/systems/viewport-reset",
             "scenes": [
                 "main"
