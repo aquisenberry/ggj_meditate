@@ -9,8 +9,10 @@ module.exports = function(ecs, data) {
         var om_progress = data.entities.get(entity,"om_progress");
         if(progress.value === progress.max){
         	om_progress.value += om_progress.increment;
-        	player_image.name = "monkzenmode"
-        }else{
+        	player_image.name = "monkzenmode";
+        } else if(progress.value <= 30) {
+            player_image.name = "pissedface";
+        } else {
             player_image.name = player_image.name == "monkzenmode"?"player":player_image.name;
         }
         if(om_progress.value == om_progress.max){
