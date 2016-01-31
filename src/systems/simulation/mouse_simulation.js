@@ -2,6 +2,9 @@
 
 module.exports = function(ecs, data) {
     ecs.addEach(function(entity, elapsed) {
+        var progress_meter = 7;
+        var increment_progress =1;
+        var progress = data.entities.get(progress_meter,"progress");
 
         var entity_size = data.entities.get(entity, "size");
         var click_image = data.entities.get(entity, "click_image");
@@ -19,6 +22,7 @@ module.exports = function(ecs, data) {
             timers.cursor_click.running = true;
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
+                    progress.value +=increment_progress;
                     data.entities.destroy(entity_collisions[i]);
                 }
             }
