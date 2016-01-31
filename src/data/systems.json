@@ -118,12 +118,6 @@
             ]
         },
         {
-            "name": "splat-ecs/lib/systems/draw-rectangles",
-            "scenes": [
-                "main"
-            ]
-        },
-        {
             "name": "./systems/renderer/render_zengrenade",
             "scenes": [
                 "main"
