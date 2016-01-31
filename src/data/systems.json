@@ -80,6 +80,12 @@
         ]
     },
     {
+        "name": "./systems/simulation/projectile_rotation",
+        "scenes": [
+            "main"
+        ]
+    },
+    {
         "name": "./systems/simulation/zengrenade",
         "scenes": [
             "main"
@@ -107,12 +113,6 @@
         },
         {
             "name": "splat-ecs/lib/systems/draw-image",
-            "scenes": [
-                "main"
-            ]
-        },
-        {
-            "name": "splat-ecs/lib/systems/draw-rectangles",
             "scenes": [
                 "main"
             ]

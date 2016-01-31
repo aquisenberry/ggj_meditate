@@ -7,17 +7,22 @@
             "y": 0
         },
         "size": {
-            "width": 10,
-            "height": 10
+            "width": 30,
+            "height": 30
         },
         "velocity": {
             "x": 0,
             "y": 0
         },
         "collisions": [],
+        "image": {
+            "name": "negative_projectile"
+        },
         "negative_effect": true,
         "death_animation": "",
-        "animation": "",
+        "rotation": {
+            "angle": 0
+        },
         "z-index": {
             "z-index": 2
         }
