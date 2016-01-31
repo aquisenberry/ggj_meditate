@@ -41,6 +41,9 @@ module.exports = function(entity, data) {
     var uv = normalize(new_pos.x, new_pos.y, constants.center);
     var negative = Math.floor(Math.random() * (9 - 1)) + 1;
     var big = Math.floor(Math.random() * 9) % 2;
+    if(data.arguments.mode == "zen") {
+        negative = 0;
+    }
     data.entities.set(projectile, "negative_effect", negative > 2);
     if(negative > 2){
         data.entities.set(projectile, "image", {"name": "negative_projectile"});

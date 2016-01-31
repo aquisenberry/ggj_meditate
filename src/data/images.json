@@ -3,6 +3,7 @@
     "cursor_clicked": "images/cursorclicked.png",
     "player": "images/player_image.png",
     "player_ouch": "images/monkmad.png",
+    "pissedface": "images/pissedmonk.png",
     "background": "images/beach1.png",
     "medallion": "images/medallion.png",
     "zengrenade": "images/zengrenade.png",
@@ -22,5 +23,9 @@
     "lotus": "images/lotus.png",
     "monkzenmode": "images/monkzenmode.png",
     "back_to_title": "images/backtotitle.png",
-    "try_again": "images/tryagain.png"
+    "try_again": "images/tryagain.png",
+    "title": "images/title.png",
+    "play": "images/play.png",
+    "zenmode": "images/zenmodeselect.png",
+    "credits": "images/credits.png"
 }

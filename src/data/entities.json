@@ -1,53 +1,119 @@
 {
     "title": [
         {
-        "id": 0,
-        "name": "camera",
-        "camera": true,
-        "position": {
-            "x": 0,
-            "y": 0
-        },
-        "matchCanvasSize": true,
-        "image": {
-            "name": "background"
-        },
-        "z-index": {
-            "z-index": -1
-        }
-    },
-    {
-        "id": 2,
-        "name": "cursor",
-        "cursor": true,
-        "position": {
-            "x": 0,
-            "y": 0
-        },
-        "size": {
-            "width": 40,
-            "height": 40
-        },
-        "image": {"name": "cursor"},
-        "click_image": "cursor_clicked",
-        "timers": {
-            "cursor_click": {
-                "running": false,
-                "time": 0,
-                "max": 150,
-                "script": "./scripts/change_image"
+            "id": 0,
+            "name": "camera",
+            "camera": true,
+            "position": {
+                "x": 0,
+                "y": 0
             },
-            "zen_cooldown": {
-                "running": false,
-                "time": 0,
-                "max": 10000
+            "timers": {
+                "set_constants": {
+                    "running": true,
+                    "time": 0,
+                    "max": 1,
+                    "script": "./scripts/set_constants_title"
+                }
+            },
+            "matchCanvasSize": true,
+            "image": {
+                "name": "background"
+            },
+            "z-index": {
+                "z-index": -1
             }
         },
-        "collisions": [],
-        "z-index": {
-            "z-index": 6
+        {
+            "id": 2,
+            "name": "cursor",
+            "cursor": true,
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 40,
+                "height": 40
+            },
+            "image": {"name": "cursor"},
+            "click_image": "cursor_clicked",
+            "timers": {
+                "cursor_click": {
+                    "running": false,
+                    "time": 0,
+                    "max": 150,
+                    "script": "./scripts/change_image"
+                }
+            },
+            "collisions": [],
+            "z-index": {
+                "z-index": 6
+            }
+        },
+        {
+            "id": 3,
+            "name": "title",
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 0,
+                "height": 0
+            },
+            "image": {
+                "name": "title"
+            }
+        },
+        {
+            "id": 4,
+            "name": "play",
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 179,
+                "height": 103
+            },
+            "collisions": [],
+            "image": {
+                "name": "play"
+            }
+        },
+        {
+            "id": 5,
+            "name": "zenmode",
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 415,
+                "height": 103
+            },
+            "collisions": [],
+            "image": {
+                "name": "zenmode"
+            }
+        },
+        {
+            "id": 6,
+            "name": "credits",
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 305,
+                "height": 103
+            },
+            "collisions": [],
+            "image": {
+                "name": "credits"
+            }
         }
-    }
     ],
     "main": [
     {
