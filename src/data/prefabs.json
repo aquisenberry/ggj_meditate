@@ -48,10 +48,31 @@
     "zengrenade": {
         "name": "zengrenade",
         "zengrenade": true,
+        "timers": {
+            "boom": {
+                "running": false,
+                "time": 0,
+                "max": 50,
+                "script": "./scripts/boom"
+            },
+            "pull_pin": {
+                "running": true,
+                "time": 0,
+                "max": 250,
+                "script": "./scripts/pull_pin"
+            },
+            "kill": {
+                "running": true,
+                "time": 0,
+                "max": 1500,
+                "script": "./scripts/zen_kill"
+            }
+        },
         "position": {
             "x": 0,
             "y": 0
         },
+        "size_step": 5,
         "size": {
             "width": 0,
             "height": 0
