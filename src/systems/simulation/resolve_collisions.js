@@ -8,6 +8,9 @@ module.exports = function(ecs, data) {
     ecs.addEach(function resolveCollisions(entity, elapse) {
         var score = data.entities.get(entity, "score");
         var entity_collisions = data.entities.get(entity, "collisions");
+        var ouch_image = data.entities.get(entity, "ouch_image");
+        var zen_image = data.entities.get(entity, "zen_image");
+        var player_image = data.entities.get(entity, "image");
         var player_pos = data.entities.get(entity, "position");
         var player_radius = data.entities.get(entity, "size").width / 2;
         var player_center = {
@@ -59,6 +62,9 @@ module.exports = function(ecs, data) {
             var mod = Math.cos(time.jitter_time)*half_bob_range;
             data.entities.set(entity, "rotation", {"angle": (rotation.angle + mod)});
             time.jitter_time += time_incriment;
+            player_image.name = ouch_image;
+        } else {
+            player_image.name = zen_image;
         }
 
     }, "player");

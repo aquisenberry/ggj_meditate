@@ -2,6 +2,7 @@
     "cursor": "images/cursor.png",
     "cursor_clicked": "images/cursorclicked.png",
     "player": "images/player_image.png",
+    "player_ouch": "images/monkmad.png",
     "background": "images/beach1.png",
     "medallion": "images/medallion.png",
     "zengrenade": "images/zengrenade.png",
