@@ -20,7 +20,7 @@
             "spawn_projectile": {
                 "running": true,
                 "time": 0,
-                "max": 1000,
+                "max": 450,
                 "script": "./scripts/spawn_projectiles"
             }
         },
