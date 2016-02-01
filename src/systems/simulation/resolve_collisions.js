@@ -55,7 +55,7 @@ module.exports = function(ecs, data) {
             progress.value = progress.max;
         }
         if (progress.value < 0){
-            data.switchScene("end");
+            data.switchScene("end",{"win":false});
         }
 
         if(data.entities.get(entity, "is_hit")) {
