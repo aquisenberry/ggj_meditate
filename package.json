@@ -1,8 +1,8 @@
 {
-  "name": "splat-ecs-starter-project",
-  "version": "0.0.0",
-  "description": "A Sample game",
-  "private": true,
+  "name": "Zen Master",
+  "version": "0.0.1",
+  "description": "A Meditation Game",
+  "private": false,
   "main": "src/game.js",
   "scripts": {
     "build": "webpack",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SplatJS/splat-ecs-starter-project.git"
+    "url": "https://github.com/aquisenberry/ggj_meditate"
   },
   "keywords": [],
   "author": "Eric Lathrop <eric@ericlathrop.com> (http://ericlathrop.com/)",
