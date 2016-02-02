@@ -17,6 +17,10 @@
             }
         },
         "matchCanvasSize": true,
+        "velocity": {
+            "x": 0,
+            "y": 0
+        },
         "image": {
             "name": "background"
         },
