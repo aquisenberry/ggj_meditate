@@ -15,13 +15,14 @@ module.exports = function(ecs, data) {
         var timers = data.entities.get(entity, "timers");
         var entity_collisions = data.entities.get(entity, "collisions");
         if(data.input.mouse.consumePressed(0)) {
-            console.log(entity_collisions);
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "name") == "back_title") {
-                    console.log("Clicked");
                     data.entities.set(entity_collisions[i], "image", {"name": "back_to_title_pressed"}); 
                     data.sounds.stop("title");
                     data.switchScene("title");
+                }
+                if(data.entities.get(entity_collisions[i], "credit_link")) {
+                    window.location = data.entities.get(entity_collisions[i], "url");
                 }
             }
             image.name = click_image;

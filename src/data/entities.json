@@ -466,8 +466,8 @@
                 "y": 0
             },
             "size": {
-                "width": 179,
-                "height": 103
+                "width": 426,
+                "height": 99
             },
             "collisions": [],
             "image": {
@@ -496,6 +496,7 @@
         {
             "id": 6,
             "name": "anthony",
+            "credit_link": true,
             "position": {
                 "x": 5,
                 "y": 0
@@ -511,6 +512,9 @@
         {
             "id": 7,
             "name": "matthew",
+            "credit_link": true,
+            "url": "http://matthew-caldwell.com",
+            "collisions": [],
             "position": {
                 "x": 5,
                 "y": 0
@@ -541,6 +545,7 @@
         {
             "id": 9,
             "name": "ryan",
+            "credit_link": true,
             "position": {
                 "x": 5,
                 "y": 0
@@ -555,7 +560,7 @@
         },
         {
             "id": 10,
-            "name": "ryan",
+            "name": "music",
             "position": {
                 "x": 5,
                 "y": 0
@@ -570,6 +575,7 @@
         },
         {
             "id": 11,
+            "credit_link": true,
             "name": "zoe",
             "position": {
                 "x": 5,
