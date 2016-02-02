@@ -15,20 +15,13 @@ module.exports = function(ecs, data) {
         var timers = data.entities.get(entity, "timers");
         var entity_collisions = data.entities.get(entity, "collisions");
         if(data.input.mouse.consumePressed(0)) {
+            console.log(entity_collisions);
             for(var i = 0; i < entity_collisions.length; ++i) {
-                if(data.entities.get(entity_collisions[i], "name") == "play") {
-                    data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
+                if(data.entities.get(entity_collisions[i], "name") == "back_title") {
+                    console.log("Clicked");
+                    data.entities.set(entity_collisions[i], "image", {"name": "back_to_title_pressed"}); 
                     data.sounds.stop("title");
-                    data.switchScene("main", {"mode": "normal"});
-                }
-                if(data.entities.get(entity_collisions[i], "name") == "zenmode") {
-                    data.entities.set(entity_collisions[i], "image", {"name": "zenmode_pressed"}); 
-                    data.sounds.stop("title");
-                    data.switchScene("main", {"mode": "zen"});
-                }
-                if(data.entities.get(entity_collisions[i], "name") == "credits") {
-                    data.entities.set(entity_collisions[i], "image", {"name": "credits_pressed"}); 
-                    data.switchScene("credits");
+                    data.switchScene("title");
                 }
             }
             image.name = click_image;

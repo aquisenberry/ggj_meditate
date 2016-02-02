@@ -3,37 +3,37 @@
     {
         "name": "splat-ecs/lib/systems/match-canvas-size",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/advance-timers",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/advance-animations",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/control-player",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/apply-movement-2d",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/apply-velocity",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     },
     {
@@ -67,11 +67,11 @@
         ]
     },
     {
-        "name": "./systems/simulation/sample-simulation-system",
+        "name": "./systems/simulation/mouse_simulation_credits",
         "scenes": [
-            "main"
+            "credits"
         ]
-    },
+    }, 
     {
         "name": "./systems/simulation/resolve_collisions",
         "scenes": [
@@ -107,25 +107,19 @@
         {
             "name": "splat-ecs/lib/systems/clear-screen",
             "scenes": [
-                "main", "title", "end"
+                "main", "title", "end", "credits"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/viewport-move-to-camera",
             "scenes": [
-                "main", "title", "end"
-            ]
-        },
-        {
-            "name": "./systems/renderer/sample-renderer-system",
-            "scenes": [
-                "main"
+                "main", "title", "end", "credits"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/draw-image",
             "scenes": [
-                "main", "title", "end"
+                "main", "title", "end", "credits"
             ]
         },
         {
@@ -161,7 +155,7 @@
         {
             "name": "splat-ecs/lib/systems/viewport-reset",
             "scenes": [
-                "main", "title", "end"
+                "main", "title", "end", "credits"
             ]
         }
     ]

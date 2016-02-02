@@ -11,5 +11,9 @@
     "end": {
         "onEnter": "./scripts/main-enter",
         "onExit": "./scripts/main-exit"
+    },
+   "credits": {
+        "onEnter": "./scripts/main-enter-credits",
+        "onExit": "./scripts/main-exit-credits"
     }
 }
