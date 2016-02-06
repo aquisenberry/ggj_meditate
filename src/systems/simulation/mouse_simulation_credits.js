@@ -23,6 +23,9 @@ module.exports = function(ecs, data) {
                     data.sounds.stop("title");
                     data.switchScene("title");
                 }
+				if(data.entities.get(entity_collisions[i], "target_url").length > 0) {
+					window.location = data.entities.get(entity_collisions[i], "target_url");
+				}
             }
             image.name = click_image;
             timers.cursor_click.time = 0;

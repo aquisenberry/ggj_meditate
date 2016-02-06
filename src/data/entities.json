@@ -115,7 +115,7 @@
         }
     }
     ],
-        "main": [
+    "main": [
         {
             "id": 0,
             "name": "camera",
@@ -484,7 +484,6 @@
                 "x": 5,
                 "y": 0
             },
-            "collisions": [],
             "size": {
                 "width": 0,
                 "height": 0
@@ -511,6 +510,8 @@
         {
             "id": 7,
             "name": "matthew",
+			"target_url": "http://matthew-caldwell.com",
+            "collisions": [],
             "position": {
                 "x": 5,
                 "y": 0

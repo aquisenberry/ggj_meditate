@@ -69,7 +69,7 @@
     {
         "name": "splat-ecs/lib/systems/box-collider",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     }, 
     {
@@ -117,15 +117,15 @@
             ]
         },
         {
-            "name": "splat-ecs/lib/systems/draw-image",
+            "name": "splat-ecs/lib/systems/draw-rectangles",
             "scenes": [
                 "main", "title", "end", "credits"
             ]
         },
         {
-            "name": "splat-ecs/lib/systems/draw-rectangles",
+            "name": "splat-ecs/lib/systems/draw-image",
             "scenes": [
-                "credits"
+                "main", "title", "end", "credits"
             ]
         },
         {
