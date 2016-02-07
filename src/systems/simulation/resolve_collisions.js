@@ -58,14 +58,16 @@ module.exports = function(ecs, data) {
             data.switchScene("end",{"win":false});
         }
 
-        if(data.entities.get(entity, "is_hit")) {
-            var mod = Math.cos(time.jitter_time)*half_bob_range;
-            data.entities.set(entity, "rotation", {"angle": (rotation.angle + mod)});
-            time.jitter_time += time_incriment;
-            player_image.name = ouch_image;
-        } else {
-            player_image.name = zen_image;
-        }
+		if(player_image != null) {
+			if(data.entities.get(entity, "is_hit")) {
+				var mod = Math.cos(time.jitter_time)*half_bob_range;
+				data.entities.set(entity, "rotation", {"angle": (rotation.angle + mod)});
+				time.jitter_time += time_incriment;
+				player_image.name = ouch_image;
+			} else {
+				player_image.name = zen_image;
+			}
+		}
 
     }, "player");
 }

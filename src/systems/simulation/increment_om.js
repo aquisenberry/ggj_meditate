@@ -7,16 +7,27 @@ module.exports = function(ecs, data) {
         var progress_meter = 7;
         var progress = data.entities.get(progress_meter,"progress");
         var om_progress = data.entities.get(entity,"om_progress");
-        if(progress.value === progress.max){
+		var zen_animation = {
+				"time": 0,
+				"frame": 0,
+				"loop": false,
+				"speed": 10,
+				"name": ""
+		};
+
+        if(progress.value === progress.max && om_progress.value < om_progress.max){
         	om_progress.value += om_progress.increment;
         	player_image.name = "monkzenmode";
         } else if(progress.value <= 30) {
             player_image.name = "pissedface";
         } else {
-            player_image.name = player_image.name == "monkzenmode"?"player":player_image.name;
+			if(om_progress.value >= om_progress.max){
+				om_progress.zen = true;
+				data.entities.set(player, "animation", zen_animation);
+			} else {
+				player_image.name = player_image.name == "monkzenmode"?"player":player_image.name;
+			}
         }
-        if(om_progress.value == om_progress.max){
-        	om_progress.zen = true;
-        }
+        
     }, "om");
 }

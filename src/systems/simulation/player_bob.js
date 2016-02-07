@@ -7,8 +7,12 @@ module.exports = function(ecs, data) {
 
         var image = data.entities.get(entity, "image");
         var time = data.entities.get(entity,"time");
+
+		var animation = data.entities.get(entity, "animation");
         
-        image.destinationY = Math.sin(time.bob_time)*half_bob_range;
-        time.bob_time += time_incriment; 
+		if(image != null) {
+			image.destinationY = Math.sin(time.bob_time)*half_bob_range;
+			time.bob_time += time_incriment; 
+		}
     }, "player");
 }
