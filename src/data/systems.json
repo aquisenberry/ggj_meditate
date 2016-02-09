@@ -129,12 +129,6 @@
             ]
         },
         {
-            "name": "./systems/renderer/render_zengrenade",
-            "scenes": [
-                "main"
-            ]
-        },
-        {
             "name": "./systems/renderer/render-progress",
             "scenes": [
                 "main"
