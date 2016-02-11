@@ -9,6 +9,7 @@
     "medallion": "images/medallion.png",
     "zengrenade": "images/zengrenade.png",
     "zengrenade_reticle": "images/zengrenadereticle.png",
+	"zengrenade_animation": "images/zengrenade_animation.png",
     "lazer": "images/lazer.png",
     "cone": "images/cone.png",
     "negative_projectile": "images/badswirl.png",

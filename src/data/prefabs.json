@@ -60,6 +60,13 @@
     },
     "zengrenade": {
         "name": "zengrenade",
+		"animation": {
+			"time": 0,
+			"frame": 0,
+			"loop": true,
+			"speed": 0.75,
+			"name": "zengrenade"
+		},
         "zengrenade": true,
         "timers": {
             "boom": {

@@ -44,7 +44,6 @@ module.exports = function(ecs, data) {
 
         if(data.input.button("zengrenade")) {
             // Show reticle
-            console.log(timers.zen_cooldown.running);
             if(!timers.zen_cooldown.running) {
                 image.name = "zengrenade_reticle";
                 image.destinationWidth = entity_size.width * 6;

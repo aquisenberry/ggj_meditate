@@ -37,6 +37,12 @@
         ]
     },
     {
+        "name": "./systems/simulation/mouse_simulation_credits",
+        "scenes": [
+            "credits"
+        ]
+    },
+    {
         "name": "./systems/simulation/mouse_simulation",
         "scenes": [
             "main"
@@ -63,13 +69,7 @@
     {
         "name": "splat-ecs/lib/systems/box-collider",
         "scenes": [
-            "main", "title", "end"
-        ]
-    },
-    {
-        "name": "./systems/simulation/mouse_simulation_credits",
-        "scenes": [
-            "credits"
+            "main", "title", "end", "credits"
         ]
     }, 
     {
@@ -117,15 +117,15 @@
             ]
         },
         {
-            "name": "splat-ecs/lib/systems/draw-image",
+            "name": "splat-ecs/lib/systems/draw-rectangles",
             "scenes": [
                 "main", "title", "end", "credits"
             ]
         },
         {
-            "name": "./systems/renderer/render_zengrenade",
+            "name": "splat-ecs/lib/systems/draw-image",
             "scenes": [
-                "main"
+                "main", "title", "end", "credits"
             ]
         },
         {
