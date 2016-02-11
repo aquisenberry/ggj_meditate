@@ -17,6 +17,10 @@
             }
         },
         "matchCanvasSize": true,
+        "velocity": {
+            "x": 0,
+            "y": 0
+        },
         "image": {
             "name": "background"
         },
@@ -466,8 +470,8 @@
                 "y": 0
             },
             "size": {
-                "width": 179,
-                "height": 103
+                "width": 426,
+                "height": 99
             },
             "collisions": [],
             "image": {
@@ -495,6 +499,7 @@
         {
             "id": 6,
             "name": "anthony",
+            "credit_link": true,
             "position": {
                 "x": 5,
                 "y": 0
@@ -573,6 +578,7 @@
         },
         {
             "id": 11,
+            "credit_link": true,
             "name": "zoe",
             "position": {
                 "x": 5,
