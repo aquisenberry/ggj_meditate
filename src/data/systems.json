@@ -75,7 +75,7 @@
     {
         "name": "./systems/simulation/resolve_collisions",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "credits"
         ]
     },
     {
