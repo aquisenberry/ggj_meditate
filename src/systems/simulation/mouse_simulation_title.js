@@ -19,7 +19,7 @@ module.exports = function(ecs, data) {
                 if(data.entities.get(entity_collisions[i], "name") == "play") {
                     data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
                     data.sounds.stop("title");
-                    data.switchScene("main", {"mode": "normal"});
+                    data.switchScene("main", {"mode": "tutorial"});
                 }
                 if(data.entities.get(entity_collisions[i], "name") == "zenmode") {
                     data.entities.set(entity_collisions[i], "image", {"name": "zenmode_pressed"}); 

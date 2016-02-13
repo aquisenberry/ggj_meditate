@@ -15,21 +15,21 @@ module.exports = {
 		],
 		loaders: [
 			{ test: /\.json$/, loader: "json" },
-			/*{
+			{
 				test: /src\/images\/.*\.(jpe?g|png|gif|svg)$/i,
 				loaders: [
 					"file?hash=sha512&digest=hex&name=images/[name].[ext]",
 					"image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false"
 				]
-			},*/
+			},
 			{
 				test: /src\/sounds\/.*\.(mp3|ogg|wav)$/i,
 				loader: "file?hash=sha512&digest=hex&name=sounds/[name].[ext]"
-			}/*,
+			},
 			{
 				test: /src\/index.html$/i,
 				loader: "file?hash=sha512&digest=hex&name=[name].[ext]"
-			}*/
+			}
 		]
 	},
 	plugins: [
