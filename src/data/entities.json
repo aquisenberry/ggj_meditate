@@ -505,6 +505,8 @@
         {
             "id": 6,
             "name": "anthony",
+            "target_url": "http://anthonyquisenberry.com",
+            "collisions": [],
             "credit_link": true,
             "position": {
                 "x": 5,
