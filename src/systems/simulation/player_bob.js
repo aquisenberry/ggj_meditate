@@ -8,7 +8,7 @@ module.exports = function(ecs, data) {
         var image = data.entities.get(entity, "image");
         var time = data.entities.get(entity,"time");
         
-        image.destinationY = Math.sin(time)*half_bob_range;
-        data.entities.set(entity, "time", time + time_incriment);
+        image.destinationY = Math.sin(time.bob_time)*half_bob_range;
+        time.bob_time += time_incriment; 
     }, "player");
 }

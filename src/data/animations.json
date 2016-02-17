@@ -1,2 +1,15 @@
 {
+	"zengrenade": [{
+		"filmstripFrames": 50,
+		"time": 25,
+		"properties": {
+			"image": {
+				"name": "zengrenade_animation",
+				"sourceX": 0,
+				"sourceY": 0,
+				"sourceWidth": 25350,
+				"sourceHeight": 508
+			}
+		}
+	}]
 }
