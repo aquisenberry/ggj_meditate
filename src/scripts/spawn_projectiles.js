@@ -77,6 +77,7 @@ module.exports = function(entity, data) {
 		timers.spawn_projectile.running = true;
 
 	} else {
+
 		var pos_projectile = data.instantiatePrefab("projectile");
 		data.entities.set(pos_projectile, "position", {"x": data.canvas.width * 0.25, "y": data.canvas.height * 0.1});
 		data.entities.set(pos_projectile, "size", {"width": 40, "height": 40});
@@ -85,6 +86,7 @@ module.exports = function(entity, data) {
 		data.entities.set(neg_projectile, "position", {"x": data.canvas.width * 0.75, "y": data.canvas.height * 0.1});
 		data.entities.set(neg_projectile, "size", {"width": 40, "height": 40});
 		data.entities.set(neg_projectile, "image", {"name": "negative_projectile"});
+
 	}
 
 }
