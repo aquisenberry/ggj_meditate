@@ -146,9 +146,15 @@
                 "spawn_projectile": {
                     "running": true,
                     "time": 0,
-                    "max": 350,
+                    "max": 500,
                     "script": "./scripts/spawn_projectiles"
-                }
+                },
+				"ramp_speed": {
+					"running": true,
+					"time": 0,
+					"max": 5000,
+					"script": "./scripts/ramp_speed"
+				}
             },
             "position": {
                 "x": 0,
