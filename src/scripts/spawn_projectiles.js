@@ -73,6 +73,5 @@ module.exports = function(entity, data) {
     var timers = data.entities.get(entity, "timers");
     timers.spawn_projectile.time = 0;
     timers.spawn_projectile.running = true;
-    
 
 }
