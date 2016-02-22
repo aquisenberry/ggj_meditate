@@ -3,37 +3,37 @@
     {
         "name": "splat-ecs/lib/systems/match-canvas-size",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/advance-timers",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/advance-animations",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/control-player",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/apply-movement-2d",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/apply-velocity",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     },
     {
@@ -45,7 +45,7 @@
     {
         "name": "./systems/simulation/mouse_simulation",
         "scenes": [
-            "main"
+            "main", "tutorial"
         ]
     },
     {
@@ -57,49 +57,49 @@
     {
         "name": "splat-ecs/lib/systems/apply-friction",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "tutorial"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/follow-parent",
         "scenes": [
-            "main", "title", "end"
+            "main", "title", "end", "tutorial"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/box-collider",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     }, 
     {
         "name": "./systems/simulation/resolve_collisions",
         "scenes": [
-            "main", "title", "end", "credits"
+            "main", "title", "end", "credits", "tutorial"
         ]
     },
     {
         "name": "./systems/simulation/player_bob",
         "scenes": [
-            "main", "end"
+            "main", "end", "tutorial"
         ]
     },
     {
         "name": "./systems/simulation/increment_om",
         "scenes": [
-            "main"
+            "main", "tutorial"
         ]
     },
     {
         "name": "./systems/simulation/projectile_rotation",
         "scenes": [
-            "main"
+            "main", "tutorial"
         ]
     },
     {
         "name": "./systems/simulation/zengrenade",
         "scenes": [
-            "main"
+            "main", "tutorial"
         ]
     }
     ],
@@ -107,43 +107,43 @@
         {
             "name": "splat-ecs/lib/systems/clear-screen",
             "scenes": [
-                "main", "title", "end", "credits"
+                "main", "title", "end", "credits", "tutorial"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/viewport-move-to-camera",
             "scenes": [
-                "main", "title", "end", "credits"
+                "main", "title", "end", "credits", "tutorial"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/draw-rectangles",
             "scenes": [
-                "main", "title", "end", "credits"
+                "main", "title", "end", "credits", "tutorial"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/draw-image",
             "scenes": [
-                "main", "title", "end", "credits"
+                "main", "title", "end", "credits", "tutorial"
             ]
         },
         {
             "name": "./systems/renderer/render-progress",
             "scenes": [
-                "main"
+                "main", "tutorial"
             ]
         },
         {
             "name": "./systems/renderer/render_ability_cooldowns",
             "scenes": [
-                "main"
+                "main", "tutorial"
             ]
         },
         {
             "name": "./systems/renderer/render_zen",
             "scenes": [
-                "main"
+                "main", "tutorial"
             ]
         },
         {
@@ -155,13 +155,13 @@
         {
             "name": "./systems/renderer/render_tutorial_text",
             "scenes": [
-                "main"
+                "tutorial"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/viewport-reset",
             "scenes": [
-                "main", "title", "end", "credits"
+                "main", "title", "end", "credits", "tutorial"
             ]
         }
     ]

@@ -8,6 +8,10 @@
 		"onEnter": "./scripts/main-enter",
 		"onExit": "./scripts/main-exit"
 	},
+	"tutorial": {
+		"onEnter": "./scripts/tutorial_enter",
+		"onExit": "./scripts/tutorial_exit"
+	},
 	"end": {
 		"onEnter": "./scripts/main-enter",
 		"onExit": "./scripts/main-exit"
