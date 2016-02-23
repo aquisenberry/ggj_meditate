@@ -67,5 +67,13 @@ module.exports = function(ecs, data) {
             player_image.name = zen_image;
         }
 
+		if(data.input.button("mute")) {
+			if(data.sounds.muted) {
+				data.sounds.unmute();
+			} else {
+				data.sounds.mute();
+			}
+		}
+
     }, "player");
 }

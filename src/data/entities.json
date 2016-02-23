@@ -339,6 +339,237 @@
             }
         }  
     ],
+    "tutorial": [
+        {
+            "id": 0,
+            "name": "camera",
+            "camera": true,
+            "constants": {
+                "center": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "timers": {
+                "set_constants": {
+                    "running": true,
+                    "time": 0,
+                    "max": 1,
+                    "script": "./scripts/set_constants"
+                },
+                "spawn_clouds": {
+                    "running": true,
+                    "time": 0,
+                    "max": 750,
+                    "script": "./scripts/spawn_clouds"
+                },
+                "spawn_tutorial": {
+                    "running": true,
+                    "time": 0,
+                    "max": 150,
+                    "script": "./scripts/spawn_tutorial"
+                }
+            },
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "matchCanvasSize": true,
+            "image": {
+                "name": "background"
+            },
+            "z-index": {
+                "z-index": -1
+            }
+        },
+        {
+            "id": 1,
+            "name": "player",
+            "player": true,
+            "timers": {
+                "ouch_pain": {
+                    "running": false,
+                    "time": 0,
+                    "max": 250,
+                    "script": "./scripts/ouch_pain"
+                }
+            },
+            "time": {
+                "bob_time": 0,
+                "jitter_time": 0
+            },
+            "is_hit": false,
+            "ouch_image": "player_ouch",
+            "zen_image": "player",
+            "rotation": {
+                "angle": 0
+            },
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 200,
+                "height": 241
+            },
+            "image": { "name": "player" },
+            "velocity": {
+                "x": 0,
+                "y": 0
+            },
+            "collisions": [],
+            "abilities": {
+                "cone": {
+                    "cooldown": 6,
+                    "prefab": "cone_ability"
+                },
+                "bomb": {
+                    "cooldown": 3,
+                    "prefab": "bomb_ability"
+                },
+                "laser": {
+                    "cooldown": 9,
+                    "prefab": "laser_ability"
+                }
+            },
+            "z-index": {
+                "z-index": 5
+            }
+        },
+        {
+            "id": 2,
+            "name": "cursor",
+            "cursor": true,
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 40,
+                "height": 40
+            },
+            "image": {"name": "cursor"},
+            "click_image": "cursor_clicked",
+            "timers": {
+                "cursor_click": {
+                    "running": false,
+                    "time": 0,
+                    "max": 150,
+                    "script": "./scripts/change_image"
+                },
+                "zen_cooldown": {
+                    "running": false,
+                    "time": 0,
+                    "max": 10000
+                }
+            },
+            "collisions": [],
+            "z-index": {
+                "z-index": 6
+            }
+        },
+        {
+            "id": 3,
+            "name": "om",
+            "om": true,
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 125,
+                "height": 131
+            },
+            "image": {
+                "name": "medallion"
+            },
+            "meter_full":false,
+            "max_value": 100,
+            "value":0,
+            "z-index": {
+                "z-index": 1
+            },
+            "om_progress":{
+                "value": 0,
+                "max": 100,
+                "increment": 0.009,
+                "zen":false
+            }
+        },
+        {
+            "id": 4,
+            "name": "play_button",
+            "play_button": true,
+            "image": {
+                "name": "play"
+            },
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "collisions": [],
+            "size": {
+                "width": 179,
+                "height": 103
+            }
+        },
+        {
+            "id": 5,
+            "name": "zengrenade",
+            "ability_icon": true,
+            "image": {
+                "name": "zengrenade"
+            },
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 75,
+                "height": 75
+            }
+        },
+        {
+            "id": 7,
+            "name": "progress_meter",
+            "progress_meter": true,
+
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 50,
+                "height": 50
+            },
+            "progress":{
+                "blocks":[],
+                "max": 150,
+                "value":50,
+                "pill_value":10
+            },
+            "timers": {
+
+            }
+
+        },
+        {
+            "id": 8,
+            "name": "lotus",
+            "lotus": true,
+            "size":{
+                "width":220,
+                "height":131
+            },
+            "position":{
+                "x":0,
+                "y":0
+            },
+            "image":{
+                "name":"lotus"
+            }
+        }  
+    ],
         "end": [
         {
             "id": 0,

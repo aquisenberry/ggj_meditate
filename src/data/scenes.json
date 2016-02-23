@@ -15,5 +15,10 @@
    "credits": {
         "onEnter": "./scripts/main-enter-credits",
         "onExit": "./scripts/main-exit-credits"
-    }
+    },
+	"tutorial": {
+		"onEnter": "./scripts/tutorial_enter",
+		"onExit": "./scripts/tutorial_exit"
+	}
+
 }
