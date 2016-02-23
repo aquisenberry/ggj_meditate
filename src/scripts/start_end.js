@@ -6,18 +6,21 @@ module.exports = function(entity, data) {
 
    var btn_size = {
     "width":data.canvas.width*0.3,
-    "height": data.canvas.height* 0.1
+    "height": data.canvas.height* 0.2
    }
 
    var title_position = data.entities.get(title_btn,"position");
    var try_position = data.entities.get(try_again_btn,"position");
+   var title_size = data.entities.get(title_btn,"size");
+   title_size.width = btn_size.width;
+   title_size.height = btn_size.height;
+   var try_size = data.entities.get(try_again_btn,"size");
+   try_size.height = btn_size.height;
+   try_size.width = btn_size.width;
 
-   data.entities.set(title_btn,"size",btn_size);
-   data.entities.set(try_position,"size",btn_size);
+   title_position.x = data.canvas.width/2 - title_size.width/2;
+   try_position.x = data.canvas.width/2 - try_size.width/2;
 
-   title_position.x = data.canvas.width/2 - data.entities.get(title_btn,"size").width/2;
-   try_position.x = data.canvas.width/2 - data.entities.get(try_again_btn,"size").width/2;
-
-   title_position.x = data.canvas.height/3;
-   title_position.x = data.canvas.height/2;
+   title_position.y = data.canvas.height/3;
+   try_position.y = data.canvas.height/2;
 }
