@@ -3,3 +3,5 @@ node_modules/
 .*.swp
 *.swp
 build.tar.gz
+webpack.config.js
+src/images/
