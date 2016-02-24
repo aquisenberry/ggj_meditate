@@ -6,6 +6,9 @@ module.exports = function(ecs, data) {
         var increment_progress =1;
         var progress = data.entities.get(progress_meter,"progress");
 
+		var player = 1;
+		var om_meter = 3;
+		var player_timers = data.entities.get(player, "timers");
         var entity_size = data.entities.get(entity, "size");
         var entity_position = data.entities.get(entity, "position");
         var image = data.entities.get(entity, "image");
@@ -19,7 +22,9 @@ module.exports = function(ecs, data) {
 
         var timers = data.entities.get(entity, "timers");
         var entity_collisions = data.entities.get(entity, "collisions");
+        var om_progress = data.entities.get(om_meter, "om_progress");
         if(data.input.mouse.consumePressed(0)) {
+			console.log(om_progress.zen);
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "name") == "play_button") {
                     data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
@@ -37,7 +42,9 @@ module.exports = function(ecs, data) {
                 if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
                     data.entities.destroy(entity_collisions[i--]);
                 }
-                
+				if(data.entities.get(entity_collisions[i], "name") == "om" && om_progress.zen) {
+					player_timers.dat_outro.running = true;
+				}
             }
             image.name = click_image;
             timers.cursor_click.time = 0;

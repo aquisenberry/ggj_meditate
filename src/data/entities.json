@@ -284,13 +284,14 @@
             "meter_full":false,
             "max_value": 100,
             "value":0,
+			"collisions": [],
             "zindex": {
                 "zindex": 1
             },
             "om_progress":{
                 "value": 0,
                 "max": 100,
-                "increment": 0.009,
+                "increment": 0.01,
                 "zen":false
             }
         },
@@ -314,7 +315,6 @@
             "id": 7,
             "name": "progress_meter",
             "progress_meter": true,
-
             "position": {
                 "x": 0,
                 "y": 0
