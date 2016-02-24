@@ -117,12 +117,6 @@
             ]
         },
         {
-            "name": "splat-ecs/lib/systems/draw-rectangles",
-            "scenes": [
-                "main", "title", "end", "credits", "tutorial"
-            ]
-        },
-        {
             "name": "splat-ecs/lib/systems/draw-image",
             "scenes": [
                 "main", "title", "end", "credits", "tutorial"
