@@ -2,6 +2,7 @@
 
 module.exports = function(ecs, data) {
     ecs.addEach(function(entity, elapsed) {
+		console.log(data.arguments.level);
         var progress_meter = 7;
         var increment_progress =1;
         var progress = data.entities.get(progress_meter,"progress");
@@ -28,7 +29,7 @@ module.exports = function(ecs, data) {
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "name") == "play_button") {
                     data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
-                    data.switchScene("main");
+                    data.switchScene("main", {"level": 1});
                 }
                 if(data.entities.get(entity_collisions[i], "projectile") && !data.entities.get(entity_collisions[i], "negative_effect")) {
                     var vel = data.entities.get(entity_collisions[i],"velocity");
