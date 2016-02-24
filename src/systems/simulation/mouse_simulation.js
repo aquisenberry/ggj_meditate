@@ -40,12 +40,12 @@ module.exports = function(ecs, data) {
                     col_timers.push_back.timer=0;
 
                 }
-                if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
-                    data.entities.destroy(entity_collisions[i--]);
-                }
 				if(data.entities.get(entity_collisions[i], "name") == "om" && om_progress.zen) {
 					player_timers.dat_outro.running = true;
 				}
+                if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
+                    data.entities.destroy(entity_collisions[i--]);
+                }
             }
             image.name = click_image;
             timers.cursor_click.time = 0;
