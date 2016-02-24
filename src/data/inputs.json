@@ -1,1 +1,22 @@
-{}
+{
+    "zengrenade": {
+        "type": "button",
+        "inputs": [{
+            "device": "keyboard",
+            "key": "space"
+        }]
+    },
+    "pause": {
+        "type": "button",
+        "inputs": [
+            {
+                "device": "keyboard",
+                "key": "p"
+            },
+            {
+                "device": "keyboard",
+                "key": "escape"
+            }
+        ]
+    }
+}

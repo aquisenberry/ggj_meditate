@@ -7,19 +7,147 @@
             "y": 0
         },
         "size": {
-            "width": 10,
-            "height": 10
+            "width": 40,
+            "height": 40
         },
         "velocity": {
             "x": 0,
             "y": 0
         },
         "collisions": [],
+        "image": {
+            "name": "negative_projectile"
+        },
         "negative_effect": true,
+        "effect": 1,
         "death_animation": "",
-        "animation": "",
+        "mod": 0.01,
+        "rotation": {
+            "angle": 0
+        },
         "z-index": {
-            "z-index": 2
+            "z-index": 3
+        },
+        "timers":{
+            "push_back":{
+                "running": false,
+                "time":0,
+                "max":500,
+                "script": "./scripts/push_back_stop"
+            }
+        }
+    },
+    "progress_block": {
+        "name": "progress_block",
+        "position":{
+            "x": 0,
+            "y": 0
+        },
+        "size":{
+            "width": 0,
+            "height": 0
+        },
+        "match":{
+            "id": 7,
+            "offsetX":0,
+            "offsetY":0
+        },
+        "colors":{
+            "empty":"#f04f50",
+            "full": "#f1ea40"
+        }
+        
+    },
+    "zengrenade": {
+        "name": "zengrenade",
+		"animation": {
+			"time": 0,
+			"frame": 0,
+			"loop": true,
+			"speed": 0.75,
+			"name": "zengrenade"
+		},
+        "zengrenade": true,
+        "timers": {
+            "boom": {
+                "running": false,
+                "time": 0,
+                "max": 50,
+                "script": "./scripts/boom"
+            },
+            "pull_pin": {
+                "running": true,
+                "time": 0,
+                "max": 250,
+                "script": "./scripts/pull_pin"
+            },
+            "kill": {
+                "running": true,
+                "time": 0,
+                "max": 1500,
+                "script": "./scripts/zen_kill"
+            }
+        },
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size_step": 5,
+        "size": {
+            "width": 0,
+            "height": 0
+        },
+        "collisions": [],
+        "z-index": {
+            "z-index": 3
+        }
+    },
+    "cloud": {
+        "name": "cloud",
+        "cloud": true,
+        "dark": false,
+        "image": {
+            "name": "clouds1"
+        },
+        "velocity": {
+            "x": 0,
+            "y": 0
+        },
+        "left": true,
+        "z-index": {
+            "z-index": 1
+        }
+    },
+    "end_btn_title":{
+        "name": "title",
+        "btn": true,
+        "title": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width":0,
+            "height":0
+        },
+        "image":{
+            "name": "back_to_title"
+        }
+    },
+    "end_btn_try_again":{
+        "name": "try_again",
+        "btn": true,
+        "try_again": true,
+        "position": {
+            "x": 0,
+            "y": 0
+        },
+        "size": {
+            "width":0,
+            "height":0
+        },
+        "image":{
+            "name": "try_again"
         }
     }
 }

@@ -3,67 +3,43 @@
     {
         "name": "splat-ecs/lib/systems/match-canvas-size",
         "scenes": [
-            "main"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/advance-timers",
         "scenes": [
-            "main"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/advance-animations",
         "scenes": [
-            "main"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/control-player",
         "scenes": [
-            "main"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/apply-movement-2d",
         "scenes": [
-            "main"
+            "main", "title", "end", "credits"
         ]
     },
     {
         "name": "splat-ecs/lib/systems/apply-velocity",
         "scenes": [
-            "main"
+            "main", "title", "end", "credits"
         ]
     },
     {
-        "name": "splat-ecs/lib/systems/apply-friction",
+        "name": "./systems/simulation/mouse_simulation_credits",
         "scenes": [
-            "main"
-        ]
-    },
-    {
-        "name": "splat-ecs/lib/systems/follow-parent",
-        "scenes": [
-            "main"
-        ]
-    },
-    {
-        "name": "splat-ecs/lib/systems/box-collider",
-        "scenes": [
-            "main"
-        ]
-    },
-    {
-        "name": "./systems/simulation/sample-simulation-system",
-        "scenes": [
-            "main"
-        ]
-    },
-    {
-        "name": "./systems/simulation/resolve_collisions",
-        "scenes": [
-            "main"
+            "credits"
         ]
     },
     {
@@ -73,53 +49,113 @@
         ]
     },
     {
+        "name": "./systems/simulation/mouse_simulation_title",
+        "scenes": [
+            "title"
+        ]
+    },
+    {
+        "name": "splat-ecs/lib/systems/apply-friction",
+        "scenes": [
+            "main", "title", "end"
+        ]
+    },
+    {
+        "name": "splat-ecs/lib/systems/follow-parent",
+        "scenes": [
+            "main", "title", "end"
+        ]
+    },
+    {
+        "name": "splat-ecs/lib/systems/box-collider",
+        "scenes": [
+            "main", "title", "end", "credits"
+        ]
+    }, 
+    {
+        "name": "./systems/simulation/resolve_collisions",
+        "scenes": [
+            "main", "title", "end"
+        ]
+    },
+    {
         "name": "./systems/simulation/player_bob",
+        "scenes": [
+            "main", "end"
+        ]
+    },
+    {
+        "name": "./systems/simulation/increment_om",
+        "scenes": [
+            "main"
+        ]
+    },
+    {
+        "name": "./systems/simulation/projectile_rotation",
+        "scenes": [
+            "main"
+        ]
+    },
+    {
+        "name": "./systems/simulation/zengrenade",
         "scenes": [
             "main"
         ]
     }
     ],
-        "renderer": [
+    "renderer": [
         {
             "name": "splat-ecs/lib/systems/clear-screen",
             "scenes": [
-                "main"
+                "main", "title", "end", "credits"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/viewport-move-to-camera",
             "scenes": [
-                "main"
-            ]
-        },
-        {
-            "name": "./systems/renderer/sample-renderer-system",
-            "scenes": [
-                "main"
-            ]
-        },
-        {
-            "name": "splat-ecs/lib/systems/draw-image",
-            "scenes": [
-                "main"
+                "main", "title", "end", "credits"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/draw-rectangles",
             "scenes": [
+                "main", "title", "end", "credits"
+            ]
+        },
+        {
+            "name": "splat-ecs/lib/systems/draw-image",
+            "scenes": [
+                "main", "title", "end", "credits"
+            ]
+        },
+        {
+            "name": "./systems/renderer/render-progress",
+            "scenes": [
                 "main"
+            ]
+        },
+        {
+            "name": "./systems/renderer/render_ability_cooldowns",
+            "scenes": [
+                "main"
+            ]
+        },
+        {
+            "name": "./systems/renderer/render_zen",
+            "scenes": [
+                "main"
+            ]
+        },
+        {
+            "name": "./systems/renderer/render_film",
+            "scenes": [
+                "end"
             ]
         },
         {
             "name": "splat-ecs/lib/systems/viewport-reset",
             "scenes": [
-                "main"
-            ]
-        },
-        {
-            "name": "splat-ecs/lib/systems/draw-frame-rate",
-            "scenes": [
-                "main"
+                "main", "title", "end", "credits"
             ]
         }
     ]
