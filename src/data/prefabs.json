@@ -130,6 +130,7 @@
             "width":0,
             "height":0
         },
+        "collisions": [],
         "image":{
             "name": "back_to_title"
         }
@@ -146,6 +147,7 @@
             "width":0,
             "height":0
         },
+        "collisions": [],
         "image":{
             "name": "try_again"
         }

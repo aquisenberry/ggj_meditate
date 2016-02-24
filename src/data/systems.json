@@ -55,6 +55,12 @@
         ]
     },
     {
+        "name": "./systems/simulation/mouse_simulation_end",
+        "scenes": [
+            "end"
+        ]
+    },
+    {
         "name": "splat-ecs/lib/systems/apply-friction",
         "scenes": [
             "main", "title", "end", "tutorial"
