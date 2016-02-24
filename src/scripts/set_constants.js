@@ -17,7 +17,7 @@ module.exports = function(entity, data) {
     }
     var new_pos = {
         "x": constants.center.x - player_size.width / 2,
-        "y": constants.center.y - player_size.height / 2,
+        "y": -player_size.height,
     }
     var om_pos = {
         "x": data.canvas.width*0.9 -om_size.width,
