@@ -15,7 +15,7 @@ function place_entity(data, id, width_mod, height_mod, x_mod, y_mod, left) {
 
 module.exports = function(entity, data) {
 
-    data.sounds.play("title", true);
+    //data.sounds.play("title", true);
 
     var title = 3;
     place_entity(data, title, 0.6, 0.303, 0, 0, false);

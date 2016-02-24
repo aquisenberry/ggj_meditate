@@ -1,20 +1,14 @@
 {
 	"title":{
-        "first": true,
-        "onEnter": "./scripts/main-enter",
-        "onExit": "./scripts/main-exit"
+        "first": true
 	},
     "main": {
         "onEnter": "./scripts/main-enter",
         "onExit": "./scripts/main-exit"
     },
     "end": {
-        "onEnter": "./scripts/main-enter",
-        "onExit": "./scripts/main-exit"
     },
    "credits": {
-        "onEnter": "./scripts/main-enter-credits",
-        "onExit": "./scripts/main-exit-credits"
     },
 	"tutorial": {
 		"onEnter": "./scripts/tutorial_enter",
