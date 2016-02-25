@@ -60,10 +60,10 @@
 	var localSystemRequire = __webpack_require__(76);
 
 	var localScriptPath = "./scripts";
-	var localScriptRequire = __webpack_require__(92);
+	var localScriptRequire = __webpack_require__(95);
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(110);
+	var localDataRequire = __webpack_require__(119);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -85,9 +85,9 @@
 		console.error("Unable to load module: \"", path, "\"");
 		return undefined;
 	}
-	__webpack_require__(119);
-	__webpack_require__(120);
-	__webpack_require__(179);
+	__webpack_require__(128);
+	__webpack_require__(129);
+	__webpack_require__(192);
 
 	var game = new Splat.Game(canvas, customRequire);
 
@@ -7808,19 +7808,22 @@
 	var map = {
 		"./renderer/render-progress.js": 77,
 		"./renderer/render_ability_cooldowns.js": 78,
-		"./renderer/render_film.js": 79,
-		"./renderer/render_zen.js": 80,
-		"./renderer/render_zengrenade.js": 81,
-		"./renderer/sample-renderer-system.js": 82,
-		"./simulation/increment_om.js": 83,
-		"./simulation/mouse_simulation.js": 84,
-		"./simulation/mouse_simulation_credits.js": 85,
-		"./simulation/mouse_simulation_title.js": 86,
-		"./simulation/player_bob.js": 87,
-		"./simulation/projectile_rotation.js": 88,
-		"./simulation/resolve_collisions.js": 89,
-		"./simulation/sample-simulation-system.js": 90,
-		"./simulation/zengrenade.js": 91
+		"./renderer/render_end_btns.js": 79,
+		"./renderer/render_film.js": 80,
+		"./renderer/render_tutorial_text.js": 81,
+		"./renderer/render_zen.js": 82,
+		"./renderer/render_zengrenade.js": 83,
+		"./renderer/sample-renderer-system.js": 84,
+		"./simulation/increment_om.js": 85,
+		"./simulation/mouse_simulation.js": 86,
+		"./simulation/mouse_simulation_credits.js": 87,
+		"./simulation/mouse_simulation_end.js": 88,
+		"./simulation/mouse_simulation_title.js": 89,
+		"./simulation/player_bob.js": 90,
+		"./simulation/projectile_rotation.js": 91,
+		"./simulation/resolve_collisions.js": 92,
+		"./simulation/sample-simulation-system.js": 93,
+		"./simulation/zengrenade.js": 94
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -7910,6 +7913,34 @@
 
 	"use strict";
 
+	module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
+		data.entities.registerSearch("search", ["btn"]);
+		data.entities.registerSearch("cursor", ["cursor"]);
+		ecs.addEach(function(entity, context) { // eslint-disable-line no-unused-vars
+			var position = data.entities.get(entity, "position");
+			var size = data.entities.get(entity, "size");
+			context.globalAlpha = 1;
+			var image = data.entities.get(entity,"image");
+			context.drawImage(data.images.get(image.name),position.x,position.y,size.width,size.height);
+
+		}, "search");
+		ecs.addEach(function(entity, context) { // eslint-disable-line no-unused-vars
+			var position = data.entities.get(entity, "position");
+			var size = data.entities.get(entity, "size");
+			context.globalAlpha = 1;
+			var image = data.entities.get(entity,"image");
+			context.drawImage(data.images.get(image.name),position.x,position.y,size.width,size.height);
+
+		}, "cursor");
+	};
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports) {
+
+	"use strict";
+
 	module.exports = function(ecs, data) {
 		ecs.addEach(function(entity, context) { // eslint-disable-line no-unused-vars
 	        
@@ -7933,7 +7964,31 @@
 
 
 /***/ },
-/* 80 */
+/* 81 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(ecs, data) {
+	    ecs.addEach(function(entity, context) { // eslint-disable-line no-unused-vars
+
+	        var pos_txt = "This is Positive Energy. It will bring your monk to zen";
+	        var neg_txt = "This is Negative Energy. It will ruin your monk's concentration.";
+	        var zengrenade_txt = "Press space to drop a zen grenade.";
+
+	        // Positive Projectile Position: {"x": data.canvas.width * 0.25, "y": data.canvas.height * 0.1}
+	        context.font = "20px Arial";
+	        context.fillStyle = "black";
+	        context.fillText(pos_txt, data.canvas.width * 0.25 - (context.measureText(pos_txt).width / 2), data.canvas.height * 0.2);
+	        context.fillText(neg_txt, data.canvas.width * 0.75 - (context.measureText(neg_txt).width / 2), data.canvas.height * 0.2);
+	        context.fillText(zengrenade_txt, data.canvas.width * 0.5 - (context.measureText(zengrenade_txt).width / 2), data.canvas.height * 0.85);
+
+	    }, "camera");
+	}
+
+
+/***/ },
+/* 82 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7956,7 +8011,7 @@
 
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7977,7 +8032,7 @@
 
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7995,7 +8050,7 @@
 
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8015,6 +8070,9 @@
 	        } else {
 	            player_image.name = player_image.name == "monkzenmode"?"player":player_image.name;
 	        }
+			if(om_progress.value >= om_progress.max) {
+				om_progress.value = om_progress.max;
+			}
 	        if(om_progress.value == om_progress.max){
 	        	om_progress.zen = true;
 	        }
@@ -8023,7 +8081,7 @@
 
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8034,6 +8092,9 @@
 	        var increment_progress =1;
 	        var progress = data.entities.get(progress_meter,"progress");
 
+			var player = 1;
+			var om_meter = 3;
+			var player_timers = data.entities.get(player, "timers");
 	        var entity_size = data.entities.get(entity, "size");
 	        var entity_position = data.entities.get(entity, "position");
 	        var image = data.entities.get(entity, "image");
@@ -8047,8 +8108,14 @@
 
 	        var timers = data.entities.get(entity, "timers");
 	        var entity_collisions = data.entities.get(entity, "collisions");
+	        var om_progress = data.entities.get(om_meter, "om_progress");
 	        if(data.input.mouse.consumePressed(0)) {
+				console.log(om_progress.zen);
 	            for(var i = 0; i < entity_collisions.length; ++i) {
+	                if(data.entities.get(entity_collisions[i], "name") == "play_button") {
+	                    data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
+	                    data.switchScene("main", {"level": 1});
+	                }
 	                if(data.entities.get(entity_collisions[i], "projectile") && !data.entities.get(entity_collisions[i], "negative_effect")) {
 	                    var vel = data.entities.get(entity_collisions[i],"velocity");
 	                    var col_timers = data.entities.get(entity_collisions[i],"timers");
@@ -8058,10 +8125,12 @@
 	                    col_timers.push_back.timer=0;
 
 	                }
+					if(data.entities.get(entity_collisions[i], "name") == "om" && om_progress.zen) {
+						player_timers.dat_outro.running = true;
+					}
 	                if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
 	                    data.entities.destroy(entity_collisions[i--]);
 	                }
-	                
 	            }
 	            image.name = click_image;
 	            timers.cursor_click.time = 0;
@@ -8096,7 +8165,7 @@
 
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8136,7 +8205,46 @@
 
 
 /***/ },
-/* 86 */
+/* 88 */
+/***/ function(module, exports) {
+
+	module.exports = function(ecs, data) {
+	    ecs.addEach(function(entity, elapsed) {
+	        var entity_size = data.entities.get(entity, "size");
+	        var entity_position = data.entities.get(entity, "position");
+	        var image = data.entities.get(entity, "image");
+	        var click_image = data.entities.get(entity, "click_image");
+	        var cursor_position = {
+	            "x": data.input.mouse.x - entity_size.width / 2,
+	            "y": data.input.mouse.y - entity_size.height / 2
+	        };
+	        data.entities.set(entity, "position", cursor_position);
+
+	        var timers = data.entities.get(entity, "timers");
+	        var entity_collisions = data.entities.get(entity, "collisions");
+	        if(data.input.mouse.consumePressed(0)) {
+	            var film_timer = data.entities.get(0, "timers");
+	            film_timer.bring_in_film.time = 2999;
+	            film_timer.start_end.time = 999;
+	            for(var i = 0; i < entity_collisions.length; ++i) {
+	                if(data.entities.get(entity_collisions[i], "name") == "title") {
+	                    data.sounds.stop("main");
+	                    data.switchScene("title");
+	                }
+	                if(data.entities.get(entity_collisions[i], "name") == "try_again") {
+	                    data.sounds.stop("main");
+	                    data.switchScene("main", {"mode": "normal"});
+	                }
+	            }
+	            image.name = click_image;
+	            timers.cursor_click.time = 0;
+	            timers.cursor_click.running = true;
+	        }
+	    }, "cursor");
+	}
+
+/***/ },
+/* 89 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8160,12 +8268,12 @@
 	                if(data.entities.get(entity_collisions[i], "name") == "play") {
 	                    data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
 	                    data.sounds.stop("title");
-	                    data.switchScene("main", {"mode": "normal"});
+	                    data.switchScene("tutorial");
 	                }
 	                if(data.entities.get(entity_collisions[i], "name") == "zenmode") {
 	                    data.entities.set(entity_collisions[i], "image", {"name": "zenmode_pressed"}); 
 	                    data.sounds.stop("title");
-	                    data.switchScene("main", {"mode": "zen"});
+	                    data.switchScene("main", {"mode": "zen", "level": 1});
 	                }
 	                if(data.entities.get(entity_collisions[i], "name") == "credits") {
 	                    data.entities.set(entity_collisions[i], "image", {"name": "credits_pressed"}); 
@@ -8182,7 +8290,7 @@
 
 
 /***/ },
-/* 87 */
+/* 90 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8202,7 +8310,7 @@
 
 
 /***/ },
-/* 88 */
+/* 91 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8223,7 +8331,7 @@
 
 
 /***/ },
-/* 89 */
+/* 92 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8295,12 +8403,20 @@
 	            player_image.name = zen_image;
 	        }
 
+			if(data.input.button("mute")) {
+				if(data.sounds.muted) {
+					data.sounds.unmute();
+				} else {
+					data.sounds.mute();
+				}
+			}
+
 	    }, "player");
 	}
 
 
 /***/ },
-/* 90 */
+/* 93 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8312,7 +8428,7 @@
 
 
 /***/ },
-/* 91 */
+/* 94 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8350,27 +8466,33 @@
 
 
 /***/ },
-/* 92 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./boom.js": 93,
-		"./bring_in_film.js": 94,
-		"./change_image.js": 95,
-		"./main-enter-credits.js": 96,
-		"./main-enter.js": 97,
-		"./main-exit-credits.js": 98,
-		"./main-exit.js": 99,
-		"./ouch_pain.js": 100,
-		"./pull_pin.js": 101,
-		"./push_back_stop.js": 102,
-		"./set_constants.js": 103,
-		"./set_constants_title.js": 104,
-		"./spawn_clouds.js": 105,
-		"./spawn_projectiles.js": 106,
-		"./start_end.js": 107,
-		"./zen_cooldown.js": 108,
-		"./zen_kill.js": 109
+		"./boom.js": 96,
+		"./bring_in_film.js": 97,
+		"./change_image.js": 98,
+		"./dat_intro.js": 99,
+		"./dat_outro.js": 100,
+		"./main-enter-credits.js": 101,
+		"./main-enter.js": 102,
+		"./main-exit-credits.js": 103,
+		"./main-exit.js": 104,
+		"./ouch_pain.js": 105,
+		"./pull_pin.js": 106,
+		"./push_back_stop.js": 107,
+		"./ramp_speed.js": 108,
+		"./set_constants.js": 109,
+		"./set_constants_title.js": 110,
+		"./spawn_clouds.js": 111,
+		"./spawn_projectiles.js": 112,
+		"./spawn_tutorial.js": 113,
+		"./start_end.js": 114,
+		"./tutorial_enter.js": 115,
+		"./tutorial_exit.js": 116,
+		"./zen_cooldown.js": 117,
+		"./zen_kill.js": 118
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8383,11 +8505,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 92;
+	webpackContext.id = 95;
 
 
 /***/ },
-/* 93 */
+/* 96 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8416,7 +8538,7 @@
 
 
 /***/ },
-/* 94 */
+/* 97 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8428,7 +8550,7 @@
 
 
 /***/ },
-/* 95 */
+/* 98 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8439,7 +8561,60 @@
 
 
 /***/ },
-/* 96 */
+/* 99 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(entity, data) {
+
+		var camera = 0;
+		var constants = data.entities.get(camera, "constants");
+		var player_pos = data.entities.get(entity, "position");
+		var player_size = data.entities.get(entity, "size");
+		var cam_timers = data.entities.get(camera, "timers");
+	    var timers = data.entities.get(entity, "timers");
+
+		if( player_pos.y < constants.center.y - player_size.height / 2 ) {
+			player_pos.y += 5;
+			timers.dat_intro.time = 0;
+			timers.dat_intro.running = true;
+		} else {
+			cam_timers.spawn_projectile.running = true;
+			cam_timers.ramp_speed.running = true;
+		}
+
+
+	}
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(entity, data) {
+
+		var player_pos = data.entities.get(entity, "position");
+		var player_size = data.entities.get(entity, "size");
+		var timers = data.entities.get(entity, "timers");
+		var level = data.arguments.level;
+
+		if(player_pos.y > -player_size.height) {
+			player_pos.y -= 5;
+			timers.dat_outro.time = 0;
+			timers.dat_outro.running = true;
+		} else {
+			level++;
+			data.switchScene("main", {"level": level, "mode": data.arguments.mode});
+		}
+
+	}
+
+
+/***/ },
+/* 101 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8458,8 +8633,8 @@
 	}
 
 	module.exports = function(data) { // eslint-disable-line no-unused-vars
-
-	    data.sounds.play("title", true);
+	    console.log("meh");
+	    //data.sounds.play("title", true);
 
 	    var title = 3;
 	    place_entity(data, title, 0.5, 0.109, 0.5, 0.11, true);
@@ -8493,18 +8668,37 @@
 
 
 /***/ },
-/* 97 */
+/* 102 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 	module.exports = function(data) { // eslint-disable-line no-unused-vars
 
+		var camera = 0;
+		var camera_timers = data.entities.get(camera, "timers");
+		var level = parseInt(data.arguments.level) - 1;
+
+		var levels = [
+			{
+				"background": "background",
+			},
+			{
+				"background": "background2",
+			}
+		]
+
+		if(level == 0) {
+			camera_timers.spawn_clouds.running = true;
+		}
+
+		data.entities.set(camera, "image", { "name": levels[level]["background"] });
+		
 	};
 
 
 /***/ },
-/* 98 */
+/* 103 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8514,7 +8708,7 @@
 
 
 /***/ },
-/* 99 */
+/* 104 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8524,7 +8718,7 @@
 
 
 /***/ },
-/* 100 */
+/* 105 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8538,7 +8732,7 @@
 
 
 /***/ },
-/* 101 */
+/* 106 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8552,7 +8746,7 @@
 
 
 /***/ },
-/* 102 */
+/* 107 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8566,15 +8760,33 @@
 
 
 /***/ },
-/* 103 */
+/* 108 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(entity, data) {
+
+		var timers = data.entities.get(entity, "timers");
+		if(timers.spawn_projectile.max > 150) {
+			timers.spawn_projectile.max -= 10;
+			timers.ramp_speed.time = 0;
+			timers.ramp_speed.running = true;
+		}
+
+	}
+
+
+/***/ },
+/* 109 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 	module.exports = function(entity, data) {
 	    
-	    data.sounds.play("background", true);
-	    data.sounds.play("beach", true);
+	    //data.sounds.play("background", true);
+	    //data.sounds.play("beach", true);
 	    var player = 1;
 	    var om = 3;
 
@@ -8588,7 +8800,7 @@
 	    }
 	    var new_pos = {
 	        "x": constants.center.x - player_size.width / 2,
-	        "y": constants.center.y - player_size.height / 2,
+	        "y": -player_size.height,
 	    }
 	    var om_pos = {
 	        "x": data.canvas.width*0.9 -om_size.width,
@@ -8700,7 +8912,7 @@
 
 
 /***/ },
-/* 104 */
+/* 110 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8720,7 +8932,7 @@
 
 	module.exports = function(entity, data) {
 
-	    data.sounds.play("title", true);
+	    //data.sounds.play("title", true);
 
 	    var title = 3;
 	    place_entity(data, title, 0.6, 0.303, 0, 0, false);
@@ -8739,7 +8951,7 @@
 
 
 /***/ },
-/* 105 */
+/* 111 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8815,7 +9027,7 @@
 
 
 /***/ },
-/* 106 */
+/* 112 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8881,11 +9093,12 @@
 	        data.entities.set(projectile, "velocity", {"x": -uv.x * 0.03, "y": -uv.y * 0.03});
 	    } else {
 	        data.entities.set(projectile, "size", {"width": 25, "height": 25});
-	        data.entities.set(projectile, "mod", 0.04);
 	        if(negative > 2) {
 	            data.entities.set(projectile, "effect", -10);
+				data.entities.set(projectile, "mod", 0.02);
 	        } else {
 	            data.entities.set(projectile, "effect", 5);
+				data.entities.set(projectile, "mod", 0.04);
 	        }
 	        data.entities.set(projectile, "velocity", {"x": -uv.x * 0.05, "y": -uv.y * 0.05});
 	    }
@@ -8893,13 +9106,32 @@
 	    var timers = data.entities.get(entity, "timers");
 	    timers.spawn_projectile.time = 0;
 	    timers.spawn_projectile.running = true;
-	    
 
 	}
 
 
 /***/ },
-/* 107 */
+/* 113 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(entity, data) {
+
+	    var pos_projectile = data.instantiatePrefab("projectile");
+	    data.entities.set(pos_projectile, "position", {"x": data.canvas.width * 0.25, "y": data.canvas.height * 0.1});
+	    data.entities.set(pos_projectile, "size", {"width": 40, "height": 40});
+	    data.entities.set(pos_projectile, "image", {"name": "positive_projectile"});
+	    var neg_projectile = data.instantiatePrefab("projectile");
+	    data.entities.set(neg_projectile, "position", {"x": data.canvas.width * 0.75, "y": data.canvas.height * 0.1});
+	    data.entities.set(neg_projectile, "size", {"width": 40, "height": 40});
+	    data.entities.set(neg_projectile, "image", {"name": "negative_projectile"});
+
+	}
+
+
+/***/ },
+/* 114 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8910,25 +9142,57 @@
 
 	   var btn_size = {
 	    "width":data.canvas.width*0.3,
-	    "height": data.canvas.height* 0.1
+	    "height": data.canvas.height* 0.2
 	   }
 
 	   var title_position = data.entities.get(title_btn,"position");
 	   var try_position = data.entities.get(try_again_btn,"position");
+	   var title_size = data.entities.get(title_btn,"size");
+	   title_size.width = btn_size.width;
+	   title_size.height = btn_size.height;
+	   var try_size = data.entities.get(try_again_btn,"size");
+	   try_size.height = btn_size.height;
+	   try_size.width = btn_size.width;
 
-	   data.entities.set(title_btn,"size",btn_size);
-	   data.entities.set(try_position,"size",btn_size);
+	   title_position.x = data.canvas.width/2 - title_size.width/2;
+	   try_position.x = data.canvas.width/2 - try_size.width/2;
 
-	   title_position.x = data.canvas.width/2 - data.entities.get(title_btn,"size").width/2;
-	   try_position.x = data.canvas.width/2 - data.entities.get(try_again_btn,"size").width/2;
-
-	   title_position.x = data.canvas.height/3;
-	   title_position.x = data.canvas.height/2;
+	   title_position.y = data.canvas.height/3;
+	   try_position.y = data.canvas.height/2;
 	}
 
 
 /***/ },
-/* 108 */
+/* 115 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(data) { // eslint-disable-line no-unused-vars
+
+	    var play = 4;
+	    var play_position = data.entities.get(play, "position");
+	    var play_size = data.entities.get(play, "size");
+
+	    play_position.x = data.canvas.width / 2 - play_size.width / 2;
+	    play_position.y = data.canvas.height * 0.4 - play_size.height / 2;
+
+	};
+
+
+/***/ },
+/* 116 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(data) { // eslint-disable-line no-unused-vars
+
+	};
+
+
+/***/ },
+/* 117 */
 /***/ function(module, exports) {
 
 	"use script";
@@ -8939,7 +9203,7 @@
 
 
 /***/ },
-/* 109 */
+/* 118 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8950,18 +9214,18 @@
 
 
 /***/ },
-/* 110 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 111,
-		"./entities.json": 112,
-		"./images.json": 113,
-		"./inputs.json": 114,
-		"./prefabs.json": 115,
-		"./scenes.json": 116,
-		"./sounds.json": 117,
-		"./systems.json": 118
+		"./animations.json": 120,
+		"./entities.json": 121,
+		"./images.json": 122,
+		"./inputs.json": 123,
+		"./prefabs.json": 124,
+		"./scenes.json": 125,
+		"./sounds.json": 126,
+		"./systems.json": 127
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8974,11 +9238,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 110;
+	webpackContext.id = 119;
 
 
 /***/ },
-/* 111 */
+/* 120 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9000,7 +9264,7 @@
 	};
 
 /***/ },
-/* 112 */
+/* 121 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9029,8 +9293,8 @@
 				"image": {
 					"name": "background"
 				},
-				"z-index": {
-					"z-index": -1
+				"zindex": {
+					"zindex": -1
 				}
 			},
 			{
@@ -9058,8 +9322,8 @@
 					}
 				},
 				"collisions": [],
-				"z-index": {
-					"z-index": 6
+				"zindex": {
+					"zindex": 6
 				}
 			},
 			{
@@ -9145,16 +9409,22 @@
 						"script": "./scripts/set_constants"
 					},
 					"spawn_clouds": {
-						"running": true,
+						"running": false,
 						"time": 0,
 						"max": 750,
 						"script": "./scripts/spawn_clouds"
 					},
 					"spawn_projectile": {
-						"running": true,
+						"running": false,
 						"time": 0,
-						"max": 350,
+						"max": 500,
 						"script": "./scripts/spawn_projectiles"
+					},
+					"ramp_speed": {
+						"running": false,
+						"time": 0,
+						"max": 5000,
+						"script": "./scripts/ramp_speed"
 					}
 				},
 				"position": {
@@ -9165,8 +9435,235 @@
 				"image": {
 					"name": "background"
 				},
-				"z-index": {
-					"z-index": -1
+				"zindex": {
+					"zindex": -1
+				}
+			},
+			{
+				"id": 1,
+				"name": "player",
+				"player": true,
+				"timers": {
+					"ouch_pain": {
+						"running": false,
+						"time": 0,
+						"max": 250,
+						"script": "./scripts/ouch_pain"
+					},
+					"dat_intro": {
+						"running": true,
+						"time": 0,
+						"max": 15,
+						"script": "./scripts/dat_intro"
+					},
+					"dat_outro": {
+						"running": false,
+						"time": 0,
+						"max": 15,
+						"script": "./scripts/dat_outro"
+					}
+				},
+				"time": {
+					"bob_time": 0,
+					"jitter_time": 0
+				},
+				"is_hit": false,
+				"ouch_image": "player_ouch",
+				"zen_image": "player",
+				"rotation": {
+					"angle": 0
+				},
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 200,
+					"height": 241
+				},
+				"image": {
+					"name": "player"
+				},
+				"velocity": {
+					"x": 0,
+					"y": 0
+				},
+				"collisions": [],
+				"abilities": {
+					"cone": {
+						"cooldown": 6,
+						"prefab": "cone_ability"
+					},
+					"bomb": {
+						"cooldown": 3,
+						"prefab": "bomb_ability"
+					},
+					"laser": {
+						"cooldown": 9,
+						"prefab": "laser_ability"
+					}
+				},
+				"zindex": {
+					"zindex": 5
+				}
+			},
+			{
+				"id": 2,
+				"name": "cursor",
+				"cursor": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 40,
+					"height": 40
+				},
+				"image": {
+					"name": "cursor"
+				},
+				"click_image": "cursor_clicked",
+				"timers": {
+					"cursor_click": {
+						"running": false,
+						"time": 0,
+						"max": 150,
+						"script": "./scripts/change_image"
+					},
+					"zen_cooldown": {
+						"running": false,
+						"time": 0,
+						"max": 10000
+					}
+				},
+				"collisions": [],
+				"zindex": {
+					"zindex": 6
+				}
+			},
+			{
+				"id": 3,
+				"name": "om",
+				"om": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 125,
+					"height": 131
+				},
+				"image": {
+					"name": "medallion"
+				},
+				"meter_full": false,
+				"max_value": 100,
+				"value": 0,
+				"collisions": [],
+				"zindex": {
+					"zindex": 1
+				},
+				"om_progress": {
+					"value": 0,
+					"max": 100,
+					"increment": 0.01,
+					"zen": false
+				}
+			},
+			{
+				"id": 5,
+				"name": "zengrenade",
+				"ability_icon": true,
+				"image": {
+					"name": "zengrenade"
+				},
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 75,
+					"height": 75
+				}
+			},
+			{
+				"id": 7,
+				"name": "progress_meter",
+				"progress_meter": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 50,
+					"height": 50
+				},
+				"progress": {
+					"blocks": [],
+					"max": 150,
+					"value": 50,
+					"pill_value": 10
+				},
+				"timers": {}
+			},
+			{
+				"id": 8,
+				"name": "lotus",
+				"lotus": true,
+				"size": {
+					"width": 220,
+					"height": 131
+				},
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"image": {
+					"name": "lotus"
+				}
+			}
+		],
+		"tutorial": [
+			{
+				"id": 0,
+				"name": "camera",
+				"camera": true,
+				"constants": {
+					"center": {
+						"x": 0,
+						"y": 0
+					}
+				},
+				"timers": {
+					"set_constants": {
+						"running": true,
+						"time": 0,
+						"max": 1,
+						"script": "./scripts/set_constants"
+					},
+					"spawn_clouds": {
+						"running": true,
+						"time": 0,
+						"max": 750,
+						"script": "./scripts/spawn_clouds"
+					},
+					"spawn_tutorial": {
+						"running": true,
+						"time": 0,
+						"max": 150,
+						"script": "./scripts/spawn_tutorial"
+					}
+				},
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"matchCanvasSize": true,
+				"image": {
+					"name": "background"
+				},
+				"zindex": {
+					"zindex": -1
 				}
 			},
 			{
@@ -9221,8 +9718,8 @@
 						"prefab": "laser_ability"
 					}
 				},
-				"z-index": {
-					"z-index": 5
+				"zindex": {
+					"zindex": 5
 				}
 			},
 			{
@@ -9255,8 +9752,8 @@
 					}
 				},
 				"collisions": [],
-				"z-index": {
-					"z-index": 6
+				"zindex": {
+					"zindex": 6
 				}
 			},
 			{
@@ -9277,14 +9774,31 @@
 				"meter_full": false,
 				"max_value": 100,
 				"value": 0,
-				"z-index": {
-					"z-index": 1
+				"zindex": {
+					"zindex": 1
 				},
 				"om_progress": {
 					"value": 0,
 					"max": 100,
 					"increment": 0.009,
 					"zen": false
+				}
+			},
+			{
+				"id": 4,
+				"name": "play_button",
+				"play_button": true,
+				"image": {
+					"name": "play"
+				},
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"collisions": [],
+				"size": {
+					"width": 179,
+					"height": 103
 				}
 			},
 			{
@@ -9353,8 +9867,8 @@
 				"image": {
 					"name": "background"
 				},
-				"z-index": {
-					"z-index": -1
+				"zindex": {
+					"zindex": -1
 				},
 				"timers": {
 					"bring_in_film": {
@@ -9383,6 +9897,9 @@
 					"width": 40,
 					"height": 40
 				},
+				"image": {
+					"name": "cursor"
+				},
 				"click_image": "cursor_clicked",
 				"timers": {
 					"cursor_click": {
@@ -9398,8 +9915,8 @@
 					}
 				},
 				"collisions": [],
-				"z-index": {
-					"z-index": 6
+				"zindex": {
+					"zindex": 6
 				}
 			}
 		],
@@ -9413,8 +9930,8 @@
 					"y": 0
 				},
 				"matchCanvasSize": true,
-				"z-index": {
-					"z-index": -1
+				"zindex": {
+					"zindex": -1
 				},
 				"image": {
 					"name": "background"
@@ -9446,8 +9963,8 @@
 					}
 				},
 				"collisions": [],
-				"z-index": {
-					"z-index": 6
+				"zindex": {
+					"zindex": 6
 				}
 			},
 			{
@@ -9480,8 +9997,8 @@
 				"image": {
 					"name": "back_to_title"
 				},
-				"z-index": {
-					"z-index": 4
+				"zindex": {
+					"zindex": 4
 				}
 			},
 			{
@@ -9502,6 +10019,8 @@
 			{
 				"id": 6,
 				"name": "anthony",
+				"target_url": "http://anthonyquisenberry.com",
+				"collisions": [],
 				"credit_link": true,
 				"position": {
 					"x": 5,
@@ -9599,7 +10118,7 @@
 	};
 
 /***/ },
-/* 113 */
+/* 122 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9609,14 +10128,14 @@
 		"player_ouch": "images/monkmad.png",
 		"pissedface": "images/pissedmonk.png",
 		"background": "images/beach1.png",
-		"bamboo": "images/bamboo.png",
+		"background2": "images/background2.png",
 		"medallion": "images/medallion.png",
 		"zengrenade": "images/zengrenade.png",
 		"zengrenade_reticle": "images/zengrenadereticle.png",
 		"zengrenade_animation": "images/zengrenade_animation.png",
 		"lazer": "images/lazer.png",
 		"cone": "images/cone.png",
-		"negative_projectile": "images/badswirl.png",
+		"negative_projectile": "images/badswirl2.png",
 		"positive_projectile": "images/goodswirl.png",
 		"clouds1": "images/clouds1.png",
 		"clouds2": "images/clouds2.png",
@@ -9649,7 +10168,7 @@
 	};
 
 /***/ },
-/* 114 */
+/* 123 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9674,11 +10193,20 @@
 					"key": "escape"
 				}
 			]
+		},
+		"mute": {
+			"type": "button",
+			"inputs": [
+				{
+					"device": "keyboard",
+					"key": "m"
+				}
+			]
 		}
 	};
 
 /***/ },
-/* 115 */
+/* 124 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9812,6 +10340,7 @@
 				"width": 0,
 				"height": 0
 			},
+			"collisions": [],
 			"image": {
 				"name": "back_to_title"
 			}
@@ -9828,6 +10357,7 @@
 				"width": 0,
 				"height": 0
 			},
+			"collisions": [],
 			"image": {
 				"name": "try_again"
 			}
@@ -9835,31 +10365,27 @@
 	};
 
 /***/ },
-/* 116 */
+/* 125 */
 /***/ function(module, exports) {
 
 	module.exports = {
 		"title": {
-			"first": true,
-			"onEnter": "./scripts/main-enter",
-			"onExit": "./scripts/main-exit"
+			"first": true
 		},
 		"main": {
 			"onEnter": "./scripts/main-enter",
 			"onExit": "./scripts/main-exit"
 		},
-		"end": {
-			"onEnter": "./scripts/main-enter",
-			"onExit": "./scripts/main-exit"
-		},
-		"credits": {
-			"onEnter": "./scripts/main-enter-credits",
-			"onExit": "./scripts/main-exit-credits"
+		"end": {},
+		"credits": {},
+		"tutorial": {
+			"onEnter": "./scripts/tutorial_enter",
+			"onExit": "./scripts/tutorial_exit"
 		}
 	};
 
 /***/ },
-/* 117 */
+/* 126 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9869,7 +10395,7 @@
 	};
 
 /***/ },
-/* 118 */
+/* 127 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9880,7 +10406,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -9889,7 +10416,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -9898,7 +10426,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -9907,7 +10436,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -9916,7 +10446,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -9925,7 +10456,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -9937,7 +10469,8 @@
 			{
 				"name": "./systems/simulation/mouse_simulation",
 				"scenes": [
-					"main"
+					"main",
+					"tutorial"
 				]
 			},
 			{
@@ -9947,11 +10480,18 @@
 				]
 			},
 			{
+				"name": "./systems/simulation/mouse_simulation_end",
+				"scenes": [
+					"end"
+				]
+			},
+			{
 				"name": "splat-ecs/lib/systems/apply-friction",
 				"scenes": [
 					"main",
 					"title",
-					"end"
+					"end",
+					"tutorial"
 				]
 			},
 			{
@@ -9959,7 +10499,8 @@
 				"scenes": [
 					"main",
 					"title",
-					"end"
+					"end",
+					"tutorial"
 				]
 			},
 			{
@@ -9968,7 +10509,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -9976,32 +10518,38 @@
 				"scenes": [
 					"main",
 					"title",
-					"end"
+					"end",
+					"credits",
+					"tutorial"
 				]
 			},
 			{
 				"name": "./systems/simulation/player_bob",
 				"scenes": [
 					"main",
-					"end"
+					"end",
+					"tutorial"
 				]
 			},
 			{
 				"name": "./systems/simulation/increment_om",
 				"scenes": [
-					"main"
+					"main",
+					"tutorial"
 				]
 			},
 			{
 				"name": "./systems/simulation/projectile_rotation",
 				"scenes": [
-					"main"
+					"main",
+					"tutorial"
 				]
 			},
 			{
 				"name": "./systems/simulation/zengrenade",
 				"scenes": [
-					"main"
+					"main",
+					"tutorial"
 				]
 			}
 		],
@@ -10012,7 +10560,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -10021,16 +10570,8 @@
 					"main",
 					"title",
 					"end",
-					"credits"
-				]
-			},
-			{
-				"name": "splat-ecs/lib/systems/draw-rectangles",
-				"scenes": [
-					"main",
-					"title",
-					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
@@ -10039,25 +10580,29 @@
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			},
 			{
 				"name": "./systems/renderer/render-progress",
 				"scenes": [
-					"main"
+					"main",
+					"tutorial"
 				]
 			},
 			{
 				"name": "./systems/renderer/render_ability_cooldowns",
 				"scenes": [
-					"main"
+					"main",
+					"tutorial"
 				]
 			},
 			{
 				"name": "./systems/renderer/render_zen",
 				"scenes": [
-					"main"
+					"main",
+					"tutorial"
 				]
 			},
 			{
@@ -10067,86 +10612,103 @@
 				]
 			},
 			{
+				"name": "./systems/renderer/render_end_btns",
+				"scenes": [
+					"end"
+				]
+			},
+			{
+				"name": "./systems/renderer/render_tutorial_text",
+				"scenes": [
+					"tutorial"
+				]
+			},
+			{
 				"name": "splat-ecs/lib/systems/viewport-reset",
 				"scenes": [
 					"main",
 					"title",
 					"end",
-					"credits"
+					"credits",
+					"tutorial"
 				]
 			}
 		]
 	};
 
 /***/ },
-/* 119 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";
 
 /***/ },
-/* 120 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./achieved.png": 121,
-		"./anthony.png": 122,
-		"./artwork.png": 123,
-		"./backtotitle.png": 124,
-		"./backtotitlepressed.png": 125,
-		"./badswirl.png": 126,
-		"./bamboo.png": 127,
-		"./barreticle.png": 128,
-		"./beach1.png": 129,
-		"./clouds1.png": 130,
-		"./clouds2.png": 131,
-		"./clouds3.png": 132,
-		"./clouds4.png": 133,
-		"./clouds5.png": 134,
-		"./cone.png": 135,
-		"./conepressed.png": 136,
-		"./conereticle.png": 137,
-		"./credits.png": 138,
-		"./creditspressed.png": 139,
-		"./creditsscene.png": 140,
-		"./cursor.png": 141,
-		"./cursorclicked.png": 142,
-		"./darkclouds1.png": 143,
-		"./darkclouds2.png": 144,
-		"./darkclouds3.png": 145,
-		"./development.png": 146,
-		"./failed.png": 147,
-		"./gameover.png": 148,
-		"./goodswirl.png": 149,
-		"./lazer.png": 150,
-		"./lazerpressed.png": 151,
-		"./logo.png": 152,
-		"./lotus.png": 153,
-		"./matt.png": 154,
-		"./medallion.png": 155,
-		"./monkmad.png": 156,
-		"./monkzenmode.png": 157,
-		"./monkzenmodeeye1.png": 158,
-		"./monkzenmodeeye2.png": 159,
-		"./monkzenmodeeye3.png": 160,
-		"./music.png": 161,
-		"./nirvana.png": 162,
-		"./pissedmonk.png": 163,
-		"./play.png": 164,
-		"./player_image.png": 165,
-		"./playpressed.png": 166,
-		"./ryan.png": 167,
-		"./title.png": 168,
-		"./tryagain.png": 169,
-		"./tryagainpressed.png": 170,
-		"./zengrenade.png": 171,
-		"./zengrenade_animation.png": 172,
-		"./zengrenadepressed.png": 173,
-		"./zengrenadereticle.png": 174,
-		"./zenmode.png": 175,
-		"./zenmodeselect.png": 176,
-		"./zenmodeselectpressed.png": 177,
-		"./zoe.png": 178
+		"./achieved.png": 130,
+		"./anthony.png": 131,
+		"./arrow.png": 132,
+		"./artwork.png": 133,
+		"./background2.png": 134,
+		"./backtotitle.png": 135,
+		"./backtotitlepressed.png": 136,
+		"./badswirl.png": 137,
+		"./badswirl2.png": 138,
+		"./bamboo.png": 139,
+		"./barreticle.png": 140,
+		"./beach1.png": 141,
+		"./clouds1.png": 142,
+		"./clouds2.png": 143,
+		"./clouds3.png": 144,
+		"./clouds4.png": 145,
+		"./clouds5.png": 146,
+		"./cone.png": 147,
+		"./conepressed.png": 148,
+		"./conereticle.png": 149,
+		"./credits.png": 150,
+		"./creditspressed.png": 151,
+		"./creditsscene.png": 152,
+		"./cursor.png": 153,
+		"./cursorclicked.png": 154,
+		"./darkclouds1.png": 155,
+		"./darkclouds2.png": 156,
+		"./darkclouds3.png": 157,
+		"./development.png": 158,
+		"./failed.png": 159,
+		"./gameover.png": 160,
+		"./goodswirl.png": 161,
+		"./lazer.png": 162,
+		"./lazerpressed.png": 163,
+		"./logo.png": 164,
+		"./lotus.png": 165,
+		"./matt.png": 166,
+		"./medallion.png": 167,
+		"./monkmad.png": 168,
+		"./monkzenmode.png": 169,
+		"./monkzenmodeeye1.png": 170,
+		"./monkzenmodeeye2.png": 171,
+		"./monkzenmodeeye3.png": 172,
+		"./music.png": 173,
+		"./nirvana.png": 174,
+		"./pissedmonk.png": 175,
+		"./play.png": 176,
+		"./player_image.png": 177,
+		"./playpressed.png": 178,
+		"./ryan.png": 179,
+		"./title.png": 180,
+		"./tryagain.png": 181,
+		"./tryagainpressed.png": 182,
+		"./zengrenade.png": 183,
+		"./zengrenade_animation.png": 184,
+		"./zengrenadepressed.png": 185,
+		"./zengrenadereticle.png": 186,
+		"./zenmode.png": 187,
+		"./zenmodeanimate.png": 188,
+		"./zenmodeselect.png": 189,
+		"./zenmodeselectpressed.png": 190,
+		"./zoe.png": 191
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -10159,368 +10721,392 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 120;
+	webpackContext.id = 129;
 
-
-/***/ },
-/* 121 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/achieved.png";
-
-/***/ },
-/* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/anthony.png";
-
-/***/ },
-/* 123 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/artwork.png";
-
-/***/ },
-/* 124 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/backtotitle.png";
-
-/***/ },
-/* 125 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/backtotitlepressed.png";
-
-/***/ },
-/* 126 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/badswirl.png";
-
-/***/ },
-/* 127 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/bamboo.png";
-
-/***/ },
-/* 128 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/barreticle.png";
-
-/***/ },
-/* 129 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/beach1.png";
 
 /***/ },
 /* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds1.png";
+	module.exports = __webpack_require__.p + "images/achieved.png";
 
 /***/ },
 /* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds2.png";
+	module.exports = __webpack_require__.p + "images/anthony.png";
 
 /***/ },
 /* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds3.png";
+	module.exports = __webpack_require__.p + "images/arrow.png";
 
 /***/ },
 /* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds4.png";
+	module.exports = __webpack_require__.p + "images/artwork.png";
 
 /***/ },
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds5.png";
+	module.exports = __webpack_require__.p + "images/background2.png";
 
 /***/ },
 /* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cone.png";
+	module.exports = __webpack_require__.p + "images/backtotitle.png";
 
 /***/ },
 /* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/conepressed.png";
+	module.exports = __webpack_require__.p + "images/backtotitlepressed.png";
 
 /***/ },
 /* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/conereticle.png";
+	module.exports = __webpack_require__.p + "images/badswirl.png";
 
 /***/ },
 /* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/credits.png";
+	module.exports = __webpack_require__.p + "images/badswirl2.png";
 
 /***/ },
 /* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/creditspressed.png";
+	module.exports = __webpack_require__.p + "images/bamboo.png";
 
 /***/ },
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/creditsscene.png";
+	module.exports = __webpack_require__.p + "images/barreticle.png";
 
 /***/ },
 /* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cursor.png";
+	module.exports = __webpack_require__.p + "images/beach1.png";
 
 /***/ },
 /* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cursorclicked.png";
+	module.exports = __webpack_require__.p + "images/clouds1.png";
 
 /***/ },
 /* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds1.png";
+	module.exports = __webpack_require__.p + "images/clouds2.png";
 
 /***/ },
 /* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds2.png";
+	module.exports = __webpack_require__.p + "images/clouds3.png";
 
 /***/ },
 /* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds3.png";
+	module.exports = __webpack_require__.p + "images/clouds4.png";
 
 /***/ },
 /* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/development.png";
+	module.exports = __webpack_require__.p + "images/clouds5.png";
 
 /***/ },
 /* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/failed.png";
+	module.exports = __webpack_require__.p + "images/cone.png";
 
 /***/ },
 /* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/gameover.png";
+	module.exports = __webpack_require__.p + "images/conepressed.png";
 
 /***/ },
 /* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/goodswirl.png";
+	module.exports = __webpack_require__.p + "images/conereticle.png";
 
 /***/ },
 /* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lazer.png";
+	module.exports = __webpack_require__.p + "images/credits.png";
 
 /***/ },
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lazerpressed.png";
+	module.exports = __webpack_require__.p + "images/creditspressed.png";
 
 /***/ },
 /* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/creditsscene.png";
 
 /***/ },
 /* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lotus.png";
+	module.exports = __webpack_require__.p + "images/cursor.png";
 
 /***/ },
 /* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/matt.png";
+	module.exports = __webpack_require__.p + "images/cursorclicked.png";
 
 /***/ },
 /* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/medallion.png";
+	module.exports = __webpack_require__.p + "images/darkclouds1.png";
 
 /***/ },
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkmad.png";
+	module.exports = __webpack_require__.p + "images/darkclouds2.png";
 
 /***/ },
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmode.png";
+	module.exports = __webpack_require__.p + "images/darkclouds3.png";
 
 /***/ },
 /* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye1.png";
+	module.exports = __webpack_require__.p + "images/development.png";
 
 /***/ },
 /* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye2.png";
+	module.exports = __webpack_require__.p + "images/failed.png";
 
 /***/ },
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye3.png";
+	module.exports = __webpack_require__.p + "images/gameover.png";
 
 /***/ },
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/music.png";
+	module.exports = __webpack_require__.p + "images/goodswirl.png";
 
 /***/ },
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/nirvana.png";
+	module.exports = __webpack_require__.p + "images/lazer.png";
 
 /***/ },
 /* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/pissedmonk.png";
+	module.exports = __webpack_require__.p + "images/lazerpressed.png";
 
 /***/ },
 /* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/play.png";
+	module.exports = __webpack_require__.p + "images/logo.png";
 
 /***/ },
 /* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/player_image.png";
+	module.exports = __webpack_require__.p + "images/lotus.png";
 
 /***/ },
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/playpressed.png";
+	module.exports = __webpack_require__.p + "images/matt.png";
 
 /***/ },
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/ryan.png";
+	module.exports = __webpack_require__.p + "images/medallion.png";
 
 /***/ },
 /* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/title.png";
+	module.exports = __webpack_require__.p + "images/monkmad.png";
 
 /***/ },
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tryagain.png";
+	module.exports = __webpack_require__.p + "images/monkzenmode.png";
 
 /***/ },
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tryagainpressed.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye1.png";
 
 /***/ },
 /* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenade.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye2.png";
 
 /***/ },
 /* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenade_animation.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye3.png";
 
 /***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenadepressed.png";
+	module.exports = __webpack_require__.p + "images/music.png";
 
 /***/ },
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenadereticle.png";
+	module.exports = __webpack_require__.p + "images/nirvana.png";
 
 /***/ },
 /* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmode.png";
+	module.exports = __webpack_require__.p + "images/pissedmonk.png";
 
 /***/ },
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeselect.png";
+	module.exports = __webpack_require__.p + "images/play.png";
 
 /***/ },
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeselectpressed.png";
+	module.exports = __webpack_require__.p + "images/player_image.png";
 
 /***/ },
 /* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zoe.png";
+	module.exports = __webpack_require__.p + "images/playpressed.png";
 
 /***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__.p + "images/ryan.png";
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/title.png";
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tryagain.png";
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tryagainpressed.png";
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zengrenade.png";
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zengrenade_animation.png";
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zengrenadepressed.png";
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zengrenadereticle.png";
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zenmode.png";
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zenmodeanimate.png";
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zenmodeselect.png";
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zenmodeselectpressed.png";
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zoe.png";
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var map = {
-		"./beach.mp3": 180,
-		"./meditation_background.mp3": 181,
-		"./meditation_background.wav": 182,
-		"./meditation_level_2.mp3": 183,
-		"./meditation_level_2_v2.mp3": 184,
-		"./meditation_level_2_v2.wav": 185
+		"./beach.mp3": 193,
+		"./meditation_background.mp3": 194,
+		"./meditation_background.wav": 195,
+		"./meditation_level_2.mp3": 196,
+		"./meditation_level_2_v2.mp3": 197,
+		"./meditation_level_2_v2.wav": 198
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -10533,41 +11119,41 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 179;
+	webpackContext.id = 192;
 
 
 /***/ },
-/* 180 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/beach.mp3";
 
 /***/ },
-/* 181 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/meditation_background.mp3";
 
 /***/ },
-/* 182 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/meditation_background.wav";
 
 /***/ },
-/* 183 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/meditation_level_2.mp3";
 
 /***/ },
-/* 184 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.mp3";
 
 /***/ },
-/* 185 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.wav";
