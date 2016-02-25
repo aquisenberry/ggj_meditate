@@ -2,7 +2,6 @@
 
 module.exports = function(ecs, data) {
     ecs.addEach(function(entity, elapsed) {
-		console.log(data.arguments.level);
         var progress_meter = 7;
         var increment_progress =1;
         var progress = data.entities.get(progress_meter,"progress");

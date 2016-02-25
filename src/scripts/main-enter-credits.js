@@ -15,7 +15,7 @@ function place_entity(data, id, width_mod, height_mod, x_mod, y_mod, centered) {
 
 module.exports = function(data) { // eslint-disable-line no-unused-vars
     console.log("meh");
-    data.sounds.play("title", true);
+    //data.sounds.play("title", true);
 
     var title = 3;
     place_entity(data, title, 0.5, 0.109, 0.5, 0.11, true);
