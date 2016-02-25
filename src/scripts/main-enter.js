@@ -12,6 +12,9 @@ module.exports = function(data) { // eslint-disable-line no-unused-vars
 		},
 		{
 			"background": "background2",
+		},
+		{
+			"background": "background3",
 		}
 	]
 
