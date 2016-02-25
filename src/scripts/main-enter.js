@@ -17,6 +17,10 @@ module.exports = function(data) { // eslint-disable-line no-unused-vars
 			"background": "background3",
 		}
 	]
+	
+	if(level > levels.length - 1) {
+		level = levels.length - 1;
+	}
 
 	if(level == 0) {
 		camera_timers.spawn_clouds.running = true;
