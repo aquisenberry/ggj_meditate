@@ -15,7 +15,7 @@ module.exports = function(data) { // eslint-disable-line no-unused-vars
 		}
 	]
 
-	if(level == 1) {
+	if(level == 0) {
 		camera_timers.spawn_clouds.running = true;
 	}
 
