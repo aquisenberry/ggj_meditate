@@ -4,4 +4,3 @@ node_modules/
 *.swp
 build.tar.gz
 webpack.config.js
-src/images/
