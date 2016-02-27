@@ -107,7 +107,13 @@
         "scenes": [
             "main", "tutorial"
         ]
-    }
+    },
+	{
+		"name": "./systems/simulation/sample-simulation-system",
+		"scenes": [
+			"main"
+		]
+	}
     ],
     "renderer": [
         {

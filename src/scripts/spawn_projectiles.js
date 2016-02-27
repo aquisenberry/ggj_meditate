@@ -26,6 +26,12 @@ function cast_to_edge(size,x, y, pos, data) {
 
 module.exports = function(entity, data) {
 
+	var level = parseInt(data.arguments.level);
+	var big_mod_max = 0.03 + (level * 0.01)
+	var big_mod_min = (level * 0.01)
+	var small_mod_max = 0.06 + (level * 0.01)
+	var small_mod_min = 0.02 + (level * 0.01)
+
     var constants = data.entities.get(entity, "constants"); 
     var x = Math.floor(Math.random() * data.canvas.width);
     var y = Math.floor(Math.random() * data.canvas.height);
@@ -41,6 +47,8 @@ module.exports = function(entity, data) {
     var uv = normalize(new_pos.x, new_pos.y, constants.center);
     var negative = Math.floor(Math.random() * (9 - 1)) + 1;
     var big = Math.floor(Math.random() * 9) % 2;
+	var big_mod = Math.random() * (big_mod_max - big_mod_min) + big_mod_min;
+	var small_mod = Math.random() * (small_mod_max - small_mod_min) + small_mod_min;
     if(data.arguments.mode == "zen") {
         negative = 0;
     }
@@ -58,7 +66,7 @@ module.exports = function(entity, data) {
         } else {
             data.entities.set(projectile, "effect", 10);
         }
-        data.entities.set(projectile, "velocity", {"x": -uv.x * 0.03, "y": -uv.y * 0.03});
+        data.entities.set(projectile, "velocity", {"x": -uv.x * big_mod, "y": -uv.y * big_mod});
     } else {
         data.entities.set(projectile, "size", {"width": 25, "height": 25});
         if(negative > 2) {
@@ -68,7 +76,7 @@ module.exports = function(entity, data) {
             data.entities.set(projectile, "effect", 5);
 			data.entities.set(projectile, "mod", 0.04);
         }
-        data.entities.set(projectile, "velocity", {"x": -uv.x * 0.05, "y": -uv.y * 0.05});
+        data.entities.set(projectile, "velocity", {"x": -uv.x * small_mod, "y": -uv.y * small_mod});
     }
 
     var timers = data.entities.get(entity, "timers");
