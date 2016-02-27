@@ -9898,6 +9898,42 @@
 				"image": {
 					"name": "lotus"
 				}
+			},
+			{
+				"id": 9,
+				"name": "halo",
+				"halo": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 145,
+					"height": 148
+				}
+			},
+			{
+				"id": 10,
+				"name": "clear_halo",
+				"clear_halo": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 145,
+					"height": 145
+				},
+				"collisions": [],
+				"timers": {
+					"clear_screen": {
+						"running": false,
+						"time": 0,
+						"max": 50,
+						"script": "./scripts/clear_screen"
+					}
+				},
+				"size_step": 50
 			}
 		],
 		"end": [
