@@ -7,6 +7,7 @@ module.exports = function(ecs, data) {
         var progress_meter = 7;
         var progress = data.entities.get(progress_meter,"progress");
         var om_progress = data.entities.get(entity,"om_progress");
+		var halo = 9;
         if(progress.value === progress.max){
         	om_progress.value += om_progress.increment;
         	player_image.name = "monkzenmode";
@@ -19,6 +20,7 @@ module.exports = function(ecs, data) {
 			om_progress.value = om_progress.max;
 		}
         if(om_progress.value == om_progress.max){
+			data.entities.set(halo, "image", {"name": "halo"});
         	om_progress.zen = true;
         }
     }, "om");

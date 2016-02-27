@@ -17,7 +17,7 @@ module.exports = function(entity, data) {
     data.entities.set(entity, "position", new_pos);
 
     var timers = data.entities.get(entity, "timers");
-    timers.boom.time = 0;
-    timers.boom.running = true;
+    timers.clear_screen.time = 0;
+    timers.clear_screen.running = true;
 
-}
+};
