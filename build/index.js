@@ -63,7 +63,7 @@
 	var localScriptRequire = __webpack_require__(95);
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(119);
+	var localDataRequire = __webpack_require__(120);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -85,9 +85,9 @@
 		console.error("Unable to load module: \"", path, "\"");
 		return undefined;
 	}
-	__webpack_require__(128);
 	__webpack_require__(129);
-	__webpack_require__(193);
+	__webpack_require__(130);
+	__webpack_require__(195);
 
 	var game = new Splat.Game(canvas, customRequire);
 
@@ -8062,6 +8062,7 @@
 	        var progress_meter = 7;
 	        var progress = data.entities.get(progress_meter,"progress");
 	        var om_progress = data.entities.get(entity,"om_progress");
+			var halo = 9;
 	        if(progress.value === progress.max){
 	        	om_progress.value += om_progress.increment;
 	        	player_image.name = "monkzenmode";
@@ -8074,6 +8075,7 @@
 				om_progress.value = om_progress.max;
 			}
 	        if(om_progress.value == om_progress.max){
+				data.entities.set(halo, "image", {"name": "halo"});
 	        	om_progress.zen = true;
 	        }
 	    }, "om");
@@ -8094,6 +8096,8 @@
 
 			var player = 1;
 			var om_meter = 3;
+			var clear_halo = 10;
+			var clear_timers = data.entities.get(clear_halo, "timers");
 			var player_timers = data.entities.get(player, "timers");
 	        var entity_size = data.entities.get(entity, "size");
 	        var entity_position = data.entities.get(entity, "position");
@@ -8110,7 +8114,6 @@
 	        var entity_collisions = data.entities.get(entity, "collisions");
 	        var om_progress = data.entities.get(om_meter, "om_progress");
 	        if(data.input.mouse.consumePressed(0)) {
-				console.log(om_progress.zen);
 	            for(var i = 0; i < entity_collisions.length; ++i) {
 	                if(data.entities.get(entity_collisions[i], "name") == "play_button") {
 	                    data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
@@ -8126,6 +8129,8 @@
 
 	                }
 					if(data.entities.get(entity_collisions[i], "name") == "om" && om_progress.zen) {
+						data.entities.set(clear_halo, "image", {"name": "halo"});
+						clear_timers.clear_screen.running = true;
 						player_timers.dat_outro.running = true;
 					}
 	                if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
@@ -8421,9 +8426,16 @@
 
 	"use strict";
 
-	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
+	module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
 		ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
-		}, "player");
+	        var entity_collisions = data.entities.get(entity, "collisions");
+			for(var i = 0; i < entity_collisions.length; ++i) {
+				if(data.entities.get(entity_collisions[i], "projectile")) {
+					data.entities.destroy(entity_collisions[i--]);
+				}
+			}
+
+		}, "clear_halo");
 	};
 
 
@@ -8473,26 +8485,27 @@
 		"./boom.js": 96,
 		"./bring_in_film.js": 97,
 		"./change_image.js": 98,
-		"./dat_intro.js": 99,
-		"./dat_outro.js": 100,
-		"./main-enter-credits.js": 101,
-		"./main-enter.js": 102,
-		"./main-exit-credits.js": 103,
-		"./main-exit.js": 104,
-		"./ouch_pain.js": 105,
-		"./pull_pin.js": 106,
-		"./push_back_stop.js": 107,
-		"./ramp_speed.js": 108,
-		"./set_constants.js": 109,
-		"./set_constants_title.js": 110,
-		"./spawn_clouds.js": 111,
-		"./spawn_projectiles.js": 112,
-		"./spawn_tutorial.js": 113,
-		"./start_end.js": 114,
-		"./tutorial_enter.js": 115,
-		"./tutorial_exit.js": 116,
-		"./zen_cooldown.js": 117,
-		"./zen_kill.js": 118
+		"./clear_screen.js": 99,
+		"./dat_intro.js": 100,
+		"./dat_outro.js": 101,
+		"./main-enter-credits.js": 102,
+		"./main-enter.js": 103,
+		"./main-exit-credits.js": 104,
+		"./main-exit.js": 105,
+		"./ouch_pain.js": 106,
+		"./pull_pin.js": 107,
+		"./push_back_stop.js": 108,
+		"./ramp_speed.js": 109,
+		"./set_constants.js": 110,
+		"./set_constants_title.js": 111,
+		"./spawn_clouds.js": 112,
+		"./spawn_projectiles.js": 113,
+		"./spawn_tutorial.js": 114,
+		"./start_end.js": 115,
+		"./tutorial_enter.js": 116,
+		"./tutorial_exit.js": 117,
+		"./zen_cooldown.js": 118,
+		"./zen_kill.js": 119
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8521,13 +8534,13 @@
 	    var step = data.entities.get(entity, "size_step");
 	    var new_size = {
 	        "width": size.width + step,
-	        "height": size.height + step,
-	    }
+	        "height": size.height + step
+	    };
 	    data.entities.set(entity, "size", new_size);
 	    var new_pos = {
 	        "x": pos.x - step / 2,
 	        "y": pos.y - step / 2
-	    }
+	    };
 	    data.entities.set(entity, "position", new_pos);
 
 	    var timers = data.entities.get(entity, "timers");
@@ -8568,6 +8581,35 @@
 
 	module.exports = function(entity, data) {
 
+	    var size = data.entities.get(entity, "size");
+	    var pos = data.entities.get(entity, "position");
+	    var step = data.entities.get(entity, "size_step");
+	    var new_size = {
+	        "width": size.width + step,
+	        "height": size.height + step
+	    };
+	    data.entities.set(entity, "size", new_size);
+	    var new_pos = {
+	        "x": pos.x - step / 2,
+	        "y": pos.y - step / 2
+	    };
+	    data.entities.set(entity, "position", new_pos);
+
+	    var timers = data.entities.get(entity, "timers");
+	    timers.clear_screen.time = 0;
+	    timers.clear_screen.running = true;
+
+	};
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(entity, data) {
+
 		var camera = 0;
 		var constants = data.entities.get(camera, "constants");
 		var player_pos = data.entities.get(entity, "position");
@@ -8589,7 +8631,7 @@
 
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8614,7 +8656,7 @@
 
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8668,7 +8710,7 @@
 
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8677,19 +8719,23 @@
 
 		var camera = 0;
 		var camera_timers = data.entities.get(camera, "timers");
-		var level = parseInt(data.arguments.level) - 1;
+		var level = parseInt(data.arguments.level) % 3;
 
 		var levels = [
+			{
+				"background": "background3",
+			},
 			{
 				"background": "background",
 			},
 			{
 				"background": "background2",
-			},
-			{
-				"background": "background3",
 			}
 		]
+		
+		if(level > levels.length - 1) {
+			level = levels.length - 1;
+		}
 
 		if(level == 0) {
 			camera_timers.spawn_clouds.running = true;
@@ -8697,16 +8743,6 @@
 
 		data.entities.set(camera, "image", { "name": levels[level]["background"] });
 		
-	};
-
-
-/***/ },
-/* 103 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = function(game) { // eslint-disable-line no-unused-vars
 	};
 
 
@@ -8726,6 +8762,16 @@
 
 	"use strict";
 
+	module.exports = function(game) { // eslint-disable-line no-unused-vars
+	};
+
+
+/***/ },
+/* 106 */
+/***/ function(module, exports) {
+
+	"use strict";
+
 	module.exports = function(entity, data) {
 	   data.entities.set(entity, "is_hit", false); 
 	   var time = data.entities.get(entity, "time");
@@ -8735,7 +8781,7 @@
 
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8749,7 +8795,7 @@
 
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8763,7 +8809,7 @@
 
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8781,97 +8827,55 @@
 
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 	module.exports = function(entity, data) {
 	    
-	    //data.sounds.play("background", true);
-	    //data.sounds.play("beach", true);
+	    data.sounds.play("background", true);
+	    data.sounds.play("beach", true);
 	    var player = 1;
 	    var om = 3;
+		var halo = 9;
+		var clear_halo = 10;
 
 	    var player_size = data.entities.get(player, "size");
+	    var clear_size = data.entities.get(clear_halo, "size");
 	    var om_size = data.entities.get(om,"size");
+	    var halo_size = data.entities.get(halo,"size");
 
 	    var constants = data.entities.get(entity, "constants");
 	    constants.center = {
 	        "x": (data.canvas.width / 2),
 	        "y": (data.canvas.height * 0.6)
-	    }
+	    };
 	    var new_pos = {
 	        "x": constants.center.x - player_size.width / 2,
 	        "y": -player_size.height,
-	    }
+	    };
+		var clear_pos = {
+			"x": constants.center.x - clear_size.width / 2,
+			"y": constants.center.y - clear_size.height / 2
+		};
 	    var om_pos = {
 	        "x": data.canvas.width*0.9 -om_size.width,
 	        "y": data.canvas.height*0.95 -om_size.height
-	    }
+	    };
 	    data.entities.set(player, "position", new_pos);
-
-	    /*
-	    var cone_id = 4;
-	    var cone_icon_size = data.entities.get(cone_id, "size");
-	    var cone_icon_position = {
-	        "x": (data.canvas.width / 2) - cone_icon_size.width * 1.5,
-	        "y": (data.canvas.height * 0.95) - cone_icon_size.height,
-	    }
-	    data.entities.set(cone_id, "position", cone_icon_position);
-	    {
-	        "id": 4,
-	        "name": "cone",
-	        "ability_icon": true,
-	        "image": {
-	            "name": "cone"
-	        },
-	        "position": {
-	            "x": 0,
-	            "y": 0
-	        },
-	        "size": {
-	            "width": 75,
-	            "height": 75
-	        }
-	    },
-	    */
+		data.entities.set(clear_halo, "position", clear_pos);
 
 	    var bomb_id = 5;
 	    var bomb_icon_size = data.entities.get(bomb_id, "size");
 	    var bomb_icon_position = {
 	        "x": (data.canvas.width / 2) - bomb_icon_size.width * 0.5,
 	        "y": (data.canvas.height * 0.95) - bomb_icon_size.height,
-	    }
+	    };
 	    data.entities.set(bomb_id, "position", bomb_icon_position);
-
-	    /*
-	    var laser_id = 6;
-	    var laser_icon_size = data.entities.get(bomb_id, "size");
-	    var laser_icon_position = {
-	        "x": (data.canvas.width / 2) + laser_icon_size.width * 0.5,
-	        "y": (data.canvas.height * 0.95) - laser_icon_size.height,
-	    }
-	    data.entities.set(laser_id, "position", laser_icon_position);
-	     {
-	        "id": 6,
-	        "name": "lazer",
-	        "image": {
-	            "name": "lazer"
-	        },
-	        "ability_icon": true,
-	        "position": {
-	            "x": 0,
-	            "y": 0
-	        },
-	        "size": {
-	            "width": 75,
-	            "height": 75
-	        }
-	    },
-	    */
 	    
 	    data.entities.set(om,"position",om_pos);
+		data.entities.set(halo, "position", {"x": om_pos.x - 10, "y": om_pos.y - 9});
 
 	    var progress_meter = 7;
 	    var progress_meter_size = data.entities.get(progress_meter,"size");
@@ -8889,7 +8893,7 @@
 	    var pill_size = {
 	        "width":progress_meter_size.width,
 	        "height": 0.95 *(progress_meter_size.height/pill_number)
-	    }
+	    };
 	    for (var i = 0; i<pill_number;++i){
 	        var pill = data.instantiatePrefab("progress_block");
 	        var match = data.entities.get(pill,"match");
@@ -8907,7 +8911,6 @@
 	    var lotus_size=data.entities.get(lotus,"size");
 	    var lotus_position = data.entities.get(lotus,"position");
 
-
 	    lotus_position.y = progress_meter_position.y + progress_meter_size.height*0.9;
 	    lotus_position.x = progress_meter_position.x + progress_meter_size.width/2.3- lotus_size.width/2;
 
@@ -8915,7 +8918,7 @@
 
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8954,7 +8957,7 @@
 
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9030,7 +9033,7 @@
 
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9061,6 +9064,12 @@
 
 	module.exports = function(entity, data) {
 
+		var level = parseInt(data.arguments.level);
+		var big_mod_max = 0.03 + (level * 0.01)
+		var big_mod_min = (level * 0.01)
+		var small_mod_max = 0.06 + (level * 0.01)
+		var small_mod_min = 0.02 + (level * 0.01)
+
 	    var constants = data.entities.get(entity, "constants"); 
 	    var x = Math.floor(Math.random() * data.canvas.width);
 	    var y = Math.floor(Math.random() * data.canvas.height);
@@ -9076,6 +9085,8 @@
 	    var uv = normalize(new_pos.x, new_pos.y, constants.center);
 	    var negative = Math.floor(Math.random() * (9 - 1)) + 1;
 	    var big = Math.floor(Math.random() * 9) % 2;
+		var big_mod = Math.random() * (big_mod_max - big_mod_min) + big_mod_min;
+		var small_mod = Math.random() * (small_mod_max - small_mod_min) + small_mod_min;
 	    if(data.arguments.mode == "zen") {
 	        negative = 0;
 	    }
@@ -9093,7 +9104,7 @@
 	        } else {
 	            data.entities.set(projectile, "effect", 10);
 	        }
-	        data.entities.set(projectile, "velocity", {"x": -uv.x * 0.03, "y": -uv.y * 0.03});
+	        data.entities.set(projectile, "velocity", {"x": -uv.x * big_mod, "y": -uv.y * big_mod});
 	    } else {
 	        data.entities.set(projectile, "size", {"width": 25, "height": 25});
 	        if(negative > 2) {
@@ -9103,7 +9114,7 @@
 	            data.entities.set(projectile, "effect", 5);
 				data.entities.set(projectile, "mod", 0.04);
 	        }
-	        data.entities.set(projectile, "velocity", {"x": -uv.x * 0.05, "y": -uv.y * 0.05});
+	        data.entities.set(projectile, "velocity", {"x": -uv.x * small_mod, "y": -uv.y * small_mod});
 	    }
 
 	    var timers = data.entities.get(entity, "timers");
@@ -9114,7 +9125,7 @@
 
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9134,7 +9145,7 @@
 
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9166,7 +9177,7 @@
 
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9184,7 +9195,7 @@
 
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9195,7 +9206,7 @@
 
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports) {
 
 	"use script";
@@ -9206,7 +9217,7 @@
 
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9217,18 +9228,18 @@
 
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 120,
-		"./entities.json": 121,
-		"./images.json": 122,
-		"./inputs.json": 123,
-		"./prefabs.json": 124,
-		"./scenes.json": 125,
-		"./sounds.json": 126,
-		"./systems.json": 127
+		"./animations.json": 121,
+		"./entities.json": 122,
+		"./images.json": 123,
+		"./inputs.json": 124,
+		"./prefabs.json": 125,
+		"./scenes.json": 126,
+		"./sounds.json": 127,
+		"./systems.json": 128
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -9241,11 +9252,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 119;
+	webpackContext.id = 120;
 
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9267,7 +9278,7 @@
 	};
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9624,6 +9635,42 @@
 				"image": {
 					"name": "lotus"
 				}
+			},
+			{
+				"id": 9,
+				"name": "halo",
+				"halo": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 145,
+					"height": 148
+				}
+			},
+			{
+				"id": 10,
+				"name": "clear_halo",
+				"clear_halo": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 145,
+					"height": 145
+				},
+				"collisions": [],
+				"timers": {
+					"clear_screen": {
+						"running": false,
+						"time": 0,
+						"max": 50,
+						"script": "./scripts/clear_screen"
+					}
+				},
+				"size_step": 50
 			}
 		],
 		"tutorial": [
@@ -10121,7 +10168,7 @@
 	};
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10168,11 +10215,12 @@
 		"artwork": "images/artwork.png",
 		"ryan": "images/ryan.png",
 		"music": "images/music.png",
-		"zoe": "images/zoe.png"
+		"zoe": "images/zoe.png",
+		"halo": "images/halo.png"
 	};
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10210,7 +10258,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10369,7 +10417,7 @@
 	};
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10389,7 +10437,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10399,7 +10447,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10555,6 +10603,12 @@
 					"main",
 					"tutorial"
 				]
+			},
+			{
+				"name": "./systems/simulation/sample-simulation-system",
+				"scenes": [
+					"main"
+				]
 			}
 		],
 		"renderer": [
@@ -10641,79 +10695,80 @@
 	};
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./achieved.png": 130,
-		"./anthony.png": 131,
-		"./arrow.png": 132,
-		"./artwork.png": 133,
-		"./background2.png": 134,
-		"./background3.png": 135,
-		"./backtotitle.png": 136,
-		"./backtotitlepressed.png": 137,
-		"./badswirl.png": 138,
-		"./badswirl2.png": 139,
-		"./bamboo.png": 140,
-		"./barreticle.png": 141,
-		"./beach1.png": 142,
-		"./clouds1.png": 143,
-		"./clouds2.png": 144,
-		"./clouds3.png": 145,
-		"./clouds4.png": 146,
-		"./clouds5.png": 147,
-		"./cone.png": 148,
-		"./conepressed.png": 149,
-		"./conereticle.png": 150,
-		"./credits.png": 151,
-		"./creditspressed.png": 152,
-		"./creditsscene.png": 153,
-		"./cursor.png": 154,
-		"./cursorclicked.png": 155,
-		"./darkclouds1.png": 156,
-		"./darkclouds2.png": 157,
-		"./darkclouds3.png": 158,
-		"./development.png": 159,
-		"./failed.png": 160,
-		"./gameover.png": 161,
-		"./goodswirl.png": 162,
-		"./lazer.png": 163,
-		"./lazerpressed.png": 164,
-		"./logo.png": 165,
-		"./lotus.png": 166,
-		"./matt.png": 167,
-		"./medallion.png": 168,
-		"./monkmad.png": 169,
-		"./monkzenmode.png": 170,
-		"./monkzenmodeeye1.png": 171,
-		"./monkzenmodeeye2.png": 172,
-		"./monkzenmodeeye3.png": 173,
-		"./music.png": 174,
-		"./nirvana.png": 175,
-		"./pissedmonk.png": 176,
-		"./play.png": 177,
-		"./player_image.png": 178,
-		"./playpressed.png": 179,
-		"./ryan.png": 180,
-		"./title.png": 181,
-		"./tryagain.png": 182,
-		"./tryagainpressed.png": 183,
-		"./zengrenade.png": 184,
-		"./zengrenade_animation.png": 185,
-		"./zengrenadepressed.png": 186,
-		"./zengrenadereticle.png": 187,
-		"./zenmode.png": 188,
-		"./zenmodeanimate.png": 189,
-		"./zenmodeselect.png": 190,
-		"./zenmodeselectpressed.png": 191,
-		"./zoe.png": 192
+		"./achieved.png": 131,
+		"./anthony.png": 132,
+		"./arrow.png": 133,
+		"./artwork.png": 134,
+		"./background2.png": 135,
+		"./background3.png": 136,
+		"./backtotitle.png": 137,
+		"./backtotitlepressed.png": 138,
+		"./badswirl.png": 139,
+		"./badswirl2.png": 140,
+		"./bamboo.png": 141,
+		"./barreticle.png": 142,
+		"./beach1.png": 143,
+		"./clouds1.png": 144,
+		"./clouds2.png": 145,
+		"./clouds3.png": 146,
+		"./clouds4.png": 147,
+		"./clouds5.png": 148,
+		"./cone.png": 149,
+		"./conepressed.png": 150,
+		"./conereticle.png": 151,
+		"./credits.png": 152,
+		"./creditspressed.png": 153,
+		"./creditsscene.png": 154,
+		"./cursor.png": 155,
+		"./cursorclicked.png": 156,
+		"./darkclouds1.png": 157,
+		"./darkclouds2.png": 158,
+		"./darkclouds3.png": 159,
+		"./development.png": 160,
+		"./failed.png": 161,
+		"./gameover.png": 162,
+		"./goodswirl.png": 163,
+		"./halo.png": 164,
+		"./lazer.png": 165,
+		"./lazerpressed.png": 166,
+		"./logo.png": 167,
+		"./lotus.png": 168,
+		"./matt.png": 169,
+		"./medallion.png": 170,
+		"./monkmad.png": 171,
+		"./monkzenmode.png": 172,
+		"./monkzenmodeeye1.png": 173,
+		"./monkzenmodeeye2.png": 174,
+		"./monkzenmodeeye3.png": 175,
+		"./music.png": 176,
+		"./nirvana.png": 177,
+		"./pissedmonk.png": 178,
+		"./play.png": 179,
+		"./player_image.png": 180,
+		"./playpressed.png": 181,
+		"./ryan.png": 182,
+		"./title.png": 183,
+		"./tryagain.png": 184,
+		"./tryagainpressed.png": 185,
+		"./zengrenade.png": 186,
+		"./zengrenade_animation.png": 187,
+		"./zengrenadepressed.png": 188,
+		"./zengrenadereticle.png": 189,
+		"./zenmode.png": 190,
+		"./zenmodeanimate.png": 191,
+		"./zenmodeselect.png": 192,
+		"./zenmodeselectpressed.png": 193,
+		"./zoe.png": 194
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -10726,398 +10781,404 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 129;
+	webpackContext.id = 130;
 
-
-/***/ },
-/* 130 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/achieved.png";
 
 /***/ },
 /* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/anthony.png";
+	module.exports = __webpack_require__.p + "images/achieved.png";
 
 /***/ },
 /* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/arrow.png";
+	module.exports = __webpack_require__.p + "images/anthony.png";
 
 /***/ },
 /* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/artwork.png";
+	module.exports = __webpack_require__.p + "images/arrow.png";
 
 /***/ },
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/background2.png";
+	module.exports = __webpack_require__.p + "images/artwork.png";
 
 /***/ },
 /* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/background3.png";
+	module.exports = __webpack_require__.p + "images/background2.png";
 
 /***/ },
 /* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/backtotitle.png";
+	module.exports = __webpack_require__.p + "images/background3.png";
 
 /***/ },
 /* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/backtotitlepressed.png";
+	module.exports = __webpack_require__.p + "images/backtotitle.png";
 
 /***/ },
 /* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/badswirl.png";
+	module.exports = __webpack_require__.p + "images/backtotitlepressed.png";
 
 /***/ },
 /* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/badswirl2.png";
+	module.exports = __webpack_require__.p + "images/badswirl.png";
 
 /***/ },
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/bamboo.png";
+	module.exports = __webpack_require__.p + "images/badswirl2.png";
 
 /***/ },
 /* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/barreticle.png";
+	module.exports = __webpack_require__.p + "images/bamboo.png";
 
 /***/ },
 /* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/beach1.png";
+	module.exports = __webpack_require__.p + "images/barreticle.png";
 
 /***/ },
 /* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds1.png";
+	module.exports = __webpack_require__.p + "images/beach1.png";
 
 /***/ },
 /* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds2.png";
+	module.exports = __webpack_require__.p + "images/clouds1.png";
 
 /***/ },
 /* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds3.png";
+	module.exports = __webpack_require__.p + "images/clouds2.png";
 
 /***/ },
 /* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds4.png";
+	module.exports = __webpack_require__.p + "images/clouds3.png";
 
 /***/ },
 /* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds5.png";
+	module.exports = __webpack_require__.p + "images/clouds4.png";
 
 /***/ },
 /* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cone.png";
+	module.exports = __webpack_require__.p + "images/clouds5.png";
 
 /***/ },
 /* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/conepressed.png";
+	module.exports = __webpack_require__.p + "images/cone.png";
 
 /***/ },
 /* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/conereticle.png";
+	module.exports = __webpack_require__.p + "images/conepressed.png";
 
 /***/ },
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/credits.png";
+	module.exports = __webpack_require__.p + "images/conereticle.png";
 
 /***/ },
 /* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/creditspressed.png";
+	module.exports = __webpack_require__.p + "images/credits.png";
 
 /***/ },
 /* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/creditsscene.png";
+	module.exports = __webpack_require__.p + "images/creditspressed.png";
 
 /***/ },
 /* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cursor.png";
+	module.exports = __webpack_require__.p + "images/creditsscene.png";
 
 /***/ },
 /* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cursorclicked.png";
+	module.exports = __webpack_require__.p + "images/cursor.png";
 
 /***/ },
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds1.png";
+	module.exports = __webpack_require__.p + "images/cursorclicked.png";
 
 /***/ },
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds2.png";
+	module.exports = __webpack_require__.p + "images/darkclouds1.png";
 
 /***/ },
 /* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds3.png";
+	module.exports = __webpack_require__.p + "images/darkclouds2.png";
 
 /***/ },
 /* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/development.png";
+	module.exports = __webpack_require__.p + "images/darkclouds3.png";
 
 /***/ },
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/failed.png";
+	module.exports = __webpack_require__.p + "images/development.png";
 
 /***/ },
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/gameover.png";
+	module.exports = __webpack_require__.p + "images/failed.png";
 
 /***/ },
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/goodswirl.png";
+	module.exports = __webpack_require__.p + "images/gameover.png";
 
 /***/ },
 /* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lazer.png";
+	module.exports = __webpack_require__.p + "images/goodswirl.png";
 
 /***/ },
 /* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lazerpressed.png";
+	module.exports = __webpack_require__.p + "images/halo.png";
 
 /***/ },
 /* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/lazer.png";
 
 /***/ },
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lotus.png";
+	module.exports = __webpack_require__.p + "images/lazerpressed.png";
 
 /***/ },
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/matt.png";
+	module.exports = __webpack_require__.p + "images/logo.png";
 
 /***/ },
 /* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/medallion.png";
+	module.exports = __webpack_require__.p + "images/lotus.png";
 
 /***/ },
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkmad.png";
+	module.exports = __webpack_require__.p + "images/matt.png";
 
 /***/ },
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmode.png";
+	module.exports = __webpack_require__.p + "images/medallion.png";
 
 /***/ },
 /* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye1.png";
+	module.exports = __webpack_require__.p + "images/monkmad.png";
 
 /***/ },
 /* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye2.png";
+	module.exports = __webpack_require__.p + "images/monkzenmode.png";
 
 /***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye3.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye1.png";
 
 /***/ },
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/music.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye2.png";
 
 /***/ },
 /* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/nirvana.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye3.png";
 
 /***/ },
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/pissedmonk.png";
+	module.exports = __webpack_require__.p + "images/music.png";
 
 /***/ },
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/play.png";
+	module.exports = __webpack_require__.p + "images/nirvana.png";
 
 /***/ },
 /* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/player_image.png";
+	module.exports = __webpack_require__.p + "images/pissedmonk.png";
 
 /***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/playpressed.png";
+	module.exports = __webpack_require__.p + "images/play.png";
 
 /***/ },
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/ryan.png";
+	module.exports = __webpack_require__.p + "images/player_image.png";
 
 /***/ },
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/title.png";
+	module.exports = __webpack_require__.p + "images/playpressed.png";
 
 /***/ },
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tryagain.png";
+	module.exports = __webpack_require__.p + "images/ryan.png";
 
 /***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tryagainpressed.png";
+	module.exports = __webpack_require__.p + "images/title.png";
 
 /***/ },
 /* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenade.png";
+	module.exports = __webpack_require__.p + "images/tryagain.png";
 
 /***/ },
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenade_animation.png";
+	module.exports = __webpack_require__.p + "images/tryagainpressed.png";
 
 /***/ },
 /* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenadepressed.png";
+	module.exports = __webpack_require__.p + "images/zengrenade.png";
 
 /***/ },
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenadereticle.png";
+	module.exports = __webpack_require__.p + "images/zengrenade_animation.png";
 
 /***/ },
 /* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmode.png";
+	module.exports = __webpack_require__.p + "images/zengrenadepressed.png";
 
 /***/ },
 /* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeanimate.png";
+	module.exports = __webpack_require__.p + "images/zengrenadereticle.png";
 
 /***/ },
 /* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeselect.png";
+	module.exports = __webpack_require__.p + "images/zenmode.png";
 
 /***/ },
 /* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeselectpressed.png";
+	module.exports = __webpack_require__.p + "images/zenmodeanimate.png";
 
 /***/ },
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zoe.png";
+	module.exports = __webpack_require__.p + "images/zenmodeselect.png";
 
 /***/ },
 /* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__.p + "images/zenmodeselectpressed.png";
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zoe.png";
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var map = {
-		"./beach.mp3": 194,
-		"./meditation_background.mp3": 195,
-		"./meditation_background.wav": 196,
-		"./meditation_level_2.mp3": 197,
-		"./meditation_level_2_v2.mp3": 198,
-		"./meditation_level_2_v2.wav": 199
+		"./beach.mp3": 196,
+		"./meditation_background.mp3": 197,
+		"./meditation_background.wav": 198,
+		"./meditation_level_2.mp3": 199,
+		"./meditation_level_2_v2.mp3": 200,
+		"./meditation_level_2_v2.wav": 201
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -11130,41 +11191,41 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 193;
+	webpackContext.id = 195;
 
-
-/***/ },
-/* 194 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "sounds/beach.mp3";
-
-/***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "sounds/meditation_background.mp3";
 
 /***/ },
 /* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "sounds/meditation_background.wav";
+	module.exports = __webpack_require__.p + "sounds/beach.mp3";
 
 /***/ },
 /* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "sounds/meditation_level_2.mp3";
+	module.exports = __webpack_require__.p + "sounds/meditation_background.mp3";
 
 /***/ },
 /* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.mp3";
+	module.exports = __webpack_require__.p + "sounds/meditation_background.wav";
 
 /***/ },
 /* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "sounds/meditation_level_2.mp3";
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.mp3";
+
+/***/ },
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.wav";
