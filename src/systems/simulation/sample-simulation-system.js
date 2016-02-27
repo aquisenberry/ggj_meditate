@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
+module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
 	ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
         var entity_collisions = data.entities.get(entity, "collisions");
 		for(var i = 0; i < entity_collisions.length; ++i) {
