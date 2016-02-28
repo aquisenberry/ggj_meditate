@@ -23,7 +23,7 @@ module.exports = function(ecs, data) {
                 }
                 if(data.entities.get(entity_collisions[i], "name") == "try_again") {
                     data.sounds.stop("main");
-                    data.switchScene("main", {"mode": "normal"});
+                    data.switchScene("main", {"mode": "normal", "level": 1});
                 }
             }
             image.name = click_image;
