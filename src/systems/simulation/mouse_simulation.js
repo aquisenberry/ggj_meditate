@@ -25,34 +25,25 @@ module.exports = function(ecs, data) {
         var timers = data.entities.get(entity, "timers");
         var entity_collisions = data.entities.get(entity, "collisions");
         var om_progress = data.entities.get(om_meter, "om_progress");
-        if(data.input.mouse.consumePressed(0)) {
+        if(data.input.mouse.isPressed(0)) {
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "name") == "play_button") {
                     data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
                     data.switchScene("main", {"level": 1});
-                }
-                if(data.entities.get(entity_collisions[i], "projectile") && !data.entities.get(entity_collisions[i], "negative_effect")) {
-                    var vel = data.entities.get(entity_collisions[i],"velocity");
-                    var col_timers = data.entities.get(entity_collisions[i],"timers");
-                    vel.x = -2*vel.x;
-                    vel.y = -2*vel.y;
-                    col_timers.push_back.running= true;
-                    col_timers.push_back.timer=0;
-
                 }
 				if(data.entities.get(entity_collisions[i], "name") == "om" && om_progress.zen) {
 					data.entities.set(clear_halo, "image", {"name": "halo"});
 					clear_timers.clear_screen.running = true;
 					player_timers.dat_outro.running = true;
 				}
-                if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
+                if(data.entities.get(entity_collisions[i], "projectile")) {
                     data.entities.destroy(entity_collisions[i--]);
                 }
             }
             image.name = click_image;
-            timers.cursor_click.time = 0;
-            timers.cursor_click.running = true;
-        }
+        } else {
+			image.name = "cursor";
+		}
 
         var grenade, grenade_timers;
 
