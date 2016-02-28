@@ -59,7 +59,7 @@ module.exports = function(entity, data) {
         data.entities.set(projectile, "image", {"name": "positive_projectile"});
     }
     if(big) {
-        data.entities.set(projectile, "size", {"width": 40, "height": 40});
+        data.entities.set(projectile, "size", {"width": data.canvas.width * 0.04, "height": data.canvas.width * 0.04});
         data.entities.set(projectile, "mod", 0.01);
         if(negative > 2) {
             data.entities.set(projectile, "effect", -20);
@@ -68,7 +68,7 @@ module.exports = function(entity, data) {
         }
         data.entities.set(projectile, "velocity", {"x": -uv.x * big_mod, "y": -uv.y * big_mod});
     } else {
-        data.entities.set(projectile, "size", {"width": 25, "height": 25});
+        data.entities.set(projectile, "size", {"width": data.canvas.width * 0.025, "height": data.canvas.width * 0.025});
         if(negative > 2) {
             data.entities.set(projectile, "effect", -10);
 			data.entities.set(projectile, "mod", 0.02);
