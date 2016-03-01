@@ -1,10 +1,16 @@
 {
     "zengrenade": {
         "type": "button",
-        "inputs": [{
+        "inputs": [
+		{
             "device": "keyboard",
             "key": "space"
-        }]
+        },
+		{
+			"device": "gamepad",
+			"button": "a"
+		}
+		]
     },
     "pause": {
         "type": "button",

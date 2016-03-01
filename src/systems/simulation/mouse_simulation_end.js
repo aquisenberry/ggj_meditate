@@ -1,13 +1,35 @@
+"use strict";
+
+var Gamepad = require("html5-gamepad");
+
 module.exports = function(ecs, data) {
     ecs.addEach(function(entity, elapsed) {
+		var gamepad = new Gamepad();
+		gamepad.update();
         var entity_size = data.entities.get(entity, "size");
         var entity_position = data.entities.get(entity, "position");
         var image = data.entities.get(entity, "image");
         var click_image = data.entities.get(entity, "click_image");
+        
+		var mod = data.entities.get(entity, "move_mod");
+		var x = gamepad.axis(0, "left stick x") * mod;
+		var y = gamepad.axis(0, "left stick y") * mod;
         var cursor_position = {
-            "x": data.input.mouse.x - entity_size.width / 2,
-            "y": data.input.mouse.y - entity_size.height / 2
+            "x": entity_position.x + x,
+            "y": entity_position.y + y
         };
+		if(cursor_position.x <= 0) {
+			cursor_position.x = 0;
+		}
+		if(cursor_position.y <= 0) {
+			cursor_position.y = 0;
+		}
+		if(cursor_position.x >= data.canvas.width - entity_size.width) {
+			cursor_position.x = data.canvas.width - entity_size.width;
+		}
+		if(cursor_position.y >= data.canvas.height - entity_size.height) {
+			cursor_position.y = data.canvas.height - entity_size.height;
+		}
         data.entities.set(entity, "position", cursor_position);
 
         var timers = data.entities.get(entity, "timers");

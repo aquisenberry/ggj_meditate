@@ -42,6 +42,7 @@
 		},
 		"image": {"name": "cursor"},
 		"click_image": "cursor_clicked",
+		"move_mod": 3,
 		"timers": {
 			"cursor_click": {
 				"running": false,
@@ -238,6 +239,8 @@
 			"id": 2,
 			"name": "cursor",
 			"cursor": true,
+			"move_mod": 3,
+			"was_pressed": false,
 			"position": {
 				"x": 0,
 				"y": 0
@@ -486,6 +489,8 @@
 		{
 			"id": 2,
 			"name": "cursor",
+			"move_mod": 3,
+			"was_pressed": false,
 			"cursor": true,
 			"position": {
 				"x": 0,
@@ -691,6 +696,7 @@
 			"id": 2,
 			"name": "cursor",
 			"cursor": true,
+			"move_mod": 3,
 			"position": {
 				"x": 0,
 				"y": 0
@@ -743,6 +749,7 @@
 			"id": 2,
 			"name": "cursor",
 			"cursor": true,
+			"move_mod": 3,
 			"position": {
 				"x": 0,
 				"y": 0
