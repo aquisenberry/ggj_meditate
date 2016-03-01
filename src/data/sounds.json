@@ -1,5 +1,7 @@
 {
     "background": "sounds/meditation_background.mp3",
     "beach": "sounds/beach.mp3",
-    "title": "sounds/meditation_level_2_v2.mp3"
+    "title": "sounds/meditation_level_2_v2.mp3",
+    "smallgong": "sounds/smallgong.mp3",
+    "deepgong":"sounds/deepgong.mp3"
 }
