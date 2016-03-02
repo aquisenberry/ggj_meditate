@@ -91,6 +91,12 @@
         ]
     },
     {
+        "name": "./systems/simulation/pulse_om",
+        "scenes": [
+            "main"
+        ]
+    },
+    {
         "name": "./systems/simulation/increment_om",
         "scenes": [
             "main", "tutorial"

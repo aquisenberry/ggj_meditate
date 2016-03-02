@@ -281,11 +281,18 @@
 				"width": 125,
 				"height": 131
 			},
+			"base_size": {
+				"width": 125,
+				"height": 131
+			},
 			"image": {
 				"name": "medallion"
 			},
+			"time":{
+				"scale_time": 0
+			},
 			"meter_full":false,
-			"max_value": 100,
+			"max_value": 50,
 			"value":0,
 			"collisions": [],
 			"zindex": {
@@ -293,7 +300,7 @@
 			},
 			"om_progress":{
 				"value": 0,
-				"max": 100,
+				"max": 50,
 				"increment": 0.01,
 				"zen":false
 			}
@@ -363,6 +370,13 @@
 			"size": {
 				"width": 145,
 				"height": 148
+			},
+			"base_size": {
+				"width": 145,
+				"height": 148
+			},
+			"time":{
+				"scale_time": 0
 			}
 		},
 		{
