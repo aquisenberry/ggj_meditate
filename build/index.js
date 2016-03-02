@@ -60,10 +60,10 @@
 	var localSystemRequire = __webpack_require__(76);
 
 	var localScriptPath = "./scripts";
-	var localScriptRequire = __webpack_require__(95);
+	var localScriptRequire = __webpack_require__(98);
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(120);
+	var localDataRequire = __webpack_require__(123);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -85,9 +85,9 @@
 		console.error("Unable to load module: \"", path, "\"");
 		return undefined;
 	}
-	__webpack_require__(129);
-	__webpack_require__(130);
-	__webpack_require__(195);
+	__webpack_require__(132);
+	__webpack_require__(133);
+	__webpack_require__(198);
 
 	var game = new Splat.Game(canvas, customRequire);
 
@@ -7816,14 +7816,15 @@
 		"./renderer/sample-renderer-system.js": 84,
 		"./simulation/increment_om.js": 85,
 		"./simulation/mouse_simulation.js": 86,
-		"./simulation/mouse_simulation_credits.js": 87,
-		"./simulation/mouse_simulation_end.js": 88,
-		"./simulation/mouse_simulation_title.js": 89,
-		"./simulation/player_bob.js": 90,
-		"./simulation/projectile_rotation.js": 91,
-		"./simulation/resolve_collisions.js": 92,
-		"./simulation/sample-simulation-system.js": 93,
-		"./simulation/zengrenade.js": 94
+		"./simulation/mouse_simulation_credits.js": 89,
+		"./simulation/mouse_simulation_end.js": 90,
+		"./simulation/mouse_simulation_title.js": 91,
+		"./simulation/player_bob.js": 92,
+		"./simulation/projectile_rotation.js": 93,
+		"./simulation/pulse_om.js": 94,
+		"./simulation/resolve_collisions.js": 95,
+		"./simulation/sample-simulation-system.js": 96,
+		"./simulation/zengrenade.js": 97
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -7999,13 +8000,15 @@
 			var position = data.entities.get(entity, "position");
 			var size = data.entities.get(entity, "size");
 			var om_progress = data.entities.get(entity,"om_progress");
-			context.strokeStyle = "#82d1e1"
-			context.lineWidth = size.width*0.05;
-			context.globalAlpha = 1;
-			context.beginPath();
-			context.arc(position.x+size.width/2,position.y+size.height/2,size.width/2- size.width*0.02,0,Math.PI*2*om_progress.value/om_progress.max);
-			context.stroke();
-			context.globalAlpha = 1;
+			if(om_progress.value <= om_progress.max){
+				context.strokeStyle = "#82d1e1"
+				context.lineWidth = size.width*0.05;
+				context.globalAlpha = 1;
+				context.beginPath();
+				context.arc(position.x+size.width/2,position.y+size.height/2,size.width/2- size.width*0.02,0,Math.PI*2*om_progress.value/om_progress.max);
+				context.stroke();
+				context.globalAlpha = 1;
+			}
 		}, "om");
 	};
 
@@ -8084,12 +8087,16 @@
 
 /***/ },
 /* 86 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
+	var Gamepad = __webpack_require__(87);
+
 	module.exports = function(ecs, data) {
 	    ecs.addEach(function(entity, elapsed) {
+			var gamepad = new Gamepad();
+			gamepad.update();
 	        var progress_meter = 7;
 	        var increment_progress =1;
 	        var progress = data.entities.get(progress_meter,"progress");
@@ -8104,48 +8111,64 @@
 	        var image = data.entities.get(entity, "image");
 	        var timers = data.entities.get(entity, "timers");
 	        var click_image = data.entities.get(entity, "click_image");
+
+			var mod = data.entities.get(entity, "move_mod");
+			var x = gamepad.axis(0, "left stick x") * mod;
+			var y = gamepad.axis(0, "left stick y") * mod;
 	        var cursor_position = {
-	            "x": data.input.mouse.x - entity_size.width / 2,
-	            "y": data.input.mouse.y - entity_size.height / 2
+	            "x": entity_position.x + x,
+	            "y": entity_position.y + y
 	        };
+			if(cursor_position.x <= 0) {
+				cursor_position.x = 0;
+			}
+			if(cursor_position.y <= 0) {
+				cursor_position.y = 0;
+			}
+			if(cursor_position.x >= data.canvas.width - entity_size.width) {
+				cursor_position.x = data.canvas.width - entity_size.width;
+			}
+			if(cursor_position.y >= data.canvas.height - entity_size.height) {
+				cursor_position.y = data.canvas.height - entity_size.height;
+			}
 	        data.entities.set(entity, "position", cursor_position);
 
 	        var timers = data.entities.get(entity, "timers");
 	        var entity_collisions = data.entities.get(entity, "collisions");
 	        var om_progress = data.entities.get(om_meter, "om_progress");
-	        if(data.input.mouse.consumePressed(0)) {
+	        if(gamepad.button(0, "a")) {
+				data.entities.set(entity, "move_mod", 2);
 	            for(var i = 0; i < entity_collisions.length; ++i) {
 	                if(data.entities.get(entity_collisions[i], "name") == "play_button") {
 	                    data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
 	                    data.switchScene("main", {"level": 1});
-	                }
-	                if(data.entities.get(entity_collisions[i], "projectile") && !data.entities.get(entity_collisions[i], "negative_effect")) {
-	                    var vel = data.entities.get(entity_collisions[i],"velocity");
-	                    var col_timers = data.entities.get(entity_collisions[i],"timers");
-	                    vel.x = -2*vel.x;
-	                    vel.y = -2*vel.y;
-	                    col_timers.push_back.running= true;
-	                    col_timers.push_back.timer=0;
-
 	                }
 					if(data.entities.get(entity_collisions[i], "name") == "om" && om_progress.zen) {
 						data.entities.set(clear_halo, "image", {"name": "halo"});
 						clear_timers.clear_screen.running = true;
 						player_timers.dat_outro.running = true;
 					}
-	                if(data.entities.get(entity_collisions[i], "projectile") && data.entities.get(entity_collisions[i], "negative_effect")) {
+	                if(data.entities.get(entity_collisions[i], "projectile")) {
 	                    data.entities.destroy(entity_collisions[i--]);
 	                }
 	            }
 	            image.name = click_image;
-	            timers.cursor_click.time = 0;
-	            timers.cursor_click.running = true;
-	        }
+	        } else {
+				image.name = "cursor";
+				data.entities.set(entity, "move_mod", 4);
+			}
+
+			if(gamepad.button(0, "start") && om_progress.zen) {
+				data.entities.set(clear_halo, "image", {"name": "halo"});
+				clear_timers.clear_screen.running = true;
+				player_timers.dat_outro.running = true;
+			}
 
 	        var grenade, grenade_timers;
 
-	        if(data.input.button("zengrenade")) {
+	        if(gamepad.button(0, "right trigger")) {
 	            // Show reticle
+				data.entities.set(entity, "was_pressed", true);
 	            if(!timers.zen_cooldown.running) {
 	                image.name = "zengrenade_reticle";
 	                image.destinationWidth = entity_size.width * 6;
@@ -8153,16 +8176,18 @@
 	                image.destinationX = -image.destinationWidth / 2 + entity_size.width / 2;
 	                image.destinationY = -image.destinationHeight / 2 + entity_size.height / 2;
 	            }
-	        }
-	        if(data.input.buttonReleased("zengrenade")) {
-	            if(!timers.zen_cooldown.running) {
-	                grenade = data.instantiatePrefab("zengrenade");
-	                data.entities.set(entity, "image", {"name": "cursor"});
-	                data.entities.set(grenade, "position", { "x": cursor_position.x - entity_size.width / 2, "y": cursor_position.y - entity_size.height / 2});
-	                data.entities.set(grenade, "size", {"width": entity_size.width * 2, "height": entity_size.height * 2});
-	                timers.zen_cooldown.time = 0;
-	                timers.zen_cooldown.running = true;
-	            }
+	        } else {
+				if(data.entities.get(entity, "was_pressed")) {
+					if(!timers.zen_cooldown.running) {
+						grenade = data.instantiatePrefab("zengrenade");
+						data.entities.set(entity, "image", {"name": "cursor"});
+						data.entities.set(grenade, "position", { "x": cursor_position.x - entity_size.width / 2, "y": cursor_position.y - entity_size.height / 2});
+						data.entities.set(grenade, "size", {"width": entity_size.width * 2, "height": entity_size.height * 2});
+						timers.zen_cooldown.time = 0;
+						timers.zen_cooldown.running = true;
+					}
+					data.entities.set(entity, "was_pressed", false);
+				}
 	        }
 
 	    }, "cursor");
@@ -8171,6 +8196,786 @@
 
 /***/ },
 /* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var mappings = __webpack_require__(88);
+
+	function getMapping(gamepadId, userAgent) {
+		return mappings.filter(function(mapping) {
+			return gamepadId.indexOf(mapping.id) !== -1 && userAgent.indexOf(mapping.userAgent) !== -1;
+		})[0] || mappings[0];
+	}
+
+	function transformButton(mapping, gp, button, i) {
+		var mb = mapping.buttons[i] || { name: "button " + i };
+		gp.buttons[mb.name] = button.pressed;
+		if (mb.axis) {
+			if (button.pressed) {
+				gp.axes[mb.axis] = mb.axisValue;
+			} else if (gp.axes[mb.axis] === undefined) {
+				gp.axes[mb.axis] = 0;
+			}
+		}
+		return gp;
+	}
+
+	function scaleAxis(axis, scale) {
+		if (scale === "to positive") {
+			return (axis + 1.0) / 2.0;
+		}
+		if (scale === "to negative") {
+			return (axis + 1.0) / -2.0;
+		}
+		return axis;
+	}
+
+	function transformAxis(mapping, threshold, gp, axis, i) {
+		var ma = mapping.axes[i] || { name: "axis " + i };
+		gp.axes[ma.name] = scaleAxis(axis, ma.scale);
+		if (ma.buttons) {
+			if (ma.buttons[0] !== null) {
+				gp.buttons[ma.buttons[0]] = axis < -threshold;
+			}
+			if (ma.buttons[1] !== null) {
+				gp.buttons[ma.buttons[1]] = axis > threshold;
+			}
+		}
+		return gp;
+	}
+
+	function transformGamepad(threshold, gamepad) {
+		var gp = {
+			id: gamepad.id,
+			buttons: {},
+			axes: {}
+		};
+		var mapping = getMapping(gamepad.id, navigator.userAgent);
+		gp = gamepad.buttons.reduce(transformButton.bind(undefined, mapping), gp),
+		gp = gamepad.axes.reduce(transformAxis.bind(undefined, mapping, threshold), gp);
+		return gp;
+	}
+
+	function isDefined(val) {
+		return val !== undefined;
+	}
+
+	function Gamepad() {
+		this.threshold = 0.001;
+		this.gamepads = [];
+	}
+	Gamepad.prototype.update = function() {
+		// navigator.getGamepads() returns an array-like object, not an actual object
+		// so convert to an array so we can call map()
+		//
+		// WTF: webkit always returns 4 gamepads, so remove the undefined ones
+		var gamepads = Array.prototype.slice.call(navigator.getGamepads()).filter(isDefined);
+		this.gamepads = gamepads.map(transformGamepad.bind(undefined, this.threshold));
+	};
+	Gamepad.prototype.axis = function(gamepad, axis) {
+		if (gamepad >= this.gamepads.length) {
+			return 0;
+		}
+		return this.gamepads[gamepad].axes[axis];
+	};
+	Gamepad.prototype.count = function() {
+		return this.gamepads.length;
+	}
+	Gamepad.prototype.button = function(gamepad, button) {
+		if (gamepad >= this.gamepads.length) {
+			return false;
+		}
+		return this.gamepads[gamepad].buttons[button];
+	};
+	Gamepad.prototype.name = function(gamepad) {
+		if (gamepad >= this.gamepads.length) {
+			return undefined;
+		}
+		return this.gamepads[gamepad].id;
+	};
+
+	module.exports = Gamepad;
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports) {
+
+	module.exports = [
+		{
+			"id": "Logitech Gamepad F310",
+			"userAgent": "Firefox",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "home"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "left trigger",
+					"scale": "to positive",
+					"buttons": [
+						null,
+						"left trigger"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				},
+				{
+					"name": "right trigger",
+					"scale": "to positive",
+					"buttons": [
+						null,
+						"right trigger"
+					]
+				},
+				{
+					"name": "dpad x",
+					"buttons": [
+						"dpad left",
+						"dpad right"
+					]
+				},
+				{
+					"name": "dpad y",
+					"buttons": [
+						"dpad up",
+						"dpad down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Logitech Gamepad F310",
+			"userAgent": "WebKit",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger",
+					"axis": "left trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "right trigger",
+					"axis": "right trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "home"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Sony Computer Entertainment Wireless Controller",
+			"userAgent": "Firefox",
+			"buttons": [
+				{
+					"name": "x"
+				},
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger"
+				},
+				{
+					"name": "right trigger"
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "home"
+				},
+				{
+					"name": "touch"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "left trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "right trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				},
+				{
+					"name": "dpad x",
+					"buttons": [
+						"dpad left",
+						"dpad right"
+					]
+				},
+				{
+					"name": "dpad y",
+					"buttons": [
+						"dpad up",
+						"dpad down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Sony Computer Entertainment Wireless Controller",
+			"userAgent": "WebKit",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger",
+					"axis": "left trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "right trigger",
+					"axis": "right trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "home"
+				},
+				{
+					"name": "touch"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Sony PLAYSTATION(R)3 Controller",
+			"userAgent": "Firefox",
+			"buttons": [
+				{
+					"name": "back"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "left trigger"
+				},
+				{
+					"name": "right trigger"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "a"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "home"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				},
+				{
+					"name": "dunno 1"
+				},
+				{
+					"name": "dunno 2"
+				},
+				{
+					"name": "dunno 3"
+				},
+				{
+					"name": "dunno 4"
+				},
+				{
+					"name": "dpad up",
+					"scale": "to positive"
+				},
+				{
+					"name": "dpad right",
+					"scale": "to positive"
+				},
+				{
+					"name": "dpad down",
+					"scale": "to positive"
+				},
+				{
+					"name": "dunno 8"
+				},
+				{
+					"name": "left trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "right trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "left shoulder",
+					"scale": "to positive"
+				},
+				{
+					"name": "right shoulder",
+					"scale": "to positive"
+				},
+				{
+					"name": "y",
+					"scale": "to positive"
+				},
+				{
+					"name": "b",
+					"scale": "to positive"
+				},
+				{
+					"name": "a",
+					"scale": "to positive"
+				},
+				{
+					"name": "x",
+					"scale": "to positive"
+				},
+				{
+					"name": "dunno 9"
+				},
+				{
+					"name": "dunno 10"
+				},
+				{
+					"name": "dunno 11"
+				},
+				{
+					"name": "accelerometer x"
+				},
+				{
+					"name": "accelerometer y"
+				},
+				{
+					"name": "accelerometer z"
+				}
+			]
+		},
+		{
+			"id": "Sony PLAYSTATION(R)3 Controller",
+			"userAgent": "WebKit",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger",
+					"axis": "left trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "right trigger",
+					"axis": "right trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "home"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				}
+			]
+		}
+	];
+
+/***/ },
+/* 89 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8181,10 +8986,26 @@
 	        var entity_position = data.entities.get(entity, "position");
 	        var image = data.entities.get(entity, "image");
 	        var click_image = data.entities.get(entity, "click_image");
+	        
+			var mod = data.entities.get(entity, "move_mod");
+			var x = gamepad.axis(0, "left stick x") * mod;
+			var y = gamepad.axis(0, "left stick y") * mod;
 	        var cursor_position = {
-	            "x": data.input.mouse.x - entity_size.width / 2,
-	            "y": data.input.mouse.y - entity_size.height / 2
+	            "x": entity_position.x + x,
+	            "y": entity_position.y + y
 	        };
+			if(cursor_position.x <= 0) {
+				cursor_position.x = 0;
+			}
+			if(cursor_position.y <= 0) {
+				cursor_position.y = 0;
+			}
+			if(cursor_position.x >= data.canvas.width - entity_size.width) {
+				cursor_position.x = data.canvas.width - entity_size.width;
+			}
+			if(cursor_position.y >= data.canvas.height - entity_size.height) {
+				cursor_position.y = data.canvas.height - entity_size.height;
+			}
 	        data.entities.set(entity, "position", cursor_position);
 
 	        var timers = data.entities.get(entity, "timers");
@@ -8210,19 +9031,41 @@
 
 
 /***/ },
-/* 88 */
-/***/ function(module, exports) {
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var Gamepad = __webpack_require__(87);
 
 	module.exports = function(ecs, data) {
 	    ecs.addEach(function(entity, elapsed) {
+			var gamepad = new Gamepad();
+			gamepad.update();
 	        var entity_size = data.entities.get(entity, "size");
 	        var entity_position = data.entities.get(entity, "position");
 	        var image = data.entities.get(entity, "image");
 	        var click_image = data.entities.get(entity, "click_image");
+	        
+			var mod = data.entities.get(entity, "move_mod");
+			var x = gamepad.axis(0, "left stick x") * mod;
+			var y = gamepad.axis(0, "left stick y") * mod;
 	        var cursor_position = {
-	            "x": data.input.mouse.x - entity_size.width / 2,
-	            "y": data.input.mouse.y - entity_size.height / 2
+	            "x": entity_position.x + x,
+	            "y": entity_position.y + y
 	        };
+			if(cursor_position.x <= 0) {
+				cursor_position.x = 0;
+			}
+			if(cursor_position.y <= 0) {
+				cursor_position.y = 0;
+			}
+			if(cursor_position.x >= data.canvas.width - entity_size.width) {
+				cursor_position.x = data.canvas.width - entity_size.width;
+			}
+			if(cursor_position.y >= data.canvas.height - entity_size.height) {
+				cursor_position.y = data.canvas.height - entity_size.height;
+			}
 	        data.entities.set(entity, "position", cursor_position);
 
 	        var timers = data.entities.get(entity, "timers");
@@ -8238,7 +9081,7 @@
 	                }
 	                if(data.entities.get(entity_collisions[i], "name") == "try_again") {
 	                    data.sounds.stop("main");
-	                    data.switchScene("main", {"mode": "normal"});
+	                    data.switchScene("main", {"mode": "normal", "level": 1});
 	                }
 	            }
 	            image.name = click_image;
@@ -8248,27 +9091,48 @@
 	    }, "cursor");
 	}
 
+
 /***/ },
-/* 89 */
-/***/ function(module, exports) {
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
+	var Gamepad = __webpack_require__(87);
+
 	module.exports = function(ecs, data) {
 	    ecs.addEach(function(entity, elapsed) {
+			var gamepad = new Gamepad();
+			gamepad.update();
 	        var entity_size = data.entities.get(entity, "size");
 	        var entity_position = data.entities.get(entity, "position");
 	        var image = data.entities.get(entity, "image");
 	        var click_image = data.entities.get(entity, "click_image");
+			var mod = data.entities.get(entity, "move_mod");
+			var x = gamepad.axis(0, "left stick x") * mod;
+			var y = gamepad.axis(0, "left stick y") * mod;
 	        var cursor_position = {
-	            "x": data.input.mouse.x - entity_size.width / 2,
-	            "y": data.input.mouse.y - entity_size.height / 2
+	            "x": entity_position.x + x,
+	            "y": entity_position.y + y
 	        };
+			if(cursor_position.x <= 0) {
+				cursor_position.x = 0;
+			}
+			if(cursor_position.y <= 0) {
+				cursor_position.y = 0;
+			}
+			if(cursor_position.x >= data.canvas.width - entity_size.width) {
+				cursor_position.x = data.canvas.width - entity_size.width;
+			}
+			if(cursor_position.y >= data.canvas.height - entity_size.height) {
+				cursor_position.y = data.canvas.height - entity_size.height;
+			}
 	        data.entities.set(entity, "position", cursor_position);
 
 	        var timers = data.entities.get(entity, "timers");
 	        var entity_collisions = data.entities.get(entity, "collisions");
-	        if(data.input.mouse.consumePressed(0)) {
+	        if(gamepad.button(0, "a")) {
+				data.entities.set(entity, "move_mod", 2);
 	            for(var i = 0; i < entity_collisions.length; ++i) {
 	                if(data.entities.get(entity_collisions[i], "name") == "play") {
 	                    data.entities.set(entity_collisions[i], "image", {"name": "play_pressed"}); 
@@ -8288,14 +9152,16 @@
 	            image.name = click_image;
 	            timers.cursor_click.time = 0;
 	            timers.cursor_click.running = true;
-	        }
+	        } else {
+				data.entities.set(entity, "move_mod", 4);
+			}
 
 	    }, "cursor");
 	}
 
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8315,7 +9181,7 @@
 
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8336,7 +9202,48 @@
 
 
 /***/ },
-/* 92 */
+/* 94 */
+/***/ function(module, exports) {
+
+	module.exports = function(ecs, data) {
+	    ecs.addEach(function(entity, elapsed) {
+	    	if(data.entities.get(entity,"image")){
+	    		var half_bob_range = 1;
+		        var time_incriment = 0.009;
+
+		        var size = data.entities.get(entity, "size");
+		        var base_size = data.entities.get(entity, "base_size");
+		        var time = data.entities.get(entity,"time");
+		        var position = data.entities.get(entity, "position");
+
+		        size.width = (Math.sin(time.scale_time)*(1/12)+ 1) *base_size.width ;
+		        size.height = (Math.sin(time.scale_time)*(1/12)+ 1) *base_size.height;
+	    		console.log(size);
+		        time.scale_time += time_incriment; 
+	    	}
+	        
+	    }, "halo");
+	    ecs.addEach(function(entity, elapsed) {
+	    	if(data.entities.get(9,"image")){
+	    		var half_bob_range = 1;
+		        var time_incriment = 0.009;
+
+		        var size = data.entities.get(entity, "size");
+		        var base_size = data.entities.get(entity, "base_size");
+		        var time = data.entities.get(entity,"time");
+		        var position = data.entities.get(entity, "position");
+
+		        size.width = (Math.sin(time.scale_time)*(1/12)+ 1) *base_size.width ;
+		        size.height = (Math.sin(time.scale_time)*(1/12)+ 1) *base_size.height;
+	    		console.log(size);
+		        time.scale_time += time_incriment; 
+	    	}
+	        
+	    }, "om");
+	}
+
+/***/ },
+/* 95 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8421,7 +9328,7 @@
 
 
 /***/ },
-/* 93 */
+/* 96 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8440,7 +9347,7 @@
 
 
 /***/ },
-/* 94 */
+/* 97 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8478,34 +9385,34 @@
 
 
 /***/ },
-/* 95 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./boom.js": 96,
-		"./bring_in_film.js": 97,
-		"./change_image.js": 98,
-		"./clear_screen.js": 99,
-		"./dat_intro.js": 100,
-		"./dat_outro.js": 101,
-		"./main-enter-credits.js": 102,
-		"./main-enter.js": 103,
-		"./main-exit-credits.js": 104,
-		"./main-exit.js": 105,
-		"./ouch_pain.js": 106,
-		"./pull_pin.js": 107,
-		"./push_back_stop.js": 108,
-		"./ramp_speed.js": 109,
-		"./set_constants.js": 110,
-		"./set_constants_title.js": 111,
-		"./spawn_clouds.js": 112,
-		"./spawn_projectiles.js": 113,
-		"./spawn_tutorial.js": 114,
-		"./start_end.js": 115,
-		"./tutorial_enter.js": 116,
-		"./tutorial_exit.js": 117,
-		"./zen_cooldown.js": 118,
-		"./zen_kill.js": 119
+		"./boom.js": 99,
+		"./bring_in_film.js": 100,
+		"./change_image.js": 101,
+		"./clear_screen.js": 102,
+		"./dat_intro.js": 103,
+		"./dat_outro.js": 104,
+		"./main-enter-credits.js": 105,
+		"./main-enter.js": 106,
+		"./main-exit-credits.js": 107,
+		"./main-exit.js": 108,
+		"./ouch_pain.js": 109,
+		"./pull_pin.js": 110,
+		"./push_back_stop.js": 111,
+		"./ramp_speed.js": 112,
+		"./set_constants.js": 113,
+		"./set_constants_title.js": 114,
+		"./spawn_clouds.js": 115,
+		"./spawn_projectiles.js": 116,
+		"./spawn_tutorial.js": 117,
+		"./start_end.js": 118,
+		"./tutorial_enter.js": 119,
+		"./tutorial_exit.js": 120,
+		"./zen_cooldown.js": 121,
+		"./zen_kill.js": 122
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8518,11 +9425,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 95;
+	webpackContext.id = 98;
 
 
 /***/ },
-/* 96 */
+/* 99 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8551,7 +9458,7 @@
 
 
 /***/ },
-/* 97 */
+/* 100 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8563,7 +9470,7 @@
 
 
 /***/ },
-/* 98 */
+/* 101 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8574,7 +9481,7 @@
 
 
 /***/ },
-/* 99 */
+/* 102 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8603,7 +9510,7 @@
 
 
 /***/ },
-/* 100 */
+/* 103 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8631,7 +9538,7 @@
 
 
 /***/ },
-/* 101 */
+/* 104 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8656,7 +9563,7 @@
 
 
 /***/ },
-/* 102 */
+/* 105 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8710,7 +9617,7 @@
 
 
 /***/ },
-/* 103 */
+/* 106 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8743,7 +9650,7 @@
 
 
 /***/ },
-/* 104 */
+/* 107 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8753,7 +9660,7 @@
 
 
 /***/ },
-/* 105 */
+/* 108 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8763,7 +9670,7 @@
 
 
 /***/ },
-/* 106 */
+/* 109 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8777,7 +9684,7 @@
 
 
 /***/ },
-/* 107 */
+/* 110 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8791,7 +9698,7 @@
 
 
 /***/ },
-/* 108 */
+/* 111 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8805,7 +9712,7 @@
 
 
 /***/ },
-/* 109 */
+/* 112 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8823,7 +9730,7 @@
 
 
 /***/ },
-/* 110 */
+/* 113 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8914,7 +9821,7 @@
 
 
 /***/ },
-/* 111 */
+/* 114 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8953,7 +9860,7 @@
 
 
 /***/ },
-/* 112 */
+/* 115 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9029,7 +9936,7 @@
 
 
 /***/ },
-/* 113 */
+/* 116 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9093,7 +10000,7 @@
 	        data.entities.set(projectile, "image", {"name": "positive_projectile"});
 	    }
 	    if(big) {
-	        data.entities.set(projectile, "size", {"width": 40, "height": 40});
+	        data.entities.set(projectile, "size", {"width": data.canvas.width * 0.04, "height": data.canvas.width * 0.04});
 	        data.entities.set(projectile, "mod", 0.01);
 	        if(negative > 2) {
 	            data.entities.set(projectile, "effect", -20);
@@ -9102,7 +10009,7 @@
 	        }
 	        data.entities.set(projectile, "velocity", {"x": -uv.x * big_mod, "y": -uv.y * big_mod});
 	    } else {
-	        data.entities.set(projectile, "size", {"width": 25, "height": 25});
+	        data.entities.set(projectile, "size", {"width": data.canvas.width * 0.025, "height": data.canvas.width * 0.025});
 	        if(negative > 2) {
 	            data.entities.set(projectile, "effect", -10);
 				data.entities.set(projectile, "mod", 0.02);
@@ -9121,7 +10028,7 @@
 
 
 /***/ },
-/* 114 */
+/* 117 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9141,7 +10048,7 @@
 
 
 /***/ },
-/* 115 */
+/* 118 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9173,7 +10080,7 @@
 
 
 /***/ },
-/* 116 */
+/* 119 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9191,7 +10098,7 @@
 
 
 /***/ },
-/* 117 */
+/* 120 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9202,7 +10109,7 @@
 
 
 /***/ },
-/* 118 */
+/* 121 */
 /***/ function(module, exports) {
 
 	"use script";
@@ -9213,7 +10120,7 @@
 
 
 /***/ },
-/* 119 */
+/* 122 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9224,18 +10131,18 @@
 
 
 /***/ },
-/* 120 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 121,
-		"./entities.json": 122,
-		"./images.json": 123,
-		"./inputs.json": 124,
-		"./prefabs.json": 125,
-		"./scenes.json": 126,
-		"./sounds.json": 127,
-		"./systems.json": 128
+		"./animations.json": 124,
+		"./entities.json": 125,
+		"./images.json": 126,
+		"./inputs.json": 127,
+		"./prefabs.json": 128,
+		"./scenes.json": 129,
+		"./sounds.json": 130,
+		"./systems.json": 131
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -9248,11 +10155,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 120;
+	webpackContext.id = 123;
 
 
 /***/ },
-/* 121 */
+/* 124 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9274,7 +10181,7 @@
 	};
 
 /***/ },
-/* 122 */
+/* 125 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9323,6 +10230,7 @@
 					"name": "cursor"
 				},
 				"click_image": "cursor_clicked",
+				"move_mod": 3,
 				"timers": {
 					"cursor_click": {
 						"running": false,
@@ -9521,6 +10429,8 @@
 				"id": 2,
 				"name": "cursor",
 				"cursor": true,
+				"move_mod": 3,
+				"was_pressed": false,
 				"position": {
 					"x": 0,
 					"y": 0
@@ -9563,11 +10473,18 @@
 					"width": 125,
 					"height": 131
 				},
+				"base_size": {
+					"width": 125,
+					"height": 131
+				},
 				"image": {
 					"name": "medallion"
 				},
+				"time": {
+					"scale_time": 0
+				},
 				"meter_full": false,
-				"max_value": 100,
+				"max_value": 50,
 				"value": 0,
 				"collisions": [],
 				"zindex": {
@@ -9575,7 +10492,7 @@
 				},
 				"om_progress": {
 					"value": 0,
-					"max": 100,
+					"max": 50,
 					"increment": 0.01,
 					"zen": false
 				}
@@ -9643,6 +10560,13 @@
 				"size": {
 					"width": 145,
 					"height": 148
+				},
+				"base_size": {
+					"width": 145,
+					"height": 148
+				},
+				"time": {
+					"scale_time": 0
 				}
 			},
 			{
@@ -9771,6 +10695,8 @@
 			{
 				"id": 2,
 				"name": "cursor",
+				"move_mod": 3,
+				"was_pressed": false,
 				"cursor": true,
 				"position": {
 					"x": 0,
@@ -9971,6 +10897,7 @@
 				"id": 2,
 				"name": "cursor",
 				"cursor": true,
+				"move_mod": 3,
 				"position": {
 					"x": 0,
 					"y": 0
@@ -10024,6 +10951,7 @@
 				"id": 2,
 				"name": "cursor",
 				"cursor": true,
+				"move_mod": 3,
 				"position": {
 					"x": 0,
 					"y": 0
@@ -10200,7 +11128,7 @@
 	};
 
 /***/ },
-/* 123 */
+/* 126 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10252,7 +11180,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 127 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10262,6 +11190,10 @@
 				{
 					"device": "keyboard",
 					"key": "space"
+				},
+				{
+					"device": "gamepad",
+					"button": "a"
 				}
 			]
 		},
@@ -10286,11 +11218,20 @@
 					"key": "m"
 				}
 			]
+		},
+		"action": {
+			"type": "button",
+			"inputs": [
+				{
+					"device": "mouse",
+					"button": 0
+				}
+			]
 		}
 	};
 
 /***/ },
-/* 125 */
+/* 128 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10449,7 +11390,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 129 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10461,7 +11402,10 @@
 			"onExit": "./scripts/main-exit"
 		},
 		"end": {},
-		"credits": {},
+		"credits": {
+			"onEnter": "./scripts/main-enter-credits",
+			"onExit": "./scripts/main-exit-credits"
+		},
 		"tutorial": {
 			"onEnter": "./scripts/tutorial_enter",
 			"onExit": "./scripts/tutorial_exit"
@@ -10469,7 +11413,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 130 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10479,7 +11423,7 @@
 	};
 
 /***/ },
-/* 128 */
+/* 131 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10616,6 +11560,12 @@
 				]
 			},
 			{
+				"name": "./systems/simulation/pulse_om",
+				"scenes": [
+					"main"
+				]
+			},
+			{
 				"name": "./systems/simulation/increment_om",
 				"scenes": [
 					"main",
@@ -10727,80 +11677,80 @@
 	};
 
 /***/ },
-/* 129 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";
 
 /***/ },
-/* 130 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./achieved.png": 131,
-		"./anthony.png": 132,
-		"./arrow.png": 133,
-		"./artwork.png": 134,
-		"./background2.png": 135,
-		"./background3.png": 136,
-		"./backtotitle.png": 137,
-		"./backtotitlepressed.png": 138,
-		"./badswirl.png": 139,
-		"./badswirl2.png": 140,
-		"./bamboo.png": 141,
-		"./barreticle.png": 142,
-		"./beach1.png": 143,
-		"./clouds1.png": 144,
-		"./clouds2.png": 145,
-		"./clouds3.png": 146,
-		"./clouds4.png": 147,
-		"./clouds5.png": 148,
-		"./cone.png": 149,
-		"./conepressed.png": 150,
-		"./conereticle.png": 151,
-		"./credits.png": 152,
-		"./creditspressed.png": 153,
-		"./creditsscene.png": 154,
-		"./cursor.png": 155,
-		"./cursorclicked.png": 156,
-		"./darkclouds1.png": 157,
-		"./darkclouds2.png": 158,
-		"./darkclouds3.png": 159,
-		"./development.png": 160,
-		"./failed.png": 161,
-		"./gameover.png": 162,
-		"./goodswirl.png": 163,
-		"./halo.png": 164,
-		"./lazer.png": 165,
-		"./lazerpressed.png": 166,
-		"./logo.png": 167,
-		"./lotus.png": 168,
-		"./matt.png": 169,
-		"./medallion.png": 170,
-		"./monkmad.png": 171,
-		"./monkzenmode.png": 172,
-		"./monkzenmodeeye1.png": 173,
-		"./monkzenmodeeye2.png": 174,
-		"./monkzenmodeeye3.png": 175,
-		"./music.png": 176,
-		"./nirvana.png": 177,
-		"./pissedmonk.png": 178,
-		"./play.png": 179,
-		"./player_image.png": 180,
-		"./playpressed.png": 181,
-		"./ryan.png": 182,
-		"./title.png": 183,
-		"./tryagain.png": 184,
-		"./tryagainpressed.png": 185,
-		"./zengrenade.png": 186,
-		"./zengrenade_animation.png": 187,
-		"./zengrenadepressed.png": 188,
-		"./zengrenadereticle.png": 189,
-		"./zenmode.png": 190,
-		"./zenmodeanimate.png": 191,
-		"./zenmodeselect.png": 192,
-		"./zenmodeselectpressed.png": 193,
-		"./zoe.png": 194
+		"./achieved.png": 134,
+		"./anthony.png": 135,
+		"./arrow.png": 136,
+		"./artwork.png": 137,
+		"./background2.png": 138,
+		"./background3.png": 139,
+		"./backtotitle.png": 140,
+		"./backtotitlepressed.png": 141,
+		"./badswirl.png": 142,
+		"./badswirl2.png": 143,
+		"./bamboo.png": 144,
+		"./barreticle.png": 145,
+		"./beach1.png": 146,
+		"./clouds1.png": 147,
+		"./clouds2.png": 148,
+		"./clouds3.png": 149,
+		"./clouds4.png": 150,
+		"./clouds5.png": 151,
+		"./cone.png": 152,
+		"./conepressed.png": 153,
+		"./conereticle.png": 154,
+		"./credits.png": 155,
+		"./creditspressed.png": 156,
+		"./creditsscene.png": 157,
+		"./cursor.png": 158,
+		"./cursorclicked.png": 159,
+		"./darkclouds1.png": 160,
+		"./darkclouds2.png": 161,
+		"./darkclouds3.png": 162,
+		"./development.png": 163,
+		"./failed.png": 164,
+		"./gameover.png": 165,
+		"./goodswirl.png": 166,
+		"./halo.png": 167,
+		"./lazer.png": 168,
+		"./lazerpressed.png": 169,
+		"./logo.png": 170,
+		"./lotus.png": 171,
+		"./matt.png": 172,
+		"./medallion.png": 173,
+		"./monkmad.png": 174,
+		"./monkzenmode.png": 175,
+		"./monkzenmodeeye1.png": 176,
+		"./monkzenmodeeye2.png": 177,
+		"./monkzenmodeeye3.png": 178,
+		"./music.png": 179,
+		"./nirvana.png": 180,
+		"./pissedmonk.png": 181,
+		"./play.png": 182,
+		"./player_image.png": 183,
+		"./playpressed.png": 184,
+		"./ryan.png": 185,
+		"./title.png": 186,
+		"./tryagain.png": 187,
+		"./tryagainpressed.png": 188,
+		"./zengrenade.png": 189,
+		"./zengrenade_animation.png": 190,
+		"./zengrenadepressed.png": 191,
+		"./zengrenadereticle.png": 192,
+		"./zenmode.png": 193,
+		"./zenmodeanimate.png": 194,
+		"./zenmodeselect.png": 195,
+		"./zenmodeselectpressed.png": 196,
+		"./zoe.png": 197
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -10813,404 +11763,404 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 130;
+	webpackContext.id = 133;
 
-
-/***/ },
-/* 131 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/achieved.png";
-
-/***/ },
-/* 132 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/anthony.png";
-
-/***/ },
-/* 133 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/arrow.png";
 
 /***/ },
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/artwork.png";
+	module.exports = __webpack_require__.p + "images/achieved.png";
 
 /***/ },
 /* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/background2.png";
+	module.exports = __webpack_require__.p + "images/anthony.png";
 
 /***/ },
 /* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/background3.png";
+	module.exports = __webpack_require__.p + "images/arrow.png";
 
 /***/ },
 /* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/backtotitle.png";
+	module.exports = __webpack_require__.p + "images/artwork.png";
 
 /***/ },
 /* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/backtotitlepressed.png";
+	module.exports = __webpack_require__.p + "images/background2.png";
 
 /***/ },
 /* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/badswirl.png";
+	module.exports = __webpack_require__.p + "images/background3.png";
 
 /***/ },
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/badswirl2.png";
+	module.exports = __webpack_require__.p + "images/backtotitle.png";
 
 /***/ },
 /* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/bamboo.png";
+	module.exports = __webpack_require__.p + "images/backtotitlepressed.png";
 
 /***/ },
 /* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/barreticle.png";
+	module.exports = __webpack_require__.p + "images/badswirl.png";
 
 /***/ },
 /* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/beach1.png";
+	module.exports = __webpack_require__.p + "images/badswirl2.png";
 
 /***/ },
 /* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds1.png";
+	module.exports = __webpack_require__.p + "images/bamboo.png";
 
 /***/ },
 /* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds2.png";
+	module.exports = __webpack_require__.p + "images/barreticle.png";
 
 /***/ },
 /* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds3.png";
+	module.exports = __webpack_require__.p + "images/beach1.png";
 
 /***/ },
 /* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds4.png";
+	module.exports = __webpack_require__.p + "images/clouds1.png";
 
 /***/ },
 /* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/clouds5.png";
+	module.exports = __webpack_require__.p + "images/clouds2.png";
 
 /***/ },
 /* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cone.png";
+	module.exports = __webpack_require__.p + "images/clouds3.png";
 
 /***/ },
 /* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/conepressed.png";
+	module.exports = __webpack_require__.p + "images/clouds4.png";
 
 /***/ },
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/conereticle.png";
+	module.exports = __webpack_require__.p + "images/clouds5.png";
 
 /***/ },
 /* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/credits.png";
+	module.exports = __webpack_require__.p + "images/cone.png";
 
 /***/ },
 /* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/creditspressed.png";
+	module.exports = __webpack_require__.p + "images/conepressed.png";
 
 /***/ },
 /* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/creditsscene.png";
+	module.exports = __webpack_require__.p + "images/conereticle.png";
 
 /***/ },
 /* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cursor.png";
+	module.exports = __webpack_require__.p + "images/credits.png";
 
 /***/ },
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/cursorclicked.png";
+	module.exports = __webpack_require__.p + "images/creditspressed.png";
 
 /***/ },
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds1.png";
+	module.exports = __webpack_require__.p + "images/creditsscene.png";
 
 /***/ },
 /* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds2.png";
+	module.exports = __webpack_require__.p + "images/cursor.png";
 
 /***/ },
 /* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/darkclouds3.png";
+	module.exports = __webpack_require__.p + "images/cursorclicked.png";
 
 /***/ },
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/development.png";
+	module.exports = __webpack_require__.p + "images/darkclouds1.png";
 
 /***/ },
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/failed.png";
+	module.exports = __webpack_require__.p + "images/darkclouds2.png";
 
 /***/ },
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/gameover.png";
+	module.exports = __webpack_require__.p + "images/darkclouds3.png";
 
 /***/ },
 /* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/goodswirl.png";
+	module.exports = __webpack_require__.p + "images/development.png";
 
 /***/ },
 /* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/halo.png";
+	module.exports = __webpack_require__.p + "images/failed.png";
 
 /***/ },
 /* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lazer.png";
+	module.exports = __webpack_require__.p + "images/gameover.png";
 
 /***/ },
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lazerpressed.png";
+	module.exports = __webpack_require__.p + "images/goodswirl.png";
 
 /***/ },
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/halo.png";
 
 /***/ },
 /* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/lotus.png";
+	module.exports = __webpack_require__.p + "images/lazer.png";
 
 /***/ },
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/matt.png";
+	module.exports = __webpack_require__.p + "images/lazerpressed.png";
 
 /***/ },
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/medallion.png";
+	module.exports = __webpack_require__.p + "images/logo.png";
 
 /***/ },
 /* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkmad.png";
+	module.exports = __webpack_require__.p + "images/lotus.png";
 
 /***/ },
 /* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmode.png";
+	module.exports = __webpack_require__.p + "images/matt.png";
 
 /***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye1.png";
+	module.exports = __webpack_require__.p + "images/medallion.png";
 
 /***/ },
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye2.png";
+	module.exports = __webpack_require__.p + "images/monkmad.png";
 
 /***/ },
 /* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/monkzenmodeeye3.png";
+	module.exports = __webpack_require__.p + "images/monkzenmode.png";
 
 /***/ },
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/music.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye1.png";
 
 /***/ },
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/nirvana.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye2.png";
 
 /***/ },
 /* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/pissedmonk.png";
+	module.exports = __webpack_require__.p + "images/monkzenmodeeye3.png";
 
 /***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/play.png";
+	module.exports = __webpack_require__.p + "images/music.png";
 
 /***/ },
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/player_image.png";
+	module.exports = __webpack_require__.p + "images/nirvana.png";
 
 /***/ },
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/playpressed.png";
+	module.exports = __webpack_require__.p + "images/pissedmonk.png";
 
 /***/ },
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/ryan.png";
+	module.exports = __webpack_require__.p + "images/play.png";
 
 /***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/title.png";
+	module.exports = __webpack_require__.p + "images/player_image.png";
 
 /***/ },
 /* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tryagain.png";
+	module.exports = __webpack_require__.p + "images/playpressed.png";
 
 /***/ },
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tryagainpressed.png";
+	module.exports = __webpack_require__.p + "images/ryan.png";
 
 /***/ },
 /* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenade.png";
+	module.exports = __webpack_require__.p + "images/title.png";
 
 /***/ },
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenade_animation.png";
+	module.exports = __webpack_require__.p + "images/tryagain.png";
 
 /***/ },
 /* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenadepressed.png";
+	module.exports = __webpack_require__.p + "images/tryagainpressed.png";
 
 /***/ },
 /* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zengrenadereticle.png";
+	module.exports = __webpack_require__.p + "images/zengrenade.png";
 
 /***/ },
 /* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmode.png";
+	module.exports = __webpack_require__.p + "images/zengrenade_animation.png";
 
 /***/ },
 /* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeanimate.png";
+	module.exports = __webpack_require__.p + "images/zengrenadepressed.png";
 
 /***/ },
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeselect.png";
+	module.exports = __webpack_require__.p + "images/zengrenadereticle.png";
 
 /***/ },
 /* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zenmodeselectpressed.png";
+	module.exports = __webpack_require__.p + "images/zenmode.png";
 
 /***/ },
 /* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/zoe.png";
+	module.exports = __webpack_require__.p + "images/zenmodeanimate.png";
 
 /***/ },
 /* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__.p + "images/zenmodeselect.png";
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zenmodeselectpressed.png";
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/zoe.png";
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var map = {
-		"./beach.mp3": 196,
-		"./meditation_background.mp3": 197,
-		"./meditation_background.wav": 198,
-		"./meditation_level_2.mp3": 199,
-		"./meditation_level_2_v2.mp3": 200,
-		"./meditation_level_2_v2.wav": 201
+		"./beach.mp3": 199,
+		"./meditation_background.mp3": 200,
+		"./meditation_background.wav": 201,
+		"./meditation_level_2.mp3": 202,
+		"./meditation_level_2_v2.mp3": 203,
+		"./meditation_level_2_v2.wav": 204
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -11223,41 +12173,41 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 195;
+	webpackContext.id = 198;
 
-
-/***/ },
-/* 196 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "sounds/beach.mp3";
-
-/***/ },
-/* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "sounds/meditation_background.mp3";
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "sounds/meditation_background.wav";
 
 /***/ },
 /* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "sounds/meditation_level_2.mp3";
+	module.exports = __webpack_require__.p + "sounds/beach.mp3";
 
 /***/ },
 /* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.mp3";
+	module.exports = __webpack_require__.p + "sounds/meditation_background.mp3";
 
 /***/ },
 /* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "sounds/meditation_background.wav";
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "sounds/meditation_level_2.mp3";
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.mp3";
+
+/***/ },
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "sounds/meditation_level_2_v2.wav";
