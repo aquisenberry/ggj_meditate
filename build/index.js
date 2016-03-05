@@ -8158,7 +8158,7 @@
 				data.entities.set(entity, "move_mod", 4);
 			}
 
-			if(gamepad.button(1, "start") && om_progress.zen) {
+			if(gamepad.button(1, "left stick") && om_progress.zen) {
 				data.entities.set(clear_halo, "image", {"name": "halo"});
 				clear_timers.clear_screen.running = true;
 				player_timers.dat_outro.running = true;
@@ -8166,7 +8166,7 @@
 
 	        var grenade, grenade_timers;
 
-	        if(gamepad.button(1, "right trigger")) {
+	        if(gamepad.button(1, "right shoulder")) {
 	            // Show reticle
 				data.entities.set(entity, "was_pressed", true);
 	            if(!timers.zen_cooldown.running) {
