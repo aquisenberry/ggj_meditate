@@ -92,7 +92,7 @@
             "x": 0,
             "y": 0
         },
-        "size_step": 5,
+        "size_step": 20,
         "size": {
             "width": 0,
             "height": 0

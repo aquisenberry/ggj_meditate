@@ -261,7 +261,7 @@
 				"zen_cooldown": {
 					"running": false,
 					"time": 0,
-					"max": 10000
+					"max": 20000
 				}
 			},
 			"collisions": [],
