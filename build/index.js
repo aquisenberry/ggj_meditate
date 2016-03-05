@@ -9106,6 +9106,7 @@
 	    ecs.addEach(function(entity, elapsed) {
 			var gamepad = new Gamepad();
 			gamepad.update();
+			console.log(gamepad);
 	        var entity_size = data.entities.get(entity, "size");
 	        var entity_position = data.entities.get(entity, "position");
 	        var image = data.entities.get(entity, "image");
