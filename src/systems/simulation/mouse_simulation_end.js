@@ -34,7 +34,7 @@ module.exports = function(ecs, data) {
 
         var timers = data.entities.get(entity, "timers");
         var entity_collisions = data.entities.get(entity, "collisions");
-        if(data.input.mouse.consumePressed(0)) {
+        if(gamepad.button(1, "a")) {
             var film_timer = data.entities.get(0, "timers");
             film_timer.bring_in_film.time = 2999;
             film_timer.start_end.time = 999;

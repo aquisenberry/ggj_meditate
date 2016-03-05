@@ -9012,7 +9012,7 @@
 
 	        var timers = data.entities.get(entity, "timers");
 	        var entity_collisions = data.entities.get(entity, "collisions");
-	        if(data.input.mouse.consumePressed(0)) {
+	        if(gamepad.button(1, "a")) {
 	            for(var i = 0; i < entity_collisions.length; ++i) {
 	                if(data.entities.get(entity_collisions[i], "name") == "back_title") {
 	                    data.entities.set(entity_collisions[i], "image", {"name": "back_to_title_pressed"}); 
@@ -9072,7 +9072,7 @@
 
 	        var timers = data.entities.get(entity, "timers");
 	        var entity_collisions = data.entities.get(entity, "collisions");
-	        if(data.input.mouse.consumePressed(0)) {
+	        if(gamepad.button(1, "a")) {
 	            var film_timer = data.entities.get(0, "timers");
 	            film_timer.bring_in_film.time = 2999;
 	            film_timer.start_end.time = 999;
