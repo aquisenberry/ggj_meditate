@@ -8113,8 +8113,8 @@
 	        var click_image = data.entities.get(entity, "click_image");
 
 			var mod = data.entities.get(entity, "move_mod");
-			var x = gamepad.axis(0, "left stick x") * mod;
-			var y = gamepad.axis(0, "left stick y") * mod;
+			var x = gamepad.axes(0, "left stick x") * mod;
+			var y = gamepad.axes(0, "left stick y") * mod;
 	        var cursor_position = {
 	            "x": entity_position.x + x,
 	            "y": entity_position.y + y
@@ -8198,6 +8198,8 @@
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict"; 
+
 	var mappings = __webpack_require__(88);
 
 	function getMapping(gamepadId, userAgent) {
@@ -8251,7 +8253,7 @@
 		};
 		var mapping = getMapping(gamepad.id, navigator.userAgent);
 		gp = gamepad.buttons.reduce(transformButton.bind(undefined, mapping), gp),
-		gp = gamepad.axes.reduce(transformAxis.bind(undefined, mapping, threshold), gp);
+		   gp = gamepad.axes.reduce(transformAxis.bind(undefined, mapping, threshold), gp);
 		return gp;
 	}
 
@@ -8988,8 +8990,8 @@
 	        var click_image = data.entities.get(entity, "click_image");
 	        
 			var mod = data.entities.get(entity, "move_mod");
-			var x = gamepad.axis(0, "left stick x") * mod;
-			var y = gamepad.axis(0, "left stick y") * mod;
+			var x = gamepad.axes(0, "left stick x") * mod;
+			var y = gamepad.axes(0, "left stick y") * mod;
 	        var cursor_position = {
 	            "x": entity_position.x + x,
 	            "y": entity_position.y + y
@@ -9048,8 +9050,8 @@
 	        var click_image = data.entities.get(entity, "click_image");
 	        
 			var mod = data.entities.get(entity, "move_mod");
-			var x = gamepad.axis(0, "left stick x") * mod;
-			var y = gamepad.axis(0, "left stick y") * mod;
+			var x = gamepad.axes(0, "left stick x") * mod;
+			var y = gamepad.axes(0, "left stick y") * mod;
 	        var cursor_position = {
 	            "x": entity_position.x + x,
 	            "y": entity_position.y + y
@@ -9109,8 +9111,8 @@
 	        var image = data.entities.get(entity, "image");
 	        var click_image = data.entities.get(entity, "click_image");
 			var mod = data.entities.get(entity, "move_mod");
-			var x = gamepad.axis(0, "left stick x") * mod;
-			var y = gamepad.axis(0, "left stick y") * mod;
+			var x = gamepad.axes(0, "left stick x") * mod;
+			var y = gamepad.axes(0, "left stick y") * mod;
 	        var cursor_position = {
 	            "x": entity_position.x + x,
 	            "y": entity_position.y + y
