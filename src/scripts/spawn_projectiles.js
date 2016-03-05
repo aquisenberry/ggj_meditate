@@ -27,10 +27,10 @@ function cast_to_edge(size,x, y, pos, data) {
 module.exports = function(entity, data) {
 
 	var level = parseInt(data.arguments.level);
-	var big_mod_max = 0.03 + (level * 0.01)
-	var big_mod_min = (level * 0.01)
-	var small_mod_max = 0.06 + (level * 0.01)
-	var small_mod_min = 0.02 + (level * 0.01)
+	var big_mod_max = 0.04 + (level * 0.02)
+	var big_mod_min = (level * 0.02)
+	var small_mod_max = 0.07 + (level * 0.02)
+	var small_mod_min = 0.03 + (level * 0.02)
 
     var constants = data.entities.get(entity, "constants"); 
     var x = Math.floor(Math.random() * data.canvas.width);

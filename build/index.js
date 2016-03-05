@@ -9971,10 +9971,10 @@
 	module.exports = function(entity, data) {
 
 		var level = parseInt(data.arguments.level);
-		var big_mod_max = 0.03 + (level * 0.01)
-		var big_mod_min = (level * 0.01)
-		var small_mod_max = 0.06 + (level * 0.01)
-		var small_mod_min = 0.02 + (level * 0.01)
+		var big_mod_max = 0.04 + (level * 0.02)
+		var big_mod_min = (level * 0.02)
+		var small_mod_max = 0.07 + (level * 0.02)
+		var small_mod_min = 0.03 + (level * 0.02)
 
 	    var constants = data.entities.get(entity, "constants"); 
 	    var x = Math.floor(Math.random() * data.canvas.width);
@@ -10456,7 +10456,7 @@
 					"zen_cooldown": {
 						"running": false,
 						"time": 0,
-						"max": 10000
+						"max": 20000
 					}
 				},
 				"collisions": [],
@@ -11330,7 +11330,7 @@
 				"x": 0,
 				"y": 0
 			},
-			"size_step": 5,
+			"size_step": 25,
 			"size": {
 				"width": 0,
 				"height": 0
