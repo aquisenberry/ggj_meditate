@@ -68,6 +68,7 @@ module.exports = function(ecs, data) {
 		}
 
 		if(gamepad.button(0, "start") && om_progress.zen) {
+			data.sounds.play("deepgong");
 			data.entities.set(clear_halo, "image", {"name": "halo"});
 			clear_timers.clear_screen.running = true;
 			player_timers.dat_outro.running = true;

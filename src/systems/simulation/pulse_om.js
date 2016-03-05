@@ -18,6 +18,7 @@ module.exports = function(ecs, data) {
     }, "halo");
     ecs.addEach(function(entity, elapsed) {
     	if(data.entities.get(9,"image")){
+
     		var half_bob_range = 1;
 	        var time_incriment = 0.009;
 
@@ -26,6 +27,9 @@ module.exports = function(ecs, data) {
 	        var time = data.entities.get(entity,"time");
 	        var position = data.entities.get(entity, "position");
 
+	        if(time.scale_time == 0){
+	        	data.sounds.play("smallgong");
+	        }
 	        size.width = (Math.sin(time.scale_time)*(1/12)+ 1) *base_size.width ;
 	        size.height = (Math.sin(time.scale_time)*(1/12)+ 1) *base_size.height;
     		console.log(size);
