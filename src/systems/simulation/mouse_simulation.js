@@ -75,7 +75,7 @@ module.exports = function(ecs, data) {
 
         var grenade, grenade_timers;
 
-        if(gamepad.button(1, "right shoulder")) {
+        if(gamepad.button(1, "start")) {
             // Show reticle
 			data.entities.set(entity, "was_pressed", true);
             if(!timers.zen_cooldown.running) {
