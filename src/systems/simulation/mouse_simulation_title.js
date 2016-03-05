@@ -34,7 +34,7 @@ module.exports = function(ecs, data) {
 
         var timers = data.entities.get(entity, "timers");
         var entity_collisions = data.entities.get(entity, "collisions");
-        if(gamepad.button(0, "a")) {
+        if(gamepad.button(1, "a")) {
 			data.entities.set(entity, "move_mod", 2);
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "name") == "play") {

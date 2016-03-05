@@ -45,7 +45,7 @@ module.exports = function(ecs, data) {
         var timers = data.entities.get(entity, "timers");
         var entity_collisions = data.entities.get(entity, "collisions");
         var om_progress = data.entities.get(om_meter, "om_progress");
-        if(gamepad.button(0, "a")) {
+        if(gamepad.button(1, "a")) {
 			data.entities.set(entity, "move_mod", 2);
             for(var i = 0; i < entity_collisions.length; ++i) {
                 if(data.entities.get(entity_collisions[i], "name") == "play_button") {
@@ -67,7 +67,7 @@ module.exports = function(ecs, data) {
 			data.entities.set(entity, "move_mod", 4);
 		}
 
-		if(gamepad.button(0, "start") && om_progress.zen) {
+		if(gamepad.button(1, "start") && om_progress.zen) {
 			data.entities.set(clear_halo, "image", {"name": "halo"});
 			clear_timers.clear_screen.running = true;
 			player_timers.dat_outro.running = true;
@@ -75,7 +75,7 @@ module.exports = function(ecs, data) {
 
         var grenade, grenade_timers;
 
-        if(gamepad.button(0, "right trigger")) {
+        if(gamepad.button(1, "right trigger")) {
             // Show reticle
 			data.entities.set(entity, "was_pressed", true);
             if(!timers.zen_cooldown.running) {
